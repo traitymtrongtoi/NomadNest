@@ -1,0 +1,6 @@
+{
+  "name": "NomadNest",
+  "description": "Ứng dụng đặt phòng và trải nghiệm tại các làng nghề truyền thống Đà Nẵng, thiết kế chuyên biệt cho Digital Nomads.",
+  "requestFramePermissions": ["geolocation", "microphone"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

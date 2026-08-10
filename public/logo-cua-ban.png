@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="50%" stop-color="#059669"/>
+      <stop offset="100%" stop-color="#022c22"/>
+    </linearGradient>
+    <linearGradient id="leafGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#86efac"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+  </defs>
+  
+  <!-- Outer Rounded Square Icon Badge -->
+  <rect x="10" y="10" width="380" height="380" rx="90" fill="url(#bgGrad)"/>
+  
+  <!-- House Roof & Structure -->
+  <path d="M 200 80 L 320 170 L 305 170 L 305 240 L 255 240 L 255 190 L 215 190 L 215 240 L 160 240 L 160 210 L 200 180 M 200 95 L 140 140 L 200 185 L 260 140 Z" fill="#ffffff" opacity="0.95"/>
+  <path d="M 200 70 L 335 170 L 315 170 L 200 85 L 85 170 L 65 170 Z" fill="#ffffff"/>
+  
+  <!-- Nest and Leaves -->
+  <path d="M 120 180 C 100 220, 130 260, 190 260 C 250 260, 270 210, 250 180 C 230 230, 160 240, 120 180 Z" fill="url(#leafGrad)"/>
+  <path d="M 100 150 C 90 190, 120 220, 180 225 C 130 210, 105 180, 100 150 Z" fill="#bbf7d0"/>
+  <path d="M 145 160 C 135 130, 175 120, 185 150 C 165 155, 150 170, 145 160 Z" fill="#86efac"/>
+  <path d="M 170 145 C 180 125, 210 135, 200 155 C 185 155, 175 150, 170 145 Z" fill="#4ade80"/>
+  
+  <!-- Typography -->
+  <text x="200" y="310" font-family="'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="34" fill="#ffffff" text-anchor="middle" letter-spacing="2">NOMADNEST</text>
+  <text x="200" y="342" font-family="'Plus Jakarta Sans', 'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="20" fill="#e2e8f0" text-anchor="middle" letter-spacing="4">CO-LIVING</text>
+</svg>
