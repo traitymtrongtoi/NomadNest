@@ -10,19 +10,18 @@ export const GuestRegistrationScreen: React.FC<GuestRegistrationScreenProps> = (
   onSuccess,
   onCancel
 }) => {
-  const [fullName, setFullName] = useState('Sarah Jenkins');
-  const [email, setEmail] = useState('sarah.j@digitalnomad.io');
+  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [nationality, setNationality] = useState('Việt Nam');
-  const [workField, setWorkField] = useState('IT & Lập trình');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     saveCurrentUserToStorage({
       id: 'user_' + Date.now(),
-      name: fullName,
-      email: email,
+      name: fullName.trim() || 'Sarah Johnson',
+      email: email.trim() || 'sarah.j@digitalnomad.io',
       avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
       role: 'nomad_user',
       badge: 'Premium Nomad'
@@ -75,7 +74,7 @@ export const GuestRegistrationScreen: React.FC<GuestRegistrationScreenProps> = (
                   value={fullName}
                   onChange={e => setFullName(e.target.value)}
                   className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none"
-                  placeholder="Họ và tên của bạn"
+                  placeholder="VD: Sarah Johnson"
                 />
               </div>
             </div>
@@ -92,7 +91,7 @@ export const GuestRegistrationScreen: React.FC<GuestRegistrationScreenProps> = (
                     value={email}
                     onChange={e => setEmail(e.target.value)}
                     className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none"
-                    placeholder="email@domain.com"
+                    placeholder="VD: sarah.j@digitalnomad.io"
                   />
                 </div>
               </div>
@@ -123,43 +122,23 @@ export const GuestRegistrationScreen: React.FC<GuestRegistrationScreenProps> = (
               </div>
             </div>
 
-            {/* Quốc tịch & Lĩnh vực công việc */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-white/90">Quốc tịch</label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">public</span>
-                  <select
-                    value={nationality}
-                    onChange={e => setNationality(e.target.value)}
-                    className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none"
-                  >
-                    <option value="Việt Nam">Việt Nam</option>
-                    <option value="United States">United States</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Australia">Australia</option>
-                    <option value="Germany">Germany</option>
-                    <option value="Japan">Japan</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-1">
-                <label className="text-xs font-semibold text-white/90">Lĩnh vực công việc</label>
-                <div className="relative">
-                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">work</span>
-                  <select
-                    value={workField}
-                    onChange={e => setWorkField(e.target.value)}
-                    className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none"
-                  >
-                    <option value="IT & Lập trình">IT & Lập trình</option>
-                    <option value="Marketing & Nội dung">Marketing & Content</option>
-                    <option value="Thiết kế (UI/UX, Graphic)">Thiết kế (UI/UX, Graphic)</option>
-                    <option value="Kinh doanh & Remote">Kinh doanh & Remote</option>
-                    <option value="Khác">Lĩnh vực khác</option>
-                  </select>
-                </div>
+            {/* Quốc tịch */}
+            <div className="flex flex-col gap-1">
+              <label className="text-xs font-semibold text-white/90">Quốc tịch</label>
+              <div className="relative">
+                <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">public</span>
+                <select
+                  value={nationality}
+                  onChange={e => setNationality(e.target.value)}
+                  className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none"
+                >
+                  <option value="Việt Nam">Việt Nam</option>
+                  <option value="United States">United States</option>
+                  <option value="United Kingdom">United Kingdom</option>
+                  <option value="Australia">Australia</option>
+                  <option value="Germany">Germany</option>
+                  <option value="Japan">Japan</option>
+                </select>
               </div>
             </div>
 

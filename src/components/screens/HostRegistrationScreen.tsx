@@ -10,10 +10,10 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
   onSuccess,
   onCancel
 }) => {
-  const [hostName, setHostName] = useState('Mrs. Mai');
-  const [propertyTitle, setPropertyTitle] = useState('Xưởng Gốm & Homestay Nam Ô');
+  const [hostName, setHostName] = useState('');
+  const [propertyTitle, setPropertyTitle] = useState('');
   const [craftVillage, setCraftVillage] = useState('Làng nước mắm Nam Ô');
-  const [email, setEmail] = useState('mai.host@nomadnest.vn');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,8 +21,8 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
     e.preventDefault();
     saveCurrentUserToStorage({
       id: 'host_' + Date.now(),
-      name: hostName,
-      email: email,
+      name: hostName.trim() || 'Mrs. Mai',
+      email: email.trim() || 'mai.host@nomadnest.vn',
       avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
       role: 'local_host',
       badge: 'Superhost'

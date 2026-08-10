@@ -18,24 +18,21 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const [authMode, setAuthMode] = useState<'signup' | 'login'>('signup');
 
   // Digital Nomad Signup States
-  const [nomadName, setNomadName] = useState('Sarah Johnson');
-  const [nomadEmail, setNomadEmail] = useState('sarah.j@digitalnomad.io');
-  const [nomadPassword, setNomadPassword] = useState('password123');
+  const [nomadName, setNomadName] = useState('');
+  const [nomadEmail, setNomadEmail] = useState('');
+  const [nomadPassword, setNomadPassword] = useState('');
   const [nomadNationality, setNomadNationality] = useState('Việt Nam');
-  const [nomadField, setNomadField] = useState('IT & Lập trình');
 
   // Local Host Signup States
-  const [hostName, setHostName] = useState('Mrs. Mai');
-  const [hostProperty, setHostProperty] = useState('Xưởng Gốm & Homestay Nam Ô');
+  const [hostName, setHostName] = useState('');
+  const [hostProperty, setHostProperty] = useState('');
   const [hostVillage, setHostVillage] = useState('Làng nước mắm Nam Ô');
-  const [hostEmail, setHostEmail] = useState('mai.host@nomadnest.vn');
-  const [hostPassword, setHostPassword] = useState('password123');
+  const [hostEmail, setHostEmail] = useState('');
+  const [hostPassword, setHostPassword] = useState('');
 
   // Common Login States
-  const [loginEmail, setLoginEmail] = useState(
-    role === 'local_host' ? 'mai.host@nomadnest.vn' : 'sarah.j@digitalnomad.io'
-  );
-  const [loginPassword, setLoginPassword] = useState('password123');
+  const [loginEmail, setLoginEmail] = useState('');
+  const [loginPassword, setLoginPassword] = useState('');
 
   // Show/Hide Password States
   const [showNomadPassword, setShowNomadPassword] = useState(false);
@@ -45,8 +42,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (role === 'local_host') {
-      const name = authMode === 'signup' ? hostName : 'Mrs. Mai';
-      const email = authMode === 'signup' ? hostEmail : loginEmail;
+      const name = authMode === 'signup' ? (hostName || 'Mrs. Mai') : 'Mrs. Mai';
+      const email = authMode === 'signup' ? (hostEmail || 'mai.host@nomadnest.vn') : (loginEmail || 'mai.host@nomadnest.vn');
       saveCurrentUserToStorage({
         id: 'host_' + Date.now(),
         name: name,
@@ -65,8 +62,8 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         badge: 'Master Admin'
       });
     } else {
-      const name = authMode === 'signup' ? nomadName : 'Sarah Johnson';
-      const email = authMode === 'signup' ? nomadEmail : loginEmail;
+      const name = authMode === 'signup' ? (nomadName || 'Sarah Johnson') : 'Sarah Johnson';
+      const email = authMode === 'signup' ? (nomadEmail || 'sarah.j@digitalnomad.io') : (loginEmail || 'sarah.j@digitalnomad.io');
       saveCurrentUserToStorage({
         id: 'user_' + Date.now(),
         name: name,
@@ -176,7 +173,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                     required
                     value={nomadName}
                     onChange={(e) => setNomadName(e.target.value)}
-                    placeholder="Nguyễn Văn A / Sarah Jenkins"
+                    placeholder="VD: Sarah Johnson"
                     className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none transition-colors"
                   />
                 </div>
@@ -195,7 +192,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                       required
                       value={nomadEmail}
                       onChange={(e) => setNomadEmail(e.target.value)}
-                      placeholder="nomad@email.com"
+                      placeholder="VD: sarah.j@digitalnomad.io"
                       className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none transition-colors"
                     />
                   </div>
@@ -229,48 +226,26 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                 </div>
               </div>
 
-              {/* Quốc tịch & Lĩnh vực công việc */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-white/90">Quốc tịch (Nationality)</label>
-                  <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">
-                      public
-                    </span>
-                    <select
-                      value={nomadNationality}
-                      onChange={(e) => setNomadNationality(e.target.value)}
-                      className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none transition-colors cursor-pointer"
-                    >
-                      <option value="Việt Nam">Việt Nam</option>
-                      <option value="United States">United States</option>
-                      <option value="United Kingdom">United Kingdom</option>
-                      <option value="Australia">Australia</option>
-                      <option value="Germany">Germany</option>
-                      <option value="Japan">Japan</option>
-                      <option value="Khác">Khác...</option>
-                    </select>
-                  </div>
-                </div>
-
-                <div className="space-y-1">
-                  <label className="text-xs font-semibold text-white/90">Lĩnh vực công việc (Work Field)</label>
-                  <div className="relative">
-                    <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">
-                      work
-                    </span>
-                    <select
-                      value={nomadField}
-                      onChange={(e) => setNomadField(e.target.value)}
-                      className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none transition-colors cursor-pointer"
-                    >
-                      <option value="IT & Lập trình">IT & Lập trình</option>
-                      <option value="Marketing & Nội dung">Marketing & Content</option>
-                      <option value="Thiết kế (UI/UX, Graphic)">Thiết kế (UI/UX, Graphic)</option>
-                      <option value="Kinh doanh & Remote">Kinh doanh & Remote</option>
-                      <option value="Khác">Lĩnh vực khác</option>
-                    </select>
-                  </div>
+              {/* Quốc tịch */}
+              <div className="space-y-1">
+                <label className="text-xs font-semibold text-white/90">Quốc tịch (Nationality)</label>
+                <div className="relative">
+                  <span className="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-white/50 text-lg">
+                    public
+                  </span>
+                  <select
+                    value={nomadNationality}
+                    onChange={(e) => setNomadNationality(e.target.value)}
+                    className="w-full h-11 pl-10 pr-4 bg-[#00281D] border border-white/20 rounded-xl text-sm text-white focus:border-primary-fixed outline-none transition-colors cursor-pointer"
+                  >
+                    <option value="Việt Nam">Việt Nam</option>
+                    <option value="United States">United States</option>
+                    <option value="United Kingdom">United Kingdom</option>
+                    <option value="Australia">Australia</option>
+                    <option value="Germany">Germany</option>
+                    <option value="Japan">Japan</option>
+                    <option value="Khác">Khác...</option>
+                  </select>
                 </div>
               </div>
 
@@ -457,7 +432,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
                 value={loginEmail}
                 onChange={(e) => setLoginEmail(e.target.value)}
                 className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none"
-                placeholder="email@domain.com"
+                placeholder="VD: sarah.j@digitalnomad.io"
               />
             </div>
           </div>

@@ -44,7 +44,7 @@ export const MOCK_VILLAGES: Village[] = [
     tags: ['Làng nghề truyền thống', 'Thùng lều gỗ ủ mắm', 'Ủ chượp cá cơm'],
     slogan: 'Nơi đại dương hóa thành hương vị di sản 400 năm.',
     description: 'Trải nghiệm không gian mộc mạc bên cạnh những thùng lều gỗ lớn ủ mắm cá cơm truyền thống hơn 400 năm tuổi. Làng Nam Ô nằm nép mình ven biển Liên Chiểu, nơi nghệ nhân gìn giữ bí quyết chắt lọc từng giọt nước mắm cá cơm than nguyên chất đậm đà dưới nắng vàng.',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80',
     location: 'Quận Liên Chiểu, Đà Nẵng',
     distanceFromCenter: 'Cách trung tâm 15km',
     highlights: ['Di sản 400 năm tuổi', 'Thùng lều gỗ ủ mắm cá cơm', 'Gỏi cá Nam Ô trứ danh'],
@@ -54,7 +54,7 @@ export const MOCK_VILLAGES: Village[] = [
         title: 'Trải nghiệm ủ chượp mắm truyền thống',
         type: 'Thực hành làm mắm',
         description: 'Tận mắt tham quan nhà thùng gỗ ủ mắm cá cơm than, giao lưu cùng nghệ nhân và nếm thử các giọt mắm cốt nhĩ thượng hạng.',
-        image: 'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
         price: 'Miễn phí tham quan'
       },
       {
@@ -62,14 +62,14 @@ export const MOCK_VILLAGES: Village[] = [
         title: 'Tản bộ làng chài cổ Nam Ô',
         type: 'Tour văn hóa',
         description: 'Khám phá con đường làng cổ, dốc biển phơi lưới cá và ghé viếng Dinh Lăng Ông Nam Ô kính ngưỡng ngàn năm.',
-        image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=800&q=80',
         price: '150,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1590283603385-17ffb3a7f29f?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
     ]
   },
   {
@@ -79,7 +79,7 @@ export const MOCK_VILLAGES: Village[] = [
     tags: ['Bánh tráng vỉ tre', 'Lò tráng than củi', 'Làng cổ 500 năm'],
     slogan: 'Thơm lừng hương gạo mới trên những vỉ tre phơi nắng.',
     description: 'Trải nghiệm không gian sống mộc mạc bên cạnh lò tráng bánh tráng truyền thống hơn 500 năm tuổi. Nơi những vỉ tre dài phơi đầy bánh tráng tròn mộc mạc dưới ánh nắng rực rỡ và bếp than củi rực hồng đum đúc đêm ngày.',
-    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80',
     location: 'Xã Hòa Phong, Huyện Hòa Vang, Đà Nẵng',
     distanceFromCenter: 'Cách trung tâm 14km',
     highlights: ['Vỉ tre phơi bánh tráng nắng', 'Lò tráng than củi 500 năm', 'Đình làng cổ Túy Loan'],
@@ -94,8 +94,8 @@ export const MOCK_VILLAGES: Village[] = [
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1509315811355-57bd3b7776b6?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=800&q=80'
     ]
   },
   {
@@ -105,7 +105,7 @@ export const MOCK_VILLAGES: Village[] = [
     tags: ['Điêu khắc cẩm thạch', 'Sơn Thủy Ngũ Hành Sơn', 'Tượng đá tinh xảo'],
     slogan: 'Nơi những khối đá cẩm thạch cất lời thành nghệ thuật.',
     description: 'Sinh sống trong không gian đậm chất nghệ thuật dưới chân danh thắng Ngũ Hành Sơn. Nơi các nghệ nhân Non Nước tài hoa tỉ mẩn gọt dũa, chế tác các bức tượng đá cẩm thạch tinh xảo từ hàng trăm năm qua.',
-    image: 'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=1000&q=80',
+    image: 'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=1000&q=80',
     location: 'Quận Ngũ Hành Sơn, Đà Nẵng',
     distanceFromCenter: 'Cách trung tâm 10km',
     highlights: ['Thắng cảnh Ngũ Hành Sơn', 'Tượng đá cẩm thạch thủ công', 'Không gian yên tĩnh sáng tạo'],
@@ -120,8 +120,8 @@ export const MOCK_VILLAGES: Village[] = [
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'
     ]
   },
   {
@@ -167,12 +167,13 @@ export const MOCK_VILLAGES: Village[] = [
         title: 'Chèo thuyền thúng & Chợ cá sớm',
         type: 'Trải nghiệm ngư dân',
         description: 'Tự tay tập chèo thuyền thúng tròn ven bờ và trải nghiệm đón chuyến tàu đánh cá đầu tiên trong ngày.',
-        image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80',
+        image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=800&q=80',
         price: '180,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80'
+      'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80',
+      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
     ]
   }
 ];
@@ -192,8 +193,8 @@ export const MOCK_PROPERTIES: Property[] = [
     reviewsCount: 128,
     location: 'Làng nước mắm Nam Ô, Liên Chiểu, Đà Nẵng',
     images: [
-      'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=1000&q=80'
     ],
     tags: ['Wi-Fi 150 Mbps', 'Xem ủ mắm cá cơm', 'Gần biển Nam Ô', 'Góc làm việc Ergonomic'],
     description: 'Trải nghiệm không gian sống mộc mạc bên cạnh xưởng thùng lều gỗ ủ mắm cá cơm truyền thống hơn 400 năm tuổi. Căn biệt thự ngập tràn ánh nắng tự nhiên, trang bị bàn ghế làm việc Ergonomic tiêu chuẩn, Wi-Fi tốc độ cao và ban công thoáng mát lộng gió biển Nam Ô.',
@@ -223,7 +224,7 @@ export const MOCK_PROPERTIES: Property[] = [
     reviewsCount: 86,
     location: 'Làng bánh tráng Túy Loan, Hòa Vang, Đà Nẵng',
     images: [
-      'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1509315811355-57bd3b7776b6?auto=format&fit=crop&w=1000&q=80'
     ],
     tags: ['Lò tráng bánh 500 năm', 'Sân phơi vỉ tre', 'Wi-Fi 120 Mbps', 'Khung cảnh yên bình'],
@@ -251,8 +252,8 @@ export const MOCK_PROPERTIES: Property[] = [
     reviewsCount: 104,
     location: 'Làng đá Non Nước, Ngũ Hành Sơn, Đà Nẵng',
     images: [
-      'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80'
     ],
     tags: ['Tượng đá cẩm thạch', 'Chân núi Ngũ Hành Sơn', 'Cáp quang 200 Mbps'],
     description: 'Căn studio sang trọng được bài trí các tác phẩm đá cẩm thạch điêu khắc thủ công tinh xảo dưới chân núi Ngũ Hành Sơn. Không gian tĩnh lặng với góc làm việc đa màn hình cho lập trình viên và người sáng tạo.',
@@ -307,7 +308,7 @@ export const MOCK_PROPERTIES: Property[] = [
     location: 'Làng chài Mẫn Thái, Sơn Trà, Đà Nẵng',
     images: [
       'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1000&q=80'
+      'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=80'
     ],
     tags: ['Thuyền thúng ven biển', 'Ngắm bình minh Sơn Trà', 'Cáp quang 180 Mbps'],
     description: 'Studio sát biển Mẫn Thái với ban công nhìn thẳng ra những chiếc thuyền thúng tròn mộc mạc cập bến mỗi bình minh. Lý tưởng cho Nomad vừa làm việc online vừa yêu thích không khí biển khơi.',
