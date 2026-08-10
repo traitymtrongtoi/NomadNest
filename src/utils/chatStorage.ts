@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase';
+
 export interface StoredChatMessage {
   id: number | string;
   senderRole: 'guest' | 'host';
@@ -72,8 +74,19 @@ export const saveStoredChatMessage = (
     localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(updated));
     // Trigger custom event for same-tab reactive update
     window.dispatchEvent(new Event('nomad_chat_updated'));
+
+    // Sync asynchronously to Supabase
+    supabase.from('chat_messages').insert({
+      sender_role: senderRole,
+      sender_name: senderName,
+      text: text.trim(),
+      timestamp: timeStr
+    }).then(({ error }) => {
+      if (error) console.log('Supabase chat sync note:', error.message);
+    });
   } catch (err) {
     console.error('Error saving chat to localStorage:', err);
   }
   return updated;
 };
+

@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { User } from '../../types';
+import { checkSupabaseConnection } from '../../lib/supabase';
 
 interface AccountScreenProps {
   currentUser: User | null;
@@ -12,6 +13,14 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
   onLogout,
   onOpenQuickRoles
 }) => {
+  const [supabaseStatus, setSupabaseStatus] = useState<string>('Đang kiểm tra Supabase...');
+
+  useEffect(() => {
+    checkSupabaseConnection().then(res => {
+      setSupabaseStatus(res.message);
+    });
+  }, []);
+
   return (
     <div className="bg-[#002116] text-white min-h-screen pb-28 font-sans">
       {/* Top Header */}
@@ -43,10 +52,17 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
               <span className="material-symbols-outlined text-primary-fixed text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
             </div>
             <p className="text-xs text-primary-fixed-dim mt-0.5">{currentUser?.email || 'sarah.j@digitalnomad.io'}</p>
-            <div className="mt-2 inline-flex items-center gap-1 px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full text-[10px] font-bold">
-              <span className="material-symbols-outlined text-xs">workspace_premium</span>
-              {currentUser?.badge || 'Premium Nomad Member'}
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <div className="inline-flex items-center gap-1 px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full text-[10px] font-bold">
+                <span className="material-symbols-outlined text-xs">workspace_premium</span>
+                {currentUser?.badge || 'Premium Nomad Member'}
+              </div>
+              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[10px] font-semibold">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span>Supabase Connected</span>
+              </div>
             </div>
+            <p className="text-[11px] text-emerald-200/70 mt-1.5 font-mono truncate">{supabaseStatus}</p>
           </div>
         </div>
 

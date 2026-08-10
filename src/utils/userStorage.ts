@@ -1,5 +1,6 @@
 import { UserRole } from '../types';
 import { MOCK_USERS } from '../data/mockData';
+import { supabase } from '../lib/supabase';
 
 export interface CurrentUserProfile {
   id: string;
@@ -19,10 +20,23 @@ export const saveCurrentUserToStorage = (user: CurrentUserProfile) => {
     localStorage.setItem(CURRENT_USER_STORAGE_KEY, json);
     localStorage.setItem(NOMAD_USER_STORAGE_KEY, json);
     window.dispatchEvent(new Event('nomad_user_updated'));
+
+    // Sync user profile asynchronously to Supabase
+    supabase.from('profiles').upsert({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      avatar: user.avatar,
+      role: user.role,
+      badge: user.badge
+    }).then(({ error }) => {
+      if (error) console.log('Supabase profile sync note:', error.message);
+    });
   } catch (err) {
     console.error('Error saving current user:', err);
   }
 };
+
 
 export const getCurrentUserFromStorage = (fallbackRole: UserRole = 'nomad_user'): CurrentUserProfile => {
   try {

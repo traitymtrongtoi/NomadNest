@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { uploadRoomImage } from '../../lib/supabase';
 
 interface AddRoomScreenProps {
   onBack: () => void;
@@ -29,6 +30,7 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
   ]);
 
   // Image Upload States
+  const [isUploadingImage, setIsUploadingImage] = useState(false);
   const [previewImages, setPreviewImages] = useState<string[]>([
     'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
     'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&w=800&q=80'
@@ -54,11 +56,19 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
     { id: 'balcony', label: 'Ban công view thoáng mát', icon: 'balcony' }
   ];
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
+      setIsUploadingImage(true);
       const filesArray = Array.from(e.target.files);
-      const newUrls = filesArray.map(file => URL.createObjectURL(file as Blob));
-      setPreviewImages(prev => [...prev, ...newUrls]);
+      const uploadedUrls: string[] = [];
+
+      for (const file of filesArray) {
+        const url = await uploadRoomImage(file as File);
+        uploadedUrls.push(url);
+      }
+
+      setPreviewImages(prev => [...prev, ...uploadedUrls]);
+      setIsUploadingImage(false);
     }
   };
 
@@ -179,17 +189,28 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
                 multiple
                 accept="image/*"
                 onChange={handleImageUpload}
+                disabled={isUploadingImage}
                 className="hidden"
               />
               <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mb-2 group-hover:scale-110 transition-transform">
-                <span className="material-symbols-outlined text-2xl">photo_camera</span>
+                <span className="material-symbols-outlined text-2xl">
+                  {isUploadingImage ? 'cloud_upload' : 'photo_camera'}
+                </span>
               </div>
-              <p className="text-xs font-bold text-white mb-1">
-                Kéo thả hoặc <span className="text-emerald-400 underline">bấm vào đây để chọn ảnh</span>
-              </p>
-              <p className="text-[11px] text-emerald-100/60">
-                Tải ảnh phòng làm việc/chỗ ở của bạn (Hỗ trợ JPG, PNG)
-              </p>
+              {isUploadingImage ? (
+                <p className="text-xs font-bold text-emerald-300 animate-pulse">
+                  Đang tải ảnh lên Supabase Storage...
+                </p>
+              ) : (
+                <>
+                  <p className="text-xs font-bold text-white mb-1">
+                    Kéo thả hoặc <span className="text-emerald-400 underline">bấm vào đây để chọn ảnh</span>
+                  </p>
+                  <p className="text-[11px] text-emerald-100/60">
+                    Tự động lưu trữ trên Supabase Storage bucket <code className="text-emerald-300 bg-black/40 px-1 rounded">room-images</code>
+                  </p>
+                </>
+              )}
             </label>
 
             {/* Quick Add Sample Image Button for testing */}

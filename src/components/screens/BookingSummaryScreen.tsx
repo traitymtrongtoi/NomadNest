@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Property, Booking } from '../../types';
+import { supabase } from '../../lib/supabase';
 
 interface BookingSummaryScreenProps {
   property: Property;
@@ -42,6 +43,20 @@ export const BookingSummaryScreen: React.FC<BookingSummaryScreenProps> = ({
         status: 'confirmed',
         guestName: 'Sarah Johnson'
       };
+      // Sync booking asynchronously to Supabase
+      supabase.from('bookings').insert({
+        id: newBooking.id,
+        property_id: newBooking.propertyId,
+        property_title: newBooking.propertyTitle,
+        check_in: newBooking.checkIn,
+        check_out: newBooking.checkOut,
+        total_price: newBooking.totalPrice,
+        status: newBooking.status,
+        guest_name: newBooking.guestName
+      }).then(({ error }) => {
+        if (error) console.log('Supabase booking sync note:', error.message);
+      });
+
       setIsProcessing(false);
       onConfirmBooking(newBooking);
     }, 1500);
