@@ -8,37 +8,84 @@ interface MapScreenProps {
   onBack?: () => void;
 }
 
+const FILTER_CHIPS = [
+  { id: 'all', label: 'Tất cả' },
+  { id: 'wifi', label: 'Fast Wi-Fi (100+ Mbps)' },
+  { id: 'workshop', label: 'Làng nghề truyền thống' },
+  { id: 'co_working', label: 'Không gian làm việc' },
+  { id: 'cafe', label: 'Cà phê yên tĩnh' },
+  { id: 'food', label: 'Local Food & Làng chài' }
+];
+
 export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
   const [selectedSpot, setSelectedSpot] = useState<MapSpot | null>(null);
-  const [activeCategory, setActiveCategory] = useState<string>('all');
+  const [activeFilter, setActiveFilter] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [offlineDownloaded, setOfflineDownloaded] = useState<boolean>(false);
+  const [isLocating, setIsLocating] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
   const mapInstanceRef = useRef<L.Map | null>(null);
   const markersGroupRef = useRef<L.LayerGroup | null>(null);
+  const userMarkerRef = useRef<L.Marker | null>(null);
 
-  // Filter spots based on active category and search query
+  // Show Toast Message helper
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => {
+      setToastMessage(null);
+    }, 3200);
+  };
+
+  // Filter spots based on active filter chip and search query
   const filteredSpots = MOCK_MAP_SPOTS.filter(spot => {
     // Search query filter
     if (searchQuery.trim() !== '') {
-      const q = searchQuery.toLowerCase();
+      const q = searchQuery.toLowerCase().trim();
       const matchesTitle = spot.title.toLowerCase().includes(q);
       const matchesLocation = spot.locationName.toLowerCase().includes(q);
-      if (!matchesTitle && !matchesLocation) return false;
+      const matchesCat = spot.category.toLowerCase().includes(q);
+      if (!matchesTitle && !matchesLocation && !matchesCat) return false;
     }
 
-    // Category filter
-    if (activeCategory === 'all') return true;
-    if (activeCategory === 'wifi') return parseInt(spot.wifiSpeed) >= 100;
-    if (activeCategory === 'co_working') return spot.category === 'co_working';
-    if (activeCategory === 'cafe') return spot.category === 'cafe';
-    if (activeCategory === 'workshop') return spot.category === 'workshop';
-    if (activeCategory === 'food') return spot.category === 'food';
+    // Filter chip selection
+    if (activeFilter === 'all') return true;
+    if (activeFilter === 'wifi') return parseInt(spot.wifiSpeed) >= 100;
+    if (activeFilter === 'co_working') return spot.category === 'co_working';
+    if (activeFilter === 'cafe') return spot.category === 'cafe';
+    if (activeFilter === 'workshop') return spot.category === 'workshop';
+    if (activeFilter === 'food') return spot.category === 'food';
     return true;
   });
 
-  // 1. Initialize Leaflet Map inside useEffect safely
+  // 1. Clear search input and restore focus
+  const handleClearSearch = () => {
+    setSearchQuery('');
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  // Handle enter key in search
+  const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      if (filteredSpots.length > 0) {
+        const topSpot = filteredSpots[0];
+        setSelectedSpot(topSpot);
+        if (mapInstanceRef.current) {
+          mapInstanceRef.current.flyTo([topSpot.lat, topSpot.lng], 14, { duration: 1 });
+        }
+        showToast(`Tìm thấy ${filteredSpots.length} địa điểm cho "${searchQuery}"`);
+      } else {
+        showToast(`Không tìm thấy địa điểm nào khớp với "${searchQuery}"`);
+      }
+    }
+  };
+
+  // 2. Initialize Leaflet Map inside useEffect safely
   useEffect(() => {
     if (!mapContainerRef.current) return;
 
@@ -79,7 +126,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
     };
   }, []);
 
-  // 2. Render Markers onto map when filteredSpots or selectedSpot changes
+  // 3. Render Markers onto map when filteredSpots or selectedSpot changes
   useEffect(() => {
     const map = mapInstanceRef.current;
     const markersGroup = markersGroupRef.current;
@@ -136,10 +183,60 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
     });
   }, [filteredSpots, selectedSpot]);
 
+  // Recenter to Da Nang center
   const handleRecenterDaNang = () => {
     if (mapInstanceRef.current) {
       mapInstanceRef.current.flyTo([16.0544, 108.2022], 13, { duration: 1 });
+      showToast('Đã về trung tâm Đà Nẵng');
     }
+  };
+
+  // 4. Geolocation logic (My Location button)
+  const handleMyLocation = () => {
+    if (!navigator.geolocation) {
+      showToast('Trình duyệt của bạn không hỗ trợ định vị vị trí GPS.');
+      return;
+    }
+
+    setIsLocating(true);
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setIsLocating(false);
+        const { latitude, longitude } = position.coords;
+        const map = mapInstanceRef.current;
+        if (map) {
+          map.flyTo([latitude, longitude], 15, { duration: 1.2 });
+
+          // Add or update User Location pulsing marker
+          if (userMarkerRef.current) {
+            userMarkerRef.current.setLatLng([latitude, longitude]);
+          } else {
+            const userIcon = L.divIcon({
+              className: 'custom-user-marker',
+              html: `
+                <div class="relative flex items-center justify-center -translate-x-1/2 -translate-y-1/2">
+                  <div class="w-7 h-7 rounded-full bg-cyan-400/50 animate-ping absolute"></div>
+                  <div class="w-5 h-5 rounded-full bg-cyan-400 border-2 border-white shadow-lg relative z-10 flex items-center justify-center text-slate-900">
+                    <div class="w-2 h-2 rounded-full bg-white"></div>
+                  </div>
+                </div>
+              `,
+              iconSize: [0, 0],
+              iconAnchor: [0, 0]
+            });
+            userMarkerRef.current = L.marker([latitude, longitude], { icon: userIcon }).addTo(map);
+          }
+        }
+        showToast('Đã xác định vị trí hiện tại của bạn!');
+      },
+      (error) => {
+        setIsLocating(false);
+        console.warn('Geolocation error:', error);
+        showToast('Không thể lấy vị trí. Đang dùng tọa độ mặc định Đà Nẵng.');
+        handleRecenterDaNang();
+      },
+      { enableHighAccuracy: true, timeout: 8000 }
+    );
   };
 
   return (
@@ -149,7 +246,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
         {onBack ? (
           <button
             onClick={onBack}
-            className="text-white hover:opacity-80 w-10 h-10 rounded-full flex items-center justify-center bg-white/10 active:scale-95 transition-all"
+            className="text-white hover:opacity-80 w-10 h-10 rounded-full flex items-center justify-center bg-white/10 active:scale-95 transition-all cursor-pointer"
             type="button"
           >
             <span className="material-symbols-outlined text-2xl">arrow_back</span>
@@ -169,7 +266,11 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
         </div>
 
         <button
-          onClick={() => setOfflineDownloaded(!offlineDownloaded)}
+          onClick={() => {
+            const nextState = !offlineDownloaded;
+            setOfflineDownloaded(nextState);
+            showToast(nextState ? 'Đã tải bản đồ offline thành công!' : 'Đã xoá bản đồ offline');
+          }}
           type="button"
           className={`px-3 py-1.5 rounded-full text-xs font-semibold border flex items-center gap-1 transition-all cursor-pointer ${
             offlineDownloaded
@@ -191,25 +292,21 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
 
       {/* 3. FLOATING CATEGORY PILLS (Top Area under Header) */}
       <div className="absolute top-18 left-0 w-full z-[1000] px-4 sm:px-6 flex gap-2 overflow-x-auto no-scrollbar py-1">
-        {[
-          { id: 'all', label: 'Tất cả' },
-          { id: 'wifi', label: 'Fast Wi-Fi (100+ Mbps)' },
-          { id: 'co_working', label: 'Co-working Spaces' },
-          { id: 'cafe', label: 'Cà phê yên tĩnh' },
-          { id: 'workshop', label: 'Làng nghề truyền thống' },
-          { id: 'food', label: 'Làng chài & Ẩm thực' }
-        ].map(cat => (
+        {FILTER_CHIPS.map(chip => (
           <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+            key={chip.id}
+            onClick={() => {
+              setActiveFilter(chip.id);
+              setSelectedSpot(null);
+            }}
             type="button"
             className={`px-3.5 py-1.5 rounded-full text-xs font-bold whitespace-nowrap backdrop-blur-md border shadow-xl transition-all cursor-pointer ${
-              activeCategory === cat.id
-                ? 'bg-[#8bd6b6] text-[#002116] border-[#8bd6b6] shadow-emerald-950/40'
+              activeFilter === chip.id
+                ? 'bg-[#8bd6b6] text-[#002116] border-[#8bd6b6] shadow-emerald-950/40 ring-2 ring-[#8bd6b6]/40'
                 : 'bg-[#002116]/85 text-white border-white/20 hover:bg-white/20'
             }`}
           >
-            {cat.label}
+            {chip.label}
           </button>
         ))}
       </div>
@@ -219,35 +316,59 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
         <div className="bg-white/95 backdrop-blur-md rounded-[20px] px-4 py-2.5 shadow-[0_8px_30px_rgb(0,0,0,0.25)] border border-gray-100 flex items-center gap-2.5 transition-all focus-within:ring-2 focus-within:ring-[#8bd6b6]">
           <span className="material-symbols-outlined text-gray-400 text-xl shrink-0">search</span>
           <input
+            ref={inputRef}
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
+            onKeyDown={handleSearchKeyDown}
             placeholder="Tìm kiếm địa điểm (The Hive, Nam Ô, Non Nước...)"
             className="w-full bg-transparent text-sm font-semibold text-gray-800 placeholder:text-gray-400 placeholder:font-normal outline-none"
           />
           {searchQuery && (
             <button
-              onClick={() => setSearchQuery('')}
+              onClick={handleClearSearch}
               type="button"
-              className="w-5 h-5 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-600 flex items-center justify-center shrink-0 transition-colors"
+              className="w-6 h-6 rounded-full bg-gray-200 hover:bg-gray-300 text-gray-700 flex items-center justify-center shrink-0 transition-colors cursor-pointer active:scale-95"
+              title="Xóa tìm kiếm"
             >
-              <span className="material-symbols-outlined text-xs">close</span>
+              <span className="material-symbols-outlined text-sm">close</span>
             </button>
           )}
         </div>
       </div>
 
-      {/* 4. RECENTER GPS BUTTON */}
-      <button
-        onClick={handleRecenterDaNang}
-        type="button"
-        className="absolute top-[180px] right-4 z-[1000] w-10 h-10 rounded-full bg-[#002116]/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-xl hover:bg-[#002116] active:scale-95 transition-all cursor-pointer"
-        title="Về trung tâm Đà Nẵng"
-      >
-        <span className="material-symbols-outlined text-xl text-primary-fixed">my_location</span>
-      </button>
+      {/* 4. RECENTER & GPS BUTTONS */}
+      <div className="absolute top-[180px] right-4 z-[1000] flex flex-col gap-2">
+        <button
+          onClick={handleMyLocation}
+          disabled={isLocating}
+          type="button"
+          className="w-10 h-10 rounded-full bg-[#002116]/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-xl hover:bg-[#002116] active:scale-95 transition-all cursor-pointer disabled:opacity-50"
+          title="Định vị vị trí hiện tại"
+        >
+          <span className={`material-symbols-outlined text-xl text-cyan-300 ${isLocating ? 'animate-spin' : ''}`}>
+            {isLocating ? 'sync' : 'my_location'}
+          </span>
+        </button>
 
-      {/* 5. BOTTOM INFO CARD (Default: HIDDEN when selectedSpot is null) */}
+        <button
+          onClick={handleRecenterDaNang}
+          type="button"
+          className="w-10 h-10 rounded-full bg-[#002116]/90 backdrop-blur-md border border-white/20 text-white flex items-center justify-center shadow-xl hover:bg-[#002116] active:scale-95 transition-all cursor-pointer"
+          title="Về trung tâm Đà Nẵng"
+        >
+          <span className="material-symbols-outlined text-xl text-primary-fixed">center_focus_strong</span>
+        </button>
+      </div>
+
+      {/* 5. TOAST NOTIFICATION */}
+      {toastMessage && (
+        <div className="absolute top-[175px] left-1/2 -translate-x-1/2 z-[1100] bg-black/80 text-emerald-300 border border-emerald-400/40 text-xs font-bold px-4 py-2 rounded-full shadow-2xl backdrop-blur-md animate-fadeIn">
+          {toastMessage}
+        </div>
+      )}
+
+      {/* 6. BOTTOM INFO CARD (Default: HIDDEN when selectedSpot is null) */}
       {selectedSpot && (
         <div className="absolute bottom-20 left-4 right-4 sm:left-6 sm:right-6 max-w-xl mx-auto z-[1000] animate-fadeIn">
           <div className="bg-[#002116]/95 backdrop-blur-2xl rounded-3xl p-4 sm:p-5 border border-white/25 shadow-[0_10px_35px_rgba(0,0,0,0.6)] flex flex-col md:flex-row gap-4 items-center relative">
@@ -291,7 +412,7 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
                 </span>
 
                 <button
-                  onClick={() => alert(`Đang chỉ đường tới ${selectedSpot.title}...`)}
+                  onClick={() => showToast(`Đang mở ứng dụng bản đồ chỉ đường tới ${selectedSpot.title}...`)}
                   type="button"
                   className="px-4 py-2 bg-[#8bd6b6] hover:bg-[#6fcba6] text-[#002116] font-bold text-xs rounded-full shadow-lg transition-all active:scale-95 cursor-pointer"
                 >
@@ -305,3 +426,4 @@ export const MapScreen: React.FC<MapScreenProps> = ({ onBack }) => {
     </div>
   );
 };
+

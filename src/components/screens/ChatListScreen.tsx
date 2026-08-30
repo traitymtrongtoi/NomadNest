@@ -66,23 +66,23 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
             onClick={onBack}
             type="button"
             className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shrink-0"
-            title="Quay lại"
+            title="Back"
           >
             <span className="material-symbols-outlined text-xl">arrow_back</span>
           </button>
         ) : (
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-[#8bd6b6]">chat</span>
-            <span className="font-extrabold text-base text-white">Tin Nhắn Khách</span>
+            <span className="font-extrabold text-base text-white">Guest Messages</span>
           </div>
         )}
 
         <div className="text-center">
           <h1 className="font-extrabold text-base text-white tracking-wide">
-            {activeChat ? 'Trò Chuyện Với Chủ Nhà' : 'Danh Sách Hội Thoại'}
+            {activeChat ? 'Chat with Host' : 'Conversations'}
           </h1>
           <p className="text-[10px] text-[#8bd6b6] font-semibold">
-            Khách: <span className="underline font-bold">{currentUser.name}</span>
+            Guest: <span className="underline font-bold">{currentUser.name}</span>
           </p>
         </div>
 
@@ -99,7 +99,7 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
               className="w-8 h-8 rounded-full object-cover border border-[#8bd6b6]"
             />
             <div className="text-xs">
-              <span className="text-white/60 block text-[10px]">Tài khoản Guest đang gửi tin:</span>
+              <span className="text-white/60 block text-[10px]">Active Guest Account:</span>
               <span className="font-extrabold text-white text-xs">{currentUser.name}</span>
             </div>
           </div>
@@ -114,8 +114,8 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
             <div className="bg-emerald-950/40 border border-emerald-500/20 rounded-2xl p-3.5 flex items-center gap-3">
               <span className="material-symbols-outlined text-[#8bd6b6] text-2xl">sync_alt</span>
               <div className="text-xs">
-                <span className="font-bold text-white block">Tin nhắn đồng bộ Real-time 2 chiều</span>
-                <span className="text-white/70">Mở 2 tab trình duyệt (Guest & Host) để xem phản hồi tức thì qua localStorage.</span>
+                <span className="font-bold text-white block">Real-time Two-way Messaging</span>
+                <span className="text-white/70">Open guest & host tabs to experience instant synced replies.</span>
               </div>
             </div>
 
@@ -135,19 +135,19 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
 
                 <div className="min-w-0">
                   <div className="flex items-center gap-2">
-                    <h2 className="font-extrabold text-sm sm:text-base text-white truncate">Mrs. Mai (Chủ Homestay)</h2>
+                    <h2 className="font-extrabold text-sm sm:text-base text-white truncate">Mrs. Mai (Homestay Host)</h2>
                     <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-[#8bd6b6] border border-emerald-500/30">
-                      Làng Trà Quế
+                      Tra Que Village
                     </span>
                   </div>
                   <p className="text-xs text-white/70 truncate mt-1">
-                    {lastMessage ? `${lastMessage.senderName}: ${lastMessage.text}` : 'Chưa có tin nhắn'}
+                    {lastMessage ? `${lastMessage.senderName}: ${lastMessage.text}` : 'No messages yet'}
                   </p>
                 </div>
               </div>
 
               <div className="text-right flex flex-col items-end gap-1 shrink-0">
-                <span className="text-[10px] text-white/50">{lastMessage?.timestamp || 'Mới'}</span>
+                <span className="text-[10px] text-white/50">{lastMessage?.timestamp || 'New'}</span>
                 <span className="w-2.5 h-2.5 bg-[#8bd6b6] rounded-full animate-pulse" />
               </div>
             </div>
@@ -164,10 +164,10 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
                   className="w-10 h-10 rounded-full object-cover border border-white/20"
                 />
                 <div>
-                  <h3 className="font-extrabold text-sm sm:text-base text-white">Mrs. Mai (Chủ Homestay)</h3>
+                  <h3 className="font-extrabold text-sm sm:text-base text-white">Mrs. Mai (Homestay Host)</h3>
                   <span className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
                     <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Trực tuyến ● Đồng bộ Real-time (Tab Sync)</span>
+                    <span>Online ● Real-time Sync Active</span>
                   </span>
                 </div>
               </div>
@@ -177,7 +177,7 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
                 onClick={() => setActiveChat(false)}
                 className="text-xs text-[#8bd6b6] hover:text-white px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
               >
-                Danh sách
+                Back to list
               </button>
             </div>
 
@@ -216,14 +216,14 @@ export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
                 value={newMessageText}
                 onChange={(e) => setNewMessageText(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={`Nhập tin nhắn với tư cách ${currentUser.name}...`}
+                placeholder={`Type a message as ${currentUser.name}...`}
                 className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/40 outline-none focus:border-[#8bd6b6] transition-colors"
               />
               <button
                 type="button"
                 onClick={handleSendMessage}
                 className="w-10 h-10 rounded-full bg-[#8bd6b6] text-[#002116] flex items-center justify-center hover:bg-[#72c2a0] transition-all shadow cursor-pointer active:scale-95 shrink-0"
-                title="Gửi tin nhắn"
+                title="Send Message"
               >
                 <span className="material-symbols-outlined text-lg font-bold">send</span>
               </button>

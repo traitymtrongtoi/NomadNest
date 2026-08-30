@@ -19,160 +19,160 @@ export const MOCK_GUIDE_ITEMS: GuideItem[] = [
   {
     id: 'food-1',
     category: 'food',
-    tag: 'Đặc sản Đà Nẵng',
-    title: 'Mì Quảng Ếch & Gà Bà Mua',
-    subtitle: 'Thương hiệu Mì Quảng truyền thống',
-    description: 'Tô mì Quảng vàng ươm chuẩn vị với nước dùng đậm đà ninh từ xương, thịt gà thả vườn hoặc thịt ếch đồng thơm ngon, ăn kèm rau sống Trà Quế tươi giòn & bánh tráng nướng vừng.',
+    tag: 'Da Nang Signature',
+    title: 'Mi Quang Frog & Chicken - Ba Mua',
+    subtitle: 'Traditional Quang-style Noodle Brand',
+    description: 'A signature Da Nang turmeric-infused noodle bowl in a deeply savory slow-simmered broth with free-range chicken or tender frog, served alongside crisp Tra Que herbs, roasted peanuts, and crunchy toasted sesame rice crackers.',
     image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80',
-    address: '19 Trần Bình Trọng, Q. Hải Châu, Đà Nẵng',
-    priceRange: '35.000 - 65.000 VNĐ',
+    address: '19 Tran Binh Trong, Hai Chau Dist, Da Nang',
+    priceRange: '35,000 - 65,000 VND',
     rating: '4.8',
-    nomadTip: 'Nên gọi thêm đĩa bánh tráng nướng giòn và gọi nước chè xanh mát lạnh béo thơm.'
+    nomadTip: 'Order an extra crispy sesame rice cracker and request refreshing iced green tea.'
   },
   {
     id: 'food-2',
     category: 'food',
-    tag: 'Món cuốn',
-    title: 'Bánh Tráng Cuốn Thịt Heo Đại Lộc',
-    subtitle: 'Đặc sản mắm nêm đậm đà',
-    description: 'Thịt heo hai đầu da luộc chín tới mỏng mềm, cuốn cùng bánh tráng phơi sương Đại Lộc và đĩa rau sống tươi ngon hơn 10 loại lá rừng, chấm bát mắm nêm chưng thơm nức.',
+    tag: 'Rice Paper Rolls',
+    title: 'Banh Trang Cuon Thit Heo Dai Loc',
+    subtitle: 'Pork Belly Rolls & Fermented Dipping Sauce',
+    description: 'Thinly sliced boiled pork with two layers of skin, rolled in sun-dewed Dai Loc rice paper with over 10 varieties of fresh wild herbs, paired with an aromatic, savory fermented dipping sauce (mam nem).',
     image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
-    address: '124 Huỳnh Thúc Kháng, Q. Hải Châu, Đà Nẵng',
-    priceRange: '50.000 - 90.000 VNĐ',
+    address: '124 Huynh Thuc Khang, Hai Chau Dist, Da Nang',
+    priceRange: '50,000 - 90,000 VND',
     rating: '4.9',
-    nomadTip: 'Có chỗ ngồi điều hòa thoáng mát, Wi-Fi 80Mbps thích hợp dùng bữa trưa sau giờ làm việc.'
+    nomadTip: 'Air-conditioned seating with 80Mbps Wi-Fi—ideal for a relaxing lunch after focused work sessions.'
   },
   {
     id: 'food-3',
     category: 'food',
-    tag: 'Đặc sản làng nghề',
-    title: 'Gỏi Cá Nam Ô Ốc Sinh',
-    subtitle: 'Đặc sản làng chài cổ Nam Ô',
-    description: 'Món gỏi cá trích tươi vừa đánh bắt từ biển Nam Ô, trộn riềng ớt thính nếp thơm cay tròn vị, cuốn lá mưng, lá đinh lăng rừng và chấm nước xốt mè đậu xịn xò.',
+    tag: 'Artisan Village Specialty',
+    title: 'Goi Ca Nam O Oc Sinh',
+    subtitle: 'Ancient Nam O Fishing Village Heritage',
+    description: 'Freshly caught coastal herring tossed in galangal, chili, and fragrant roasted rice powder, rolled with wild mung and polyscias leaves, dipped in a rich sesame-peanut dipping sauce.',
     image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80',
-    address: 'Đường Nguyễn Lương Bằng, Làng Nam Ô, Q. Liên Chiểu',
-    priceRange: '60.000 - 120.000 VNĐ',
+    address: 'Nguyen Luong Bang St, Nam O Village, Lien Chieu Dist',
+    priceRange: '60,000 - 120,000 VND',
     rating: '4.9',
-    nomadTip: 'Nên thử cả 2 loại: Gỏi cá khô (trộn thính nếp) và Gỏi cá ướt (đậm đà nước xốt).'
+    nomadTip: 'Try both styles: Dry salad (tossed in roasted rice powder) and Wet salad (marinated in savory broth).'
   },
   {
     id: 'food-4',
     category: 'food',
-    tag: 'Món nước',
-    title: 'Bún Chả Cá Hòn',
-    subtitle: 'Nước dùng bí đỏ béo thanh',
-    description: 'Nước dùng ngọt thanh đậm vị biển nấu từ xương cá cờ tươi và bí đỏ thanh mát, tô bún chất lượng với chả cá thu chiên giòn, chả cá hấp dai ngon.',
+    tag: 'Noodle Soup',
+    title: 'Bun Cha Ca Hon',
+    subtitle: 'Mackerel Fish Cake & Sweet Pumpkin Broth',
+    description: 'A naturally sweet, ocean-rich broth simmered with fresh marlin bone and cooling pumpkin, served with crispy fried and tender steamed mackerel fish patties.',
     image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80',
-    address: '113/3 Nguyễn Chí Thanh, Q. Hải Châu, Đà Nẵng',
-    priceRange: '30.000 - 55.000 VNĐ',
+    address: '113/3 Nguyen Chi Thanh, Hai Chau Dist, Da Nang',
+    priceRange: '30,000 - 55,000 VND',
     rating: '4.7',
-    nomadTip: 'Quán mở cửa từ 6h00 sáng, món ăn sáng giàu năng lượng cho Digital Nomads.'
+    nomadTip: 'Opens at 6:00 AM—an energizing breakfast spot for early-rising Digital Nomads.'
   },
   {
     id: 'food-5',
     category: 'food',
-    tag: 'Ăn vặt',
-    title: 'Bánh Xèo & Nem Lụi Bà Dưỡng',
-    subtitle: 'Ẩm thực hẻm nổi tiếng nhất Đà Nẵng',
-    description: 'Bánh xèo vỏ giòn rụm màu nghệ tươi, nhân tôm đất & thịt bò mềm, nem lụi nướng than hoa thơm nức chấm nước xốt gan xay đặc chế béo ngậy.',
+    tag: 'Street Food & Snacks',
+    title: 'Banh Xeo & Nem Lui Ba Duong',
+    subtitle: 'Most Famous Hidden Alleyway Eatery',
+    description: 'Crispy turmeric-yellow savory crepes stuffed with sweet shrimp and tender beef, paired with charcoal-grilled pork skewers (nem lui) and a special creamy liver dipping sauce.',
     image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80',
-    address: 'K280/23 Hoàng Diệu, Q. Hải Châu, Đà Nẵng',
-    priceRange: '40.000 - 80.000 VNĐ',
+    address: 'K280/23 Hoang Dieu, Hai Chau Dist, Da Nang',
+    priceRange: '40,000 - 80,000 VND',
     rating: '4.8',
-    nomadTip: 'Quán trong hẻm nhưng rất rộng rãi, đông khách nhất lúc 17h00 - 19h00.'
+    nomadTip: 'Tucked inside an alley with spacious seating; peak hours are 5:00 PM – 7:00 PM.'
   },
   {
     id: 'food-6',
     category: 'food',
-    tag: 'Món nước',
-    title: 'Cao Lầu Phố Cổ & Đà Nẵng',
-    subtitle: 'Hương vị di sản Quảng Nam',
-    description: 'Sợi cao lầu màu tro dai giòn đặc trưng, thịt xá xíu thái lát đậm đà, da heo chiên phồng giòn rụm cùng nước xốt rim xá xíu thơm lừng.',
+    tag: 'Noodle Heritage',
+    title: 'Cao Lau Da Nang & Ancient Flavors',
+    subtitle: 'Historic Central Vietnam Dish',
+    description: 'Chewy ash-infused noodles topped with savory five-spice char siu pork slices, crispy fried pork cracklings, aromatic herbs, and a rich braising reduction sauce.',
     image: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=800&q=80',
-    address: '267 Thái Thị Bưởi, Q. Thanh Khê, Đà Nẵng',
-    priceRange: '35.000 - 60.000 VNĐ',
+    address: '267 Thai Thi Buoi, Thanh Khe Dist, Da Nang',
+    priceRange: '35,000 - 60,000 VND',
     rating: '4.7',
-    nomadTip: 'Sợi cao lầu làm theo công thức ngâm tro củi tràm truyền thống.'
+    nomadTip: 'Noodles are traditionally prepared with lye water from regional melaleuca tree ash.'
   },
 
   // HERITAGE GUIDE ITEMS
   {
     id: 'heritage-1',
     category: 'heritage',
-    tag: 'Di sản quốc gia',
-    title: 'Danh Thắng Ngũ Hành Sơn',
-    subtitle: 'Marble Mountains Da Nang',
-    description: 'Quần thể 5 ngọn núi đá vôi kỳ vĩ mang tên Kim - Mộc - Thủy - Hỏa - Thổ, sở hữu các hang động thạch nhũ lung linh như Động Huyền Không, Động Tàng Chơn cùng chùa Linh Ứng Kim Sơn.',
+    tag: 'National Heritage',
+    title: 'Marble Mountains (Ngu Hanh Son)',
+    subtitle: 'Sacred 5 Element Peaks',
+    description: 'A breathtaking cluster of five limestone and marble peaks named after the cosmic elements (Metal, Wood, Water, Fire, Earth). Houses mystical illuminated caverns like Huyen Khong Cave and ancient cliffside pagodas.',
     image: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80',
-    address: '81 Huyền Trân Công Chúa, Q. Ngũ Hành Sơn, Đà Nẵng',
-    priceRange: '40.000 VNĐ / vé',
+    address: '81 Huyen Tran Cong Chua, Ngu Hanh Son Dist, Da Nang',
+    priceRange: '40,000 VND / ticket',
     rating: '4.9',
-    nomadTip: 'Có ngọn Thủy Sơn trang bị thang máy ngắm cảnh 360 độ ngắm trọn bờ biển Sơn Thủy.'
+    nomadTip: 'Take the panoramic glass elevator on Water Mountain for 360-degree ocean views.'
   },
   {
     id: 'heritage-2',
     category: 'heritage',
-    tag: 'Làng nghề cổ',
-    title: 'Làng Nước Mắm Nam Ô (700 Năm)',
-    subtitle: 'Di sản văn hóa phi vật thể quốc gia',
-    description: 'Làng chài lâu đời nằm dưới chân đèo Hải Vân. Nơi sản xuất ra dòng nước mắm cá trích nguyên chất làm thủ công trong chum gỗ ngả màu thời gian.',
+    tag: 'Living Craft Heritage',
+    title: 'Nam O Fish Sauce Village (700 Years)',
+    subtitle: 'National Intangible Cultural Heritage',
+    description: 'A timeless 700-year-old coastal fishing village sheltered beneath Hai Van Pass. Master artisans handcraft pure anchovy fish sauce in weathered wooden vats, preserving ancestral secrets across centuries.',
     image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-    address: 'Làng Nam Ô, P. Hòa Hiệp Nam, Q. Liên Chiểu, Đà Nẵng',
-    priceRange: 'Miễn phí tham quan',
+    address: 'Nam O Village, Hoa Hiep Nam, Lien Chieu Dist, Da Nang',
+    priceRange: 'Free admission',
     rating: '5.0',
-    nomadTip: 'Tham gia tour workshop ủ mắm cùng các nghệ nhân bản địa NomadNest.'
+    nomadTip: 'Join hands-on fermentation workshops with local NomadNest artisans.'
   },
   {
     id: 'heritage-3',
     category: 'heritage',
-    tag: 'Bảo tàng lịch sử',
-    title: 'Bảo Tàng Điêu Khắc Chăm Đà Nẵng',
-    subtitle: 'Bảo tàng nghệ thuật Champa',
-    description: 'Bảo tàng trưng bày bộ sưu tập hiện vật điêu khắc tháp Chăm quy mô nhất thế giới. Tòa nhà cổ kính xây dựng từ năm 1915 mang đậm dấu ấn kiến trúc Pháp pha nét Chăm cổ.',
+    tag: 'Historical Museum',
+    title: 'Museum of Cham Sculpture',
+    subtitle: 'World-Renowned Champa Art Collection',
+    description: 'Home to the world’s largest collection of Cham architectural sculptures and sacred relics. Built in 1915, this antique building uniquely blends French colonial elegance with ancient Cham motifs.',
     image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
-    address: '02 Đường 2 Tháng 9, Q. Hải Châu, Đà Nẵng',
-    priceRange: '60.000 VNĐ / vé',
+    address: '02 2nd of September St, Hai Chau Dist, Da Nang',
+    priceRange: '60,000 VND / ticket',
     rating: '4.8',
-    nomadTip: 'Không gian yên tĩnh lý tưởng để tìm hiểu lịch sử văn hóa Champa.'
+    nomadTip: 'A peaceful, contemplative haven to explore centuries of ancient Champa art and history.'
   },
   {
     id: 'heritage-4',
     category: 'heritage',
-    tag: 'Làng nghề cổ',
-    title: 'Làng Đá Mỹ Nghệ Non Nước',
-    subtitle: 'Di sản điêu khắc đá 400 năm',
-    description: 'Làng nghề nằm ngay chân núi Ngũ Hành Sơn. Hàng trăm cơ sở chế tác đá nghệ thuật từ tượng Phật, con giống đến các tác phẩm điêu khắc tinh xảo xuất khẩu toàn cầu.',
+    tag: 'Ancient Craft Village',
+    title: 'Non Nuoc Stone Carving Village',
+    subtitle: '400-Year Stone Sculpture Legacy',
+    description: 'Nestled at the foot of Marble Mountains, hundreds of master stone sculptors craft exquisite statues, Buddhist relics, and decorative art exported across the globe.',
     image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-    address: 'Chân núi Ngũ Hành Sơn, P. Hòa Hải, Q. Ngũ Hành Sơn',
-    priceRange: 'Miễn phí vào làng',
+    address: 'Foot of Marble Mountains, Hoa Hai, Ngu Hanh Son Dist',
+    priceRange: 'Free admission',
     rating: '4.7',
-    nomadTip: 'Bạn có thể mua các món đồ lưu niệm bằng đá cẩm thạch nhỏ xinh mang về.'
+    nomadTip: 'Pick up finely crafted miniature marble souvenirs from local family workshops.'
   },
   {
     id: 'heritage-5',
     category: 'heritage',
-    tag: 'Danh thắng thiên nhiên',
-    title: 'Chùa Linh Ứng Bãi Bụt - Sơn Trà',
-    subtitle: 'Tượng Phật Bà Quan Thế Âm 67m',
-    description: 'Ngôi chùa lớn nhất Đà Nẵng tọa lạc trên bán đảo Sơn Trà. Tượng Phật Bà đứng tựa lưng vào núi, hướng mặt ra biển Đông bao la với phong cảnh sơn thủy hữu tình.',
+    tag: 'Spiritual & Scenic',
+    title: 'Linh Ung Pagoda & Lady Buddha',
+    subtitle: '67m Majestic Guanyin Statue',
+    description: 'The grandest pagoda in Da Nang perched on the lush Son Tra Peninsula. The towering 67-meter Lady Buddha stands against the mountainside overlooking the boundless East Sea.',
     image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
-    address: 'Bán đảo Sơn Trà, Q. Sơn Trà, Đà Nẵng',
-    priceRange: 'Miễn phí',
+    address: 'Son Tra Peninsula, Son Tra Dist, Da Nang',
+    priceRange: 'Free admission',
     rating: '4.9',
-    nomadTip: 'Nên đi vào khoảng 16h00 chiều để ngắm hoàng hôn buông xuống vịnh Đà Nẵng.'
+    nomadTip: 'Visit around 4:00 PM to catch the breathtaking golden sunset over Da Nang Bay.'
   },
   {
     id: 'heritage-6',
     category: 'heritage',
-    tag: 'Danh thắng thành phố',
-    title: 'Cầu Rồng & Cầu Tình Yêu Đà Nẵng',
-    subtitle: 'Biểu tượng hiện đại bên sông Hàn',
-    description: 'Cầu Rồng phun lửa & phun nước rực rỡ vào 21h00 các tối Thứ 7 và Chủ Nhật hàng tuần. Ngay cạnh đó là cầu Tình Yêu rực rỡ tượng đèn lồng trái tim.',
+    tag: 'Urban Landmark',
+    title: 'Dragon Bridge & Love Lock Bridge',
+    subtitle: 'Modern Icon on the Han River',
+    description: 'The iconic golden Dragon Bridge breathes fire and water in a spectacular display at 9:00 PM every Saturday and Sunday. Stroll alongside the romantic Love Lock Bridge illuminated by glowing heart-shaped lantern trees.',
     image: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80',
-    address: 'Bờ đông sông Hàn, Đường Trần Hưng Đạo, Q. Sơn Trà',
-    priceRange: 'Miễn phí',
+    address: 'East bank of Han River, Tran Hung Dao St, Son Tra Dist',
+    priceRange: 'Free',
     rating: '4.8',
-    nomadTip: 'Đến trước 20h30 để chọn được góc đứng chụp ảnh phun lửa đẹp nhất trên cầu.'
+    nomadTip: 'Arrive before 8:30 PM to secure the best photo spots along the pedestrian promenade.'
   }
 ];
 
@@ -231,7 +231,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
           }}
           type="button"
           className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shrink-0"
-          title="Quay lại"
+          title="Back"
         >
           <span className="material-symbols-outlined text-xl">arrow_back</span>
         </button>
@@ -239,10 +239,10 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
         <div className="text-center">
           <h1 className="font-extrabold text-base text-white tracking-wide">
             {activeView === 'category'
-              ? 'Local Guide Đà Nẵng'
+              ? 'Da Nang Local Guide'
               : selectedCategory === 'food'
-              ? 'Food Guide - Ẩm Thực'
-              : 'Heritage Guide - Di Sản'}
+              ? 'Food Guide - Cuisine'
+              : 'Heritage Guide - Attractions'}
           </h1>
           <p className="text-[10px] text-[#8bd6b6] font-semibold">NomadNest Cultural Compass</p>
         </div>
@@ -259,13 +259,13 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
             <div className="bg-white/5 border border-white/10 rounded-3xl p-5 sm:p-6 backdrop-blur-md relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-[#8bd6b6]/10 rounded-full blur-2xl pointer-events-none" />
               <span className="bg-[#8bd6b6] text-[#002116] text-[10px] font-extrabold uppercase tracking-wider px-3 py-1 rounded-full inline-block mb-2 shadow">
-                Khám phá bản địa
+                Local Insights
               </span>
               <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
                 Discover Da Nang through Food & Heritage
               </h2>
               <p className="text-xs sm:text-sm text-white/70 mt-2 max-w-2xl leading-relaxed">
-                Trải nghiệm trọn vẹn tinh hoa Đà Nẵng cùng NomadNest. Lựa chọn danh mục dưới đây để xem các món ăn đặc sản truyền thống hoặc các di sản văn hóa lịch sử lâu đời.
+                Immerse yourself in authentic Da Nang culture with NomadNest. Select a guide below to explore traditional local specialties or historic cultural heritage landmarks.
               </p>
             </div>
 
@@ -304,13 +304,13 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                       Food Guide
                     </h3>
                     <p className="text-sm font-bold text-emerald-300">
-                      Khám phá đặc sản Đà Nẵng
+                      Explore Da Nang Cuisine
                     </p>
                     <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                      Từ Mì Quảng đậm đà, Bánh tráng cuốn thịt heo Đại Lộc đến Gỏi cá Nam Ô danh tiếng 700 năm.
+                      From savory Mi Quang and Dai Loc pork rice paper rolls to the renowned 700-year-old Nam O raw fish salad.
                     </p>
                     <div className="pt-2 flex items-center text-xs font-bold text-[#8bd6b6] group-hover:underline gap-1">
-                      <span>Xem danh sách món ăn</span>
+                      <span>View all dishes</span>
                       <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </div>
                   </div>
@@ -350,13 +350,13 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                       Heritage Guide
                     </h3>
                     <p className="text-sm font-bold text-emerald-300">
-                      Di sản & Điểm tham quan
+                      Heritages & Attractions
                     </p>
                     <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                      Khám phá di sản Ngũ Hành Sơn, Làng Nước Mắm Nam Ô, Bảo tàng Chăm & các thắng cảnh nổi tiếng.
+                      Discover the Marble Mountains, Nam O Fish Sauce Village, Cham Museum, and other famous landmarks.
                     </p>
                     <div className="pt-2 flex items-center text-xs font-bold text-[#8bd6b6] group-hover:underline gap-1">
-                      <span>Xem danh sách điểm đến</span>
+                      <span>View all destinations</span>
                       <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </div>
                   </div>
@@ -383,7 +383,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                 }`}
               >
                 <span className="material-symbols-outlined text-lg">restaurant</span>
-                <span>Food Guide (Ẩm thực)</span>
+                <span>Food Guide (Cuisine)</span>
               </button>
 
               <button
@@ -398,7 +398,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                 }`}
               >
                 <span className="material-symbols-outlined text-lg">castle</span>
-                <span>Heritage Guide (Di sản)</span>
+                <span>Heritage Guide (Attractions)</span>
               </button>
             </div>
 
@@ -415,8 +415,8 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={
                     selectedCategory === 'food'
-                      ? 'Tìm món ăn đặc sản, mắm nêm, mì quảng...'
-                      : 'Tìm di sản, làng nghề, danh thắng...'
+                      ? 'Search local specialties, noodles, rolls, seafood...'
+                      : 'Search heritage sites, craft villages, landmarks...'
                   }
                   className="w-full bg-white/10 border border-white/20 focus:border-[#8bd6b6] rounded-2xl py-3 pl-11 pr-10 text-sm text-white placeholder:text-white/40 outline-none transition-all focus:ring-2 focus:ring-[#8bd6b6]/30"
                 />
@@ -442,7 +442,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                         : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/10'
                     }`}
                   >
-                    {tag === 'all' ? 'Tất cả' : tag}
+                    {tag === 'all' ? 'All' : tag}
                   </button>
                 ))}
               </div>
@@ -500,7 +500,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                             {item.priceRange}
                           </span>
                           <span className="text-xs font-bold text-emerald-700 group-hover:underline flex items-center gap-0.5">
-                            <span>Chi tiết</span>
+                            <span>Details</span>
                             <span className="material-symbols-outlined text-sm">chevron_right</span>
                           </span>
                         </div>
@@ -512,8 +512,8 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
             ) : (
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center space-y-3 my-6">
                 <span className="material-symbols-outlined text-4xl text-white/40">search_off</span>
-                <p className="text-sm font-bold text-white">Không tìm thấy kết quả phù hợp</p>
-                <p className="text-xs text-white/60">Vui lòng thử lại với từ khóa tìm kiếm khác hoặc chuyển danh mục.</p>
+                <p className="text-sm font-bold text-white">No matching results found</p>
+                <p className="text-xs text-white/60">Please try searching with different keywords or select another category.</p>
                 <button
                   onClick={() => {
                     setSearchQuery('');
@@ -521,7 +521,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                   }}
                   className="px-4 py-2 bg-[#8bd6b6] text-[#002116] rounded-xl text-xs font-bold hover:bg-[#72c2a0] transition-colors"
                 >
-                  Xóa bộ lọc
+                  Clear Filters
                 </button>
               </div>
             )}
@@ -546,6 +546,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
               <button
                 onClick={() => setSelectedItem(null)}
                 className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/30 transition-all active:scale-95 cursor-pointer z-10"
+                title="Close"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
@@ -573,14 +574,14 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                 </div>
                 <div className="flex items-center gap-2 text-xs text-white/90">
                   <span className="material-symbols-outlined text-base text-[#8bd6b6]">payments</span>
-                  <span>Mức giá: <strong>{selectedItem.priceRange}</strong></span>
+                  <span>Price / Fee: <strong>{selectedItem.priceRange}</strong></span>
                 </div>
               </div>
 
               {selectedItem.nomadTip && (
                 <div className="bg-[#8bd6b6]/10 border border-[#8bd6b6]/30 rounded-2xl p-4 space-y-1">
                   <span className="text-[10px] uppercase font-bold text-[#8bd6b6] tracking-wider block">
-                    💡 Nomad Tip từ NomadNest:
+                    💡 Nomad Tip from NomadNest:
                   </span>
                   <p className="text-xs text-white/90 italic">
                     "{selectedItem.nomadTip}"
@@ -597,7 +598,7 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                   className="w-full py-3.5 px-4 rounded-2xl bg-[#8bd6b6] hover:bg-[#72c2a0] text-[#002116] font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-lg"
                 >
                   <span className="material-symbols-outlined text-lg">map</span>
-                  <span>Xem trên bản đồ địa điểm</span>
+                  <span>View on Map</span>
                 </button>
               </div>
             </div>

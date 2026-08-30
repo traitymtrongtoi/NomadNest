@@ -27,15 +27,19 @@ export const VillageDetailScreen: React.FC<VillageDetailScreenProps> = ({
         />
 
         {/* Floating Controls */}
-        <div className="absolute top-0 left-0 w-full p-6 z-20 flex justify-between items-center">
+        <div className="absolute top-20 left-4 right-4 z-50 flex justify-between items-center pointer-events-none">
           <button
             onClick={onBack}
-            className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-white/20"
+            className="w-11 h-11 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg cursor-pointer pointer-events-auto"
+            title="Back"
           >
-            <span className="material-symbols-outlined">arrow_back</span>
+            <span className="material-symbols-outlined text-2xl">arrow_back</span>
           </button>
-          <div className="flex gap-3">
-            <button className="w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-white/20">
+          <div className="flex gap-3 pointer-events-auto">
+            <button
+              className="w-11 h-11 bg-black/40 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 hover:bg-black/60 active:scale-95 transition-all shadow-lg cursor-pointer"
+              title="Save"
+            >
               <span className="material-symbols-outlined">bookmark_border</span>
             </button>
           </div>
@@ -105,7 +109,7 @@ export const VillageDetailScreen: React.FC<VillageDetailScreenProps> = ({
                         {exp.price}
                       </span>
                       <span className="text-[11px] text-emerald-200/60 font-medium">
-                        Trải nghiệm làng nghề địa phương
+                        Authentic Local Craft Experience
                       </span>
                     </div>
                   </div>
@@ -118,7 +122,7 @@ export const VillageDetailScreen: React.FC<VillageDetailScreenProps> = ({
         {/* Atmosphere Gallery */}
         <section className="space-y-3">
           <h2 className="text-xl font-bold text-white pl-1">Atmosphere</h2>
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
             {village.atmosphereImages.map((img, idx) => (
               <div key={idx} className="aspect-square rounded-2xl overflow-hidden shadow-lg border border-white/10">
                 <img src={img} alt="Atmosphere" className="w-full h-full object-cover hover:scale-105 transition-transform" />
@@ -155,7 +159,7 @@ export const VillageDetailScreen: React.FC<VillageDetailScreenProps> = ({
             style={{ width: '100%', borderRadius: '12px', padding: '14px 0' }}
           >
             <span className="material-symbols-outlined text-xl">calendar_month</span>
-            <span>Xem Phòng & Đặt Chỗ</span>
+            <span>View Rooms & Book Stay</span>
             <span className="material-symbols-outlined text-lg">arrow_forward</span>
           </button>
         </div>

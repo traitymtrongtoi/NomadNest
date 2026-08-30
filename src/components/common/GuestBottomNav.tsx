@@ -23,7 +23,7 @@ export const GuestBottomNav: React.FC<GuestBottomNavProps> = ({ activeTab, onTab
         >
           home_work
         </span>
-        <span className="text-[10px] mt-0.5">Trang chủ</span>
+        <span className="text-[10px] mt-0.5">Home</span>
       </button>
 
       <button
@@ -41,7 +41,7 @@ export const GuestBottomNav: React.FC<GuestBottomNavProps> = ({ activeTab, onTab
         >
           explore
         </span>
-        <span className="text-[10px] mt-0.5">Dịch vụ</span>
+        <span className="text-[10px] mt-0.5">Explore</span>
       </button>
 
       <button
@@ -59,7 +59,7 @@ export const GuestBottomNav: React.FC<GuestBottomNavProps> = ({ activeTab, onTab
         >
           chat_bubble
         </span>
-        <span className="text-[10px] mt-0.5">Tin nhắn</span>
+        <span className="text-[10px] mt-0.5">Messages</span>
       </button>
 
       <button
@@ -77,7 +77,7 @@ export const GuestBottomNav: React.FC<GuestBottomNavProps> = ({ activeTab, onTab
         >
           person
         </span>
-        <span className="text-[10px] mt-0.5">Tài khoản</span>
+        <span className="text-[10px] mt-0.5">Account</span>
       </button>
     </nav>
   );

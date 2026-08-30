@@ -15,28 +15,28 @@ export const INITIAL_CHAT_MESSAGES: StoredChatMessage[] = [
     id: 1,
     senderRole: 'guest',
     senderName: 'Sarah Johnson',
-    text: 'Xin chào Mrs. Mai! Cho em hỏi tốc độ Wi-Fi ở homestay Làng Rau Trà Quế có đủ nhanh để em gọi video work remote không ạ?',
+    text: 'Hello Mrs. Mai! Could you confirm if the Wi-Fi speed at Nam O Villa is fast enough for my remote video calls?',
     timestamp: '10:15 AM'
   },
   {
     id: 2,
     senderRole: 'host',
     senderName: 'Mrs. Mai (Host)',
-    text: 'Chào Sarah! Wi-Fi cáp quang ở làng đạt 150Mbps, đầy đủ bàn làm việc và ổ cắm điện. Bạn yên tâm gọi Zoom/Meet nhé!',
+    text: 'Hello Sarah! Our fiber-optic Wi-Fi reaches 150 Mbps, complete with ergonomic desk setups and power outlets. Zoom/Meet calls run smoothly!',
     timestamp: '10:18 AM'
   },
   {
     id: 3,
     senderRole: 'guest',
     senderName: 'Sarah Johnson',
-    text: 'Dạ tuyệt quá! Cho em hỏi thêm về dịch vụ thuê xe máy và chèo SUP bình minh ở Bãi Bụt Sơn Trà với ạ?',
+    text: 'That sounds wonderful! Could you also share details about scooter rentals and sunrise SUP paddling near Son Tra Beach?',
     timestamp: '10:25 AM'
   },
   {
     id: 4,
     senderRole: 'host',
     senderName: 'Mrs. Mai (Host)',
-    text: 'Bên mình có sẵn xe ga Vision 150k/ngày giao tận phòng. Còn tour SUP bình minh bãi Bụt 250k bao gồm ảnh GoPro miễn phí luôn nè!',
+    text: 'We have Vision scooters available for 150k/day delivered to your door. Our sunrise SUP tour at Son Tra is 250k and includes free GoPro photos!',
     timestamp: '10:30 AM'
   }
 ];

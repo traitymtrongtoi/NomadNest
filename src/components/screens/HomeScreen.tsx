@@ -51,7 +51,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         <section className="flex flex-col gap-1 mt-2">
           <h1 className="text-3xl font-extrabold text-white leading-tight">
             Good Morning,<br />
-            {currentUser?.name || 'Sarah Johnson'}
+            {currentUser?.name || 'Explorer'}
           </h1>
           <div className="flex items-center gap-1 text-white/90 text-sm font-medium">
             <span className="material-symbols-outlined text-amber-300 text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
@@ -192,7 +192,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                   Local Guide
                 </span>
                 <span className="text-xs font-bold text-[#8bd6b6] group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                  <span>Khám phá ngay</span>
+                  <span>Explore Now</span>
                   <span className="material-symbols-outlined text-sm">arrow_forward</span>
                 </span>
               </div>
@@ -244,11 +244,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* Floating Action Buttons (FABs) - Clean & Modern 3D Green Accent */}
       <div className="fixed bottom-24 right-5 flex flex-col gap-3.5 z-40 items-end">
-        {/* FAB 1: Emergency Contact (Liên hệ khẩn cấp) */}
+        {/* FAB 1: Emergency Contact */}
         <button
           onClick={() => setIsEmergencyOpen(true)}
           className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-[#003829] to-emerald-600 text-white shadow-2xl flex items-center justify-center active:scale-92 border-2 border-white/40 hover:border-emerald-300 transition-all cursor-pointer group relative"
-          title="Liên hệ khẩn cấp 24/7"
+          title="24/7 Emergency Support"
         >
           <span className="material-symbols-outlined text-2xl drop-shadow group-hover:scale-110 transition-transform">
             phone_in_talk
@@ -256,11 +256,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           <span className="absolute -top-1 -right-1 w-3.5 h-3.5 rounded-full bg-red-500 border-2 border-white animate-pulse" />
         </button>
 
-        {/* FAB 2: AI Chatbot Sheep (Trợ lý con cừu NomadNest) */}
+        {/* FAB 2: AI Chatbot Sheep */}
         <button
           onClick={() => setIsChatbotOpen(true)}
           className="w-13 h-13 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-2xl flex items-center justify-center active:scale-92 border-2 border-white/40 hover:border-emerald-200 transition-all cursor-pointer group relative text-2xl"
-          title="Trợ lý AI NomadNest (Cừu 🐑)"
+          title="NomadNest AI Assistant (Sheep 🐑)"
         >
           <span className="group-hover:scale-115 transition-transform drop-shadow">
             🐑

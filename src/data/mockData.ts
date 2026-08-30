@@ -39,141 +39,187 @@ export const MOCK_USERS: Record<string, User> = {
 export const MOCK_VILLAGES: Village[] = [
   {
     id: 'nam_o',
-    name: 'Làng Nước Mắm Nam Ô',
+    name: 'Nam O Fish Sauce Village',
     category: 'Heritage',
-    tags: ['Làng nghề truyền thống', 'Thùng lều gỗ ủ mắm', 'Ủ chượp cá cơm'],
-    slogan: 'Nơi đại dương hóa thành hương vị di sản 400 năm.',
-    description: 'Trải nghiệm không gian mộc mạc bên cạnh những thùng lều gỗ lớn ủ mắm cá cơm truyền thống hơn 400 năm tuổi. Làng Nam Ô nằm nép mình ven biển Liên Chiểu, nơi nghệ nhân gìn giữ bí quyết chắt lọc từng giọt nước mắm cá cơm than nguyên chất đậm đà dưới nắng vàng.',
-    image: 'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80',
-    location: 'Quận Liên Chiểu, Đà Nẵng',
-    distanceFromCenter: 'Cách trung tâm 15km',
-    highlights: ['Di sản 400 năm tuổi', 'Thùng lều gỗ ủ mắm cá cơm', 'Gỏi cá Nam Ô trứ danh'],
+    tags: ['Traditional Craft Village', 'Wooden Fermentation Vats', 'Anchovy Fermentation'],
+    slogan: 'Where the ocean turns into 400-year heritage flavors.',
+    description: 'Experience rustic living alongside 400-year-old wooden fermentation vats producing pure traditional anchovy fish sauce. Tucked away along the Lien Chieu coast, local artisans preserve time-honored secrets under golden sunlight.',
+    image: 'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
+    imageUrl: 'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
+    location: 'Lien Chieu District, Da Nang',
+    distanceFromCenter: '15km from city center',
+    highlights: ['400-year-old Heritage', 'Wooden Vat Fish Sauce Craft', 'Famous Nam O Raw Fish Salad'],
     experiences: [
       {
         id: 'exp_1',
-        title: 'Trải nghiệm ủ chượp mắm truyền thống',
-        type: 'Thực hành làm mắm',
-        description: 'Tận mắt tham quan nhà thùng gỗ ủ mắm cá cơm than, giao lưu cùng nghệ nhân và nếm thử các giọt mắm cốt nhĩ thượng hạng.',
-        image: 'https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?auto=format&fit=crop&w=800&q=80',
-        price: 'Miễn phí tham quan'
+        title: 'Traditional Fish Sauce Fermentation Workshop',
+        type: 'Hands-on Craft',
+        description: 'Tour wooden vat houses, interact with master artisans, and taste premium first-press pure fish sauce drops.',
+        image: 'https://danangfantasticity.com/wp-content/uploads/2025/05/nghe-lam-nuoc-mam-nam-o-da-nang-02.jpg',
+        price: 'Free Tour'
       },
       {
         id: 'exp_2',
-        title: 'Tản bộ làng chài cổ Nam Ô',
-        type: 'Tour văn hóa',
-        description: 'Khám phá con đường làng cổ, dốc biển phơi lưới cá và ghé viếng Dinh Lăng Ông Nam Ô kính ngưỡng ngàn năm.',
-        image: 'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=800&q=80',
+        title: 'Ancient Nam O Fishing Village Walking Tour',
+        type: 'Cultural Tour',
+        description: 'Explore ancient village alleyways, coastal net-drying spots, and visit the historic Nam O Whales Shrine.',
+        image: 'https://statics.vinpearl.com/lang-nghe-nuoc-mam-nam-o--_1628760585.jpg',
         price: '150,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
+      'https://bqn.1cdn.vn/2024/02/28/baodanang.vn-dataimages-202402-original-_images1729055_1.gif',
+      'https://thanhnien.mediacdn.vn/Uploaded/minhnguyet/2022_09_14/nam-o1-406.jpg',
+      'https://vannghedanang.org.vn/app/upload/post/2019-11-15/20191115071807_download.jpg',
+      'https://thanhnien.mediacdn.vn/Uploaded/minhnguyet/2022_09_14/nam-o-578.jpg'
     ]
   },
   {
     id: 'tuy_loan',
-    name: 'Làng Bánh Tráng Túy Loan',
+    name: 'Tuy Loan Rice Paper Village',
     category: 'Culinary',
-    tags: ['Bánh tráng vỉ tre', 'Lò tráng than củi', 'Làng cổ 500 năm'],
-    slogan: 'Thơm lừng hương gạo mới trên những vỉ tre phơi nắng.',
-    description: 'Trải nghiệm không gian sống mộc mạc bên cạnh lò tráng bánh tráng truyền thống hơn 500 năm tuổi. Nơi những vỉ tre dài phơi đầy bánh tráng tròn mộc mạc dưới ánh nắng rực rỡ và bếp than củi rực hồng đum đúc đêm ngày.',
-    image: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80',
-    location: 'Xã Hòa Phong, Huyện Hòa Vang, Đà Nẵng',
-    distanceFromCenter: 'Cách trung tâm 14km',
-    highlights: ['Vỉ tre phơi bánh tráng nắng', 'Lò tráng than củi 500 năm', 'Đình làng cổ Túy Loan'],
+    tags: ['Bamboo Drying Trays', 'Wood-fired Clay Stoves', '500-Year Ancient Village'],
+    slogan: 'Aromatic fresh rice flour on bamboo trays drying under morning sun.',
+    description: 'Immerse yourself in authentic rustic living next to 500-year-old wood-fired rice paper stoves. Long bamboo trays filled with paper-thin rice sheets dry under bright sun rays and warm wood fires.',
+    image: 'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-3_1632484988.jpg',
+    imageUrl: 'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-3_1632484988.jpg',
+    location: 'Hoa Phong Commune, Hoa Vang, Da Nang',
+    distanceFromCenter: '14km from city center',
+    highlights: ['Sun-dried Rice Paper Trays', '500-Year Wood-fired Stoves', 'Historic Tuy Loan Village Temple'],
     experiences: [
       {
         id: 'exp_tuy_1',
-        title: 'Tự tay tráng & phơi bánh tráng',
-        type: 'Trải nghiệm làm bánh',
-        description: 'Học kỹ thuật múc bột gạo, tráng mỏng trên vung vải bếp than và tự tay bưng vỉ tre phơi bánh dưới nắng mai.',
-        image: 'https://images.unsplash.com/photo-1509315811355-57bd3b7776b6?auto=format&fit=crop&w=800&q=80',
+        title: 'Hand-make & Sun-dry Fresh Rice Paper',
+        type: 'Culinary Workshop',
+        description: 'Learn to ladle rice batter, spread it paper-thin over cloth stoves, and carry bamboo trays out to sun-dry.',
+        image: 'https://tourbanahills.vn/wp-content/uploads/2023/01/lang-banh-trang-tuy-loan7.jpg.jpg',
         price: '100,000 VND'
+      },
+      {
+        id: 'exp_tuy_2',
+        title: 'Traditional Tuy Loan Rice Paper Craft Tour',
+        type: 'Village Tour',
+        description: 'Visit century-old craft families, learn the secret of sesame & ginger rice batter, and savor freshly roasted rice crackers.',
+        image: 'https://danangbest.com/upload_content/banh-trang-tuy-loan-4.webp',
+        price: '150,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1584992236310-6edddc08acff?auto=format&fit=crop&w=800&q=80'
+      'https://danangfantasticity.com/wp-content/uploads/2024/02/tu-hao-lang-nghe-banh-trang-tuy-loan-1.jpg',
+      'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-05_1632496264.jpg',
+      'https://media-cdn-v2.laodong.vn/storage/newsportal/2024/12/28/1442239/Banh-Trang-Tuy-Loan..jpg',
+      'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-00_1632497035.jpg'
     ]
   },
   {
     id: 'non_nuoc',
-    name: 'Làng Đá Mỹ Nghệ Non Nước',
+    name: 'Non Nuoc Stone Carving Village',
     category: 'Artisan',
-    tags: ['Điêu khắc cẩm thạch', 'Sơn Thủy Ngũ Hành Sơn', 'Tượng đá tinh xảo'],
-    slogan: 'Nơi những khối đá cẩm thạch cất lời thành nghệ thuật.',
-    description: 'Sinh sống trong không gian đậm chất nghệ thuật dưới chân danh thắng Ngũ Hành Sơn. Nơi các nghệ nhân Non Nước tài hoa tỉ mẩn gọt dũa, chế tác các bức tượng đá cẩm thạch tinh xảo từ hàng trăm năm qua.',
-    image: 'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=1000&q=80',
-    location: 'Quận Ngũ Hành Sơn, Đà Nẵng',
-    distanceFromCenter: 'Cách trung tâm 10km',
-    highlights: ['Thắng cảnh Ngũ Hành Sơn', 'Tượng đá cẩm thạch thủ công', 'Không gian yên tĩnh sáng tạo'],
+    tags: ['Marble Sculptures', 'Marble Mountains Foot', 'Exquisite Stone Statues'],
+    slogan: 'Where raw marble blocks speak the language of fine art.',
+    description: 'Reside in an artistic haven at the foot of the Marble Mountains. Skilled Non Nuoc stone carvers meticulously sculpt exquisite marble artworks with centuries-old craftsmanship.',
+    image: 'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
+    imageUrl: 'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
+    location: 'Ngu Hanh Son District, Da Nang',
+    distanceFromCenter: '10km from city center',
+    highlights: ['Marble Mountains Scenic Area', 'Handcrafted Marble Sculptures', 'Quiet & Creative Atmosphere'],
     experiences: [
       {
         id: 'exp_non_1',
-        title: 'Thực hành điêu khắc đá cùng Nghệ nhân',
-        type: 'Lớp học thủ công',
-        description: 'Quan sát nghệ nhân chạm khắc chi tiết và tự tay đục đẽo khối đá nhỏ làm vật kỷ niệm mang về.',
-        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=800&q=80',
+        title: 'Stone Carving Practice with Master Artisan',
+        type: 'Craft Class',
+        description: 'Observe master sculptors carving intricate details and chisel your own small stone souvenir to take home.',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQTZZJvv7hUOpidFBSQYWeJ8aNRpAHc8KYssr-0wINqnHEJ0PxfFopokI0&s=10',
         price: '200,000 VND'
+      },
+      {
+        id: 'exp_non_2',
+        title: 'Marble Sculpting & Craft Village Tour',
+        type: 'Artisan Tour',
+        description: 'Explore centuries-old sculpture workshops at the foot of Marble Mountains and learn precision chisel techniques from master artisans.',
+        image: 'https://danangbest.com/upload_content/lang-da-non-nuoc-ngu-hanh-son-6.webp',
+        price: '250,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=800&q=80'
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT10AJ-HbBFQABt3Rr-QNGwvffRrBWlQg0b7LHOS52iYHNXaIcFwFN94kyr&s=10',
+      'https://www.danang.gov.vn/documents/37638/981989/lang+da-2.jpg/d1285c75-d43b-6d45-e8b0-8e7c50c0d2c7?t=1743578562210',
+      'https://www.danangxanh.com/data/images/lang-da-1.jpg',
+      'https://mia.vn/media/uploads/blog-du-lich/lang-da-my-nghe-non-nuoc-07-1700399102.jpg'
     ]
   },
   {
     id: 'cam_ne',
-    name: 'Làng Chiếu Cẩm Nê',
+    name: 'Cam Ne Sedge Mat Village',
     category: 'Craft',
-    tags: ['Sợi lác nhiều màu', 'Khung dệt gỗ', 'Chiếu tiến Vua'],
-    slogan: 'Rực rỡ sắc màu sợi lác và tình quê dệt thắm.',
-    description: 'Tận hưởng không gian thanh bình tại làng dệt chiếu từng được tuyển chọn tiến Vua nhà Nguyễn. Khắp lối đi làng quê phơi đầy những chùm sợi lác nhuộm màu đỏ, xanh, vàng rực rỡ bên khung dệt gỗ truyền thống.',
-    image: 'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?auto=format&fit=crop&w=1000&q=80',
-    location: 'Xã Hòa Tiến, Huyện Hòa Vang, Đà Nẵng',
-    distanceFromCenter: 'Cách trung tâm 12km',
-    highlights: ['Chiếu lác nhuộm màu rực rỡ', 'Dệt chiếu thủ công truyền thống', 'Homestay sinh thái bình yên'],
+    tags: ['Colorful Sedge Fiber', 'Wooden Weaving Looms', 'Royal Tribute Mats'],
+    slogan: 'Vibrant sedge fibers woven with warm countryside heritage.',
+    description: 'Enjoy peaceful sanctuary in a village renowned for weaving royal tribute sedge mats for Nguyen Dynasty kings. Bright red, green, and yellow dyed sedge fibers dry along peaceful village pathways.',
+    image: 'https://mia.vn/media/uploads/blog-du-lich/lang-cam-ne-1-1761062285.jpg',
+    imageUrl: 'https://mia.vn/media/uploads/blog-du-lich/lang-cam-ne-1-1761062285.jpg',
+    location: 'Hoa Tien Commune, Hoa Vang, Da Nang',
+    distanceFromCenter: '12km from city center',
+    highlights: ['Vibrant Sun-dyed Sedge Strands', 'Traditional Handloom Weaving', 'Serene Eco Homestays'],
     experiences: [
       {
         id: 'exp_cam_1',
-        title: 'Trải nghiệm dệt chiếu hoa Cẩm Nê',
-        type: 'Dệt chiếu thủ công',
-        description: 'Thử sức đẩy dập khung gỗ và luồn sợi lác màu dệt nên những hoa văn chiếu hoa nổi tiếng.',
-        image: 'https://images.unsplash.com/photo-1528458909336-e7a0adfac1d5?auto=format&fit=crop&w=800&q=80',
+        title: 'Cam Ne Floral Sedge Mat Weaving Class',
+        type: 'Hand Weaving',
+        description: 'Try operating the wooden loom shutter and threading colorful sedge strands into famous floral patterns.',
+        image: 'https://statics.vinpearl.com/lang-chieu-cam-ne-02_1634712501.jpg',
         price: '120,000 VND'
+      },
+      {
+        id: 'exp_cam_2',
+        title: 'Traditional Sedge Dyeing & Village Discovery Tour',
+        type: 'Village Craft Tour',
+        description: 'Learn the natural boiling dye process for vibrant sedge fibers and discover royal tribute mat weaving traditions.',
+        image: 'https://danangbest.com/upload_content/lang-chieu-cam-le-5.webp',
+        price: '150,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1528458909336-e7a0adfac1d5?auto=format&fit=crop&w=800&q=80'
+      'https://media-cdn-v2.laodong.vn/storage/newsportal/2018/9/28/633240/1.jpg?w=800&crop=auto&scale=both',
+      'https://mia.vn/media/uploads/blog-du-lich/lang-cam-ne-3-1761062289.jpg',
+      'https://www.vietnambooking.com/wp-content/uploads/2026/04/lang-chieu-cam-ne-3.jpg',
+      'https://i.ytimg.com/vi/CddR4s9kpOw/hq720.jpg?sqp=-oaymwEhCK4FEIIDSFryq4qpAxMIARUAAAAAGAElAADIQj0AgKJD&rs=AOn4CLAzcslsj9QhaLvkI9moEHErdbaJfQ'
     ]
   },
   {
     id: 'man_thai',
-    name: 'Làng Chài Mẫn Thái',
+    name: 'Man Thai Fishing Village',
     category: 'Local Life',
-    tags: ['Thuyền thúng tròn', 'Bãi biển Sơn Trà', 'Hải sản tươi sống'],
-    slogan: 'Hòa mình vào nhịp đập rộn ràng của biển cả.',
-    description: 'Ngắm nhìn hàng trăm chiếc thuyền thúng tròn bơi ra khơi trong ánh bình minh dưới chân bán đảo Sơn Trà. Nơi kéo lưới nhộn nhịp mang về những mẻ cá tôm tươi rói phục vụ thực khách.',
-    image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1000&q=80',
-    location: 'Quận Sơn Trà, Đà Nẵng',
-    distanceFromCenter: 'Cách trung tâm 5km',
-    highlights: ['Thuyền thúng bãi biển Mẫn Thái', 'Chợ cá bình minh', 'Làm việc sát bờ biển'],
+    tags: ['Round Coracle Boats', 'Son Tra Beachfront', 'Fresh Seafood Market'],
+    slogan: 'Immerse yourself in the vibrant rhythm of the ocean.',
+    description: 'Watch hundreds of round bamboo coracle boats row out into early morning sunrise under Son Tra peninsula. Fresh catches arrive directly at shore for beachside seafood lovers.',
+    image: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/1/959183/Langchai2-01.jpg',
+    imageUrl: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/1/959183/Langchai2-01.jpg',
+    location: 'Son Tra District, Da Nang',
+    distanceFromCenter: '5km from city center',
+    highlights: ['Man Thai Beach Coracle Boats', 'Dawn Fish Market', 'Beachside Remote Work'],
     experiences: [
       {
         id: 'exp_man_1',
-        title: 'Chèo thuyền thúng & Chợ cá sớm',
-        type: 'Trải nghiệm ngư dân',
-        description: 'Tự tay tập chèo thuyền thúng tròn ven bờ và trải nghiệm đón chuyến tàu đánh cá đầu tiên trong ngày.',
-        image: 'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=800&q=80',
+        title: 'Coracle Rowing & Early Morning Fish Market',
+        type: 'Fisherman Experience',
+        description: 'Learn to paddle a round basket boat near shore and join local fishermen receiving the morning catch.',
+        image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRvYIrpTDO7dTu6wXl9b9H_z8Q_XoEIfwmrjvmwBRmPugj-E5SEeCvwCRzu&s=10',
         price: '180,000 VND'
+      },
+      {
+        id: 'exp_man_2',
+        title: 'Dawn Coastal Net Casting & Fresh Seafood Feast',
+        type: 'Coastal Culture Tour',
+        description: 'Experience pulling traditional beach seine nets at daybreak and savoring fresh grilled catches right on the sands.',
+        image: 'https://myhanhseafood.vn/wp-content/uploads/2025/08/Artboard-2-copy-3-1-1-scaled.jpg',
+        price: '220,000 VND'
       }
     ],
     atmosphereImages: [
-      'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80',
-      'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80'
+      'https://i.ex-cdn.com/vntravellive.com/files/thaotpt/2025/06/12/0331-nhip-song-man-moi-cua-cho-ca-man-thai-len-loi-giua-long-da-nang-170258.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJYn5X8TBA26BxnYvRGfx0xE1enOlbZVFe-SeXbRtdstoPbItNd8pJaC61&s=10',
+      'https://bqn.1cdn.vn/2021/12/25/baodanang.vn-dataimages-202112-original-_images1635545_02__8_.jpg',
+      'https://cdnphoto.dantri.com.vn/I5kyvpBfhz9hllLN5QjxI5KXh20=/thumb_w/1920/2023/09/24/h6-1695517819546.jpg'
     ]
   }
 ];
@@ -182,142 +228,147 @@ export const MOCK_PROPERTIES: Property[] = [
   {
     id: 'prop_ocean_breeze',
     villageId: 'nam_o',
-    villageName: 'Làng Nước Mắm Nam Ô',
+    villageName: 'Nam O Fish Sauce Village',
     title: 'Ocean Breeze Villa - Nam Ô Heritage',
     hostName: 'Mrs. Mai',
     hostAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
-    hostExperience: 'Superhost • 5 năm đón tiếp Nomad',
-    hostBio: '"Xin chào! Tôi sinh ra và lớn lên tại làng cổ Nam Ô. Rất vui được đón tiếp bạn đến nghỉ dưỡng và trải nghiệm không gian làm việc yên tĩnh ngập tràn hương vị biển cùng làng nghề nước mắm 400 năm tuổi."',
+    hostExperience: 'Superhost • 5 Years Hosting Nomads',
+    hostBio: '"Hello! Born and raised in ancient Nam O village, I am thrilled to welcome you to rest, work remotely, and experience authentic 400-year coastal fish sauce heritage."',
     pricePerNight: 55,
     rating: 4.9,
     reviewsCount: 128,
-    location: 'Làng nước mắm Nam Ô, Liên Chiểu, Đà Nẵng',
+    location: 'Nam O Village, Lien Chieu, Da Nang',
     images: [
-      'https://images.unsplash.com/photo-1541888946425-d0fbb186a5b7?auto=format&fit=crop&w=1000&q=80',
+      'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
+      'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1516541196182-6bdb0516ed27?auto=format&fit=crop&w=1000&q=80'
     ],
-    tags: ['Wi-Fi 150 Mbps', 'Xem ủ mắm cá cơm', 'Gần biển Nam Ô', 'Góc làm việc Ergonomic'],
-    description: 'Trải nghiệm không gian sống mộc mạc bên cạnh xưởng thùng lều gỗ ủ mắm cá cơm truyền thống hơn 400 năm tuổi. Căn biệt thự ngập tràn ánh nắng tự nhiên, trang bị bàn ghế làm việc Ergonomic tiêu chuẩn, Wi-Fi tốc độ cao và ban công thoáng mát lộng gió biển Nam Ô.',
+    tags: ['Wi-Fi 150 Mbps', 'Fish Sauce Vat Tour', 'Near Nam O Beach', 'Ergonomic Desk'],
+    description: 'Experience authentic living beside a 400-year-old traditional wooden fish sauce vat house. Sunlit villa equipped with ergonomic desk setups, high-speed Wi-Fi, and a breezy sea balcony.',
     amenities: [
-      { icon: 'wifi', name: 'Wi-Fi cáp quang (150 Mbps)' },
-      { icon: 'ac_unit', name: 'Điều hòa 2 chiều' },
-      { icon: 'bathtub', name: 'Phòng tắm riêng khép kín' },
-      { icon: 'desk', name: 'Bàn ghế làm việc chuẩn Ergonomic' },
-      { icon: 'coffee_maker', name: 'Máy pha cà phê thủ công' },
-      { icon: 'local_laundry_service', name: 'Máy giặt & Sấy đồ' }
+      { icon: 'wifi', name: 'Fiber Wi-Fi (150 Mbps)' },
+      { icon: 'ac_unit', name: 'Climate Control AC' },
+      { icon: 'bathtub', name: 'Private En-suite Bathroom' },
+      { icon: 'desk', name: 'Ergonomic Workstation & Chair' },
+      { icon: 'coffee_maker', name: 'Artisanal Coffee Brewer' },
+      { icon: 'local_laundry_service', name: 'Washer & Dryer' }
     ],
     wifiSpeedMbps: 150,
-    workspaceType: 'Bàn làm việc riêng tư & Ghế công thái học',
+    workspaceType: 'Private Ergonomic Workstation',
     maxGuests: 2
   },
   {
     id: 'prop_tuy_loan_cottage',
     villageId: 'tuy_loan',
-    villageName: 'Làng Bánh Tráng Túy Loan',
+    villageName: 'Tuy Loan Rice Paper Village',
     title: 'Ancient Rice Paper Heritage Cottage',
-    hostName: 'Chú Hai Túy Loan',
+    hostName: 'Uncle Hai',
     hostAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
-    hostExperience: 'Nghệ nhân tráng bánh • 6 năm làm Host',
-    hostBio: 'Gia đình tôi 5 đời tráng bánh tráng vỉ tre trên bếp than củi. Chào mừng các bạn Nomad đến lưu trú và trải nghiệm văn hóa ẩm thực làng cổ 500 năm.',
+    hostExperience: 'Master Artisan • 6 Years Hosting',
+    hostBio: 'Five generations of my family have made wood-fired rice paper. Welcome digital nomads to enjoy our peaceful 500-year-old culinary village.',
     pricePerNight: 42,
     rating: 4.95,
     reviewsCount: 86,
-    location: 'Làng bánh tráng Túy Loan, Hòa Vang, Đà Nẵng',
+    location: 'Tuy Loan Village, Hoa Vang, Da Nang',
     images: [
-      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1509315811355-57bd3b7776b6?auto=format&fit=crop&w=1000&q=80'
+      'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-3_1632484988.jpg',
+      'https://images.unsplash.com/photo-1509315811355-57bd3b7776b6?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?auto=format&fit=crop&w=1000&q=80'
     ],
-    tags: ['Lò tráng bánh 500 năm', 'Sân phơi vỉ tre', 'Wi-Fi 120 Mbps', 'Khung cảnh yên bình'],
-    description: 'Trải nghiệm không gian sống mộc mạc bên cạnh lò tráng bánh tráng truyền thống hơn 500 năm tuổi. Căn homestay vườn cây xanh mát nơi những vỉ tre phơi đầy bánh tráng tròn thơm thoang thoảng dưới nắng vàng Túy Loan.',
+    tags: ['500-Yr Stove Heritage', 'Bamboo Drying Courtyard', 'Wi-Fi 120 Mbps', 'Peaceful Garden'],
+    description: 'Rustic garden cottage adjacent to a 500-year-old traditional rice paper stove. Enjoy fragrant toasted rice crackers, lotus tea, and quiet garden workspaces.',
     amenities: [
       { icon: 'wifi', name: 'Wi-Fi 120 Mbps' },
-      { icon: 'desk', name: 'Góc làm việc hướng ra vườn tre' },
-      { icon: 'coffee_maker', name: 'Trà sen & Bánh tráng nướng miễn phí' }
+      { icon: 'desk', name: 'Garden View Work Corner' },
+      { icon: 'coffee_maker', name: 'Free Lotus Tea & Roasted Rice Crackers' }
     ],
     wifiSpeedMbps: 120,
-    workspaceType: 'Góc làm việc yên tĩnh nhìn ra vườn tre phơi bánh',
+    workspaceType: 'Garden View Workspace',
     maxGuests: 3
   },
   {
     id: 'prop_marble_sanctuary',
     villageId: 'non_nuoc',
-    villageName: 'Làng Đá Mỹ Nghệ Non Nước',
+    villageName: 'Non Nuoc Stone Carving Village',
     title: 'Marble Mountain Art Loft - Non Nước',
     hostName: 'Mr. Binh',
     hostAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-    hostExperience: 'Nghệ nhân điêu khắc • 8 năm làm Host',
-    hostBio: 'Đam mê chạm khắc đá cẩm thạch và tạo dựng không gian sống thanh tĩnh cho giới sáng tạo.',
+    hostExperience: 'Master Sculptor • 8 Years Hosting',
+    hostBio: 'Passionate about marble art and crafting serene living studios for digital creators and engineers.',
     pricePerNight: 48,
     rating: 4.88,
     reviewsCount: 104,
-    location: 'Làng đá Non Nước, Ngũ Hành Sơn, Đà Nẵng',
+    location: 'Non Nuoc Village, Ngu Hanh Son, Da Nang',
     images: [
-      'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&w=1000&q=80'
+      'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
+      'https://images.unsplash.com/photo-1579783902614-a3fb3927b675?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1569172122301-bc5008bc09c5?auto=format&fit=crop&w=1000&q=80'
     ],
-    tags: ['Tượng đá cẩm thạch', 'Chân núi Ngũ Hành Sơn', 'Cáp quang 200 Mbps'],
-    description: 'Căn studio sang trọng được bài trí các tác phẩm đá cẩm thạch điêu khắc thủ công tinh xảo dưới chân núi Ngũ Hành Sơn. Không gian tĩnh lặng với góc làm việc đa màn hình cho lập trình viên và người sáng tạo.',
+    tags: ['Marble Artworks', 'Marble Mountain Foot', 'Fiber 200 Mbps'],
+    description: 'Luxurious studio adorned with hand-carved marble sculptures at the base of Marble Mountain. Features dual-monitor setups ideal for software developers and remote creators.',
     amenities: [
-      { icon: 'wifi', name: 'Wi-Fi Cáp quang 200 Mbps' },
-      { icon: 'desk', name: 'Bàn làm việc Dual Monitor' },
-      { icon: 'ac_unit', name: 'Điều hòa không khí' }
+      { icon: 'wifi', name: 'Fiber Wi-Fi 200 Mbps' },
+      { icon: 'desk', name: 'Dual Monitor Workstation' },
+      { icon: 'ac_unit', name: 'Air Conditioning' }
     ],
     wifiSpeedMbps: 200,
-    workspaceType: 'Studio làm việc chuyên nghiệp trang bị 2 màn hình',
+    workspaceType: 'Dual-Monitor Studio Workstation',
     maxGuests: 3
   },
   {
     id: 'prop_cam_ne_homestay',
     villageId: 'cam_ne',
-    villageName: 'Làng Chiếu Cẩm Nê',
+    villageName: 'Cam Ne Sedge Mat Village',
     title: 'Sedge Loom Garden Homestay - Cẩm Nê',
-    hostName: 'Mế Tám Cẩm Nê',
+    hostName: 'Grandma Tam',
     hostAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
-    hostExperience: 'Nghệ nhân dệt chiếu • 4 năm làm Host',
-    hostBio: 'Đón mừng các bạn trẻ về làng chiếu Cẩm Nê nghỉ ngơi, làm việc và khám phá di sản dệt chiếu tiến Vua.',
+    hostExperience: 'Master Weaver • 4 Years Hosting',
+    hostBio: 'Welcome young creators to Cam Ne village to relax, work remotely, and discover royal sedge mat weaving heritage.',
     pricePerNight: 38,
     rating: 4.9,
     reviewsCount: 62,
-    location: 'Làng chiếu Cẩm Nê, Hòa Vang, Đà Nẵng',
+    location: 'Cam Ne Village, Hoa Vang, Da Nang',
     images: [
-      'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?auto=format&fit=crop&w=1000&q=80',
-      'https://images.unsplash.com/photo-1528458909336-e7a0adfac1d5?auto=format&fit=crop&w=1000&q=80'
+      'https://mia.vn/media/uploads/blog-du-lich/lang-cam-ne-1-1761062285.jpg',
+      'https://images.unsplash.com/photo-1528458909336-e7a0adfac1d5?auto=format&fit=crop&w=1000&q=80',
+      'https://images.unsplash.com/photo-1606744837616-56c9a5c6a6eb?auto=format&fit=crop&w=1000&q=80'
     ],
-    tags: ['Chiếu lác nhuộm màu', 'Khung dệt gỗ', 'Yên tĩnh sinh thái'],
-    description: 'Trải nghiệm nghỉ dưỡng tại không gian homestay mộc mạc surrounded by rực rỡ sắc màu sợi lác phơi dọc hiên nhà. Trải nghiệm giấc ngủ êm ái trên những tấm chiếu lác dệt tay hoa văn tinh tế.',
+    tags: ['Colorful Sedge Fiber', 'Wooden Handloom', 'Eco Quietness'],
+    description: 'Rustic eco-homestay surrounded by colorful sun-dyed sedge strands drying along verandas. Sleep peacefully on handwoven floral sedge mats.',
     amenities: [
       { icon: 'wifi', name: 'Wi-Fi 100 Mbps' },
-      { icon: 'desk', name: 'Bàn làm việc gỗ tự nhiên' }
+      { icon: 'desk', name: 'Natural Solid Wood Desk' }
     ],
     wifiSpeedMbps: 100,
-    workspaceType: 'Góc làm việc gỗ mộc bên khung dệt chiếu',
+    workspaceType: 'Solid Wood Desk beside Loom',
     maxGuests: 2
   },
   {
     id: 'prop_man_thai_beach',
     villageId: 'man_thai',
-    villageName: 'Làng Chài Mẫn Thái',
+    villageName: 'Man Thai Fishing Village',
     title: 'Coracle & Oceanfront Studio - Mẫn Thái',
-    hostName: 'Anh Tuấn',
+    hostName: 'Anh Tuan',
     hostAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-    hostExperience: 'Ngư dân & Host • 3 năm làm Host',
-    hostBio: 'Yêu biển Đà Nẵng và mong muốn mang lại trải nghiệm sống sát bờ biển rộn ràng cho các Digital Nomad.',
+    hostExperience: 'Fisherman & Host • 3 Years Hosting',
+    hostBio: 'I love Da Nang sea and want to bring authentic beachfront living experiences to digital nomads.',
     pricePerNight: 50,
     rating: 4.92,
     reviewsCount: 115,
-    location: 'Làng chài Mẫn Thái, Sơn Trà, Đà Nẵng',
+    location: 'Man Thai Fishing Village, Son Tra, Da Nang',
     images: [
+      'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/1/959183/Langchai2-01.jpg',
       'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=1000&q=80',
       'https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&w=1000&q=80'
     ],
-    tags: ['Thuyền thúng ven biển', 'Ngắm bình minh Sơn Trà', 'Cáp quang 180 Mbps'],
-    description: 'Studio sát biển Mẫn Thái với ban công nhìn thẳng ra những chiếc thuyền thúng tròn mộc mạc cập bến mỗi bình minh. Lý tưởng cho Nomad vừa làm việc online vừa yêu thích không khí biển khơi.',
+    tags: ['Coracle Boats', 'Son Tra Sunrise', 'Fiber 180 Mbps'],
+    description: 'Oceanfront beach studio with direct balcony views of basket boats returning at sunrise. Perfect for remote nomads who love ocean waves.',
     amenities: [
-      { icon: 'wifi', name: 'Wi-Fi Cáp quang 180 Mbps' },
-      { icon: 'desk', name: 'Bàn làm việc hướng biển' }
+      { icon: 'wifi', name: 'Fiber Wi-Fi 180 Mbps' },
+      { icon: 'desk', name: 'Ocean View Desk Setup' }
     ],
     wifiSpeedMbps: 180,
-    workspaceType: 'Bàn làm việc sát cửa kính view thuyền thúng biển Mẫn Thái',
+    workspaceType: 'Ocean Window Workstation',
     maxGuests: 2
   }
 ];
@@ -360,7 +411,7 @@ export const MOCK_CONVERSATIONS: ChatConversation[] = [
     unreadCount: 1,
     isOnline: true,
     messages: [
-      { id: 'm1', sender: 'me', text: 'Xin chào Mrs. Mai! Can I rent a bicycle today?', timestamp: '09:30 AM' },
+      { id: 'm1', sender: 'me', text: 'Hello Mrs. Mai! Can I rent a bicycle today?', timestamp: '09:30 AM' },
       { id: 'm2', sender: 'other', text: 'Yes, the bicycle is ready for your ride to the beach!', timestamp: '09:42 AM' }
     ]
   },
@@ -415,7 +466,7 @@ export const MOCK_MAP_SPOTS: MapSpot[] = [
     reviewsCount: 210,
     wifiSpeed: '100 Mbps',
     quietLevel: 'Heritage & Experience',
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    image: 'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
     lat: 16.1030,
     lng: 108.1320
   },
@@ -441,7 +492,7 @@ export const MOCK_MAP_SPOTS: MapSpot[] = [
     reviewsCount: 165,
     wifiSpeed: '120 Mbps',
     quietLevel: 'Artisan Hub',
-    image: 'https://images.unsplash.com/photo-1568084680786-a84f91d1153c?auto=format&fit=crop&w=800&q=80',
+    image: 'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
     lat: 16.0020,
     lng: 108.2630
   },
@@ -454,7 +505,7 @@ export const MOCK_MAP_SPOTS: MapSpot[] = [
     reviewsCount: 112,
     wifiSpeed: '90 Mbps',
     quietLevel: 'Ocean Breeze & Fresh Seafood',
-    image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&w=800&q=80',
+    image: 'https://media-cdn-v2.laodong.vn/Storage/NewsPortal/2021/10/1/959183/Langchai2-01.jpg',
     lat: 16.0880,
     lng: 108.2380
   },
@@ -467,7 +518,7 @@ export const MOCK_MAP_SPOTS: MapSpot[] = [
     reviewsCount: 85,
     wifiSpeed: '80 Mbps',
     quietLevel: 'Peaceful Countryside',
-    image: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=800&q=80',
+    image: 'https://statics.vinpearl.com/lang-banh-trang-tuy-loan-3_1632484988.jpg',
     lat: 16.0120,
     lng: 108.1250
   }

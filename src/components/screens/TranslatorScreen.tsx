@@ -172,7 +172,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
       utterance.lang = sourceLang === 'EN' ? 'vi-VN' : 'en-US';
       window.speechSynthesis.speak(utterance);
     } else {
-      alert(`Phát âm: "${phraseText}"`);
+      alert(`Pronouncing: "${phraseText}"`);
     }
   };
 
@@ -220,37 +220,37 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
             <span className="font-extrabold text-base text-white">Nomad Translator</span>
           </div>
         )}
-        <h1 className="font-extrabold text-base text-white">Phiên Dịch Viên Văn Hóa</h1>
+        <h1 className="font-extrabold text-base text-white">Cultural Translator</h1>
         <div className="w-10" />
       </header>
 
       <main className="pt-20 px-4 max-w-xl mx-auto space-y-6">
-        {/* Language Switch Bar (Minimalist Google Translate Style) */}
+        {/* Language Switch Bar */}
         <div className="bg-black/30 backdrop-blur-md rounded-2xl p-1.5 border border-white/15 flex items-center justify-between shadow-md">
           <button
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
-            className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors"
+            className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors cursor-pointer"
           >
-            {sourceLang === 'EN' ? 'Tiếng Anh (English)' : 'Tiếng Việt'}
+            {sourceLang === 'EN' ? 'English' : 'Vietnamese'}
           </button>
 
           <button
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
             className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:rotate-180 transition-transform duration-300 shadow cursor-pointer"
-            title="Đổi ngôn ngữ"
+            title="Swap languages"
           >
             <span className="material-symbols-outlined text-lg">swap_horiz</span>
           </button>
 
           <button
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
-            className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors"
+            className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors cursor-pointer"
           >
-            {sourceLang === 'EN' ? 'Tiếng Việt' : 'Tiếng Anh (English)'}
+            {sourceLang === 'EN' ? 'Vietnamese' : 'English'}
           </button>
         </div>
 
-        {/* Seamless Translation Workspace (Google Translate Style) */}
+        {/* Seamless Translation Workspace */}
         <div className="bg-white/5 backdrop-blur-xl border border-white/15 rounded-3xl p-5 shadow-2xl space-y-4 relative overflow-hidden">
           {activeInputMode !== 'camera' ? (
             <>
@@ -263,7 +263,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     setText(e.target.value);
                     if (activeInputMode !== 'text') setActiveInputMode('text');
                   }}
-                  placeholder={sourceLang === 'EN' ? 'Nhập văn bản hoặc bấm micro để nói...' : 'Type text or press mic to speak...'}
+                  placeholder={sourceLang === 'EN' ? 'Type text or tap mic to speak...' : 'Nhập văn bản tiếng Việt để dịch...'}
                   className="w-full bg-transparent text-white placeholder:text-white/40 text-lg font-medium outline-none resize-none leading-relaxed"
                 />
                 {text && (
@@ -284,7 +284,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                 {isTranslating ? (
                   <div className="flex items-center gap-2 text-xs text-emerald-300 font-medium">
                     <span className="material-symbols-outlined animate-spin text-base">sync</span>
-                    <span>Đang dịch ngôn ngữ...</span>
+                    <span>Translating...</span>
                   </div>
                 ) : translatedText ? (
                   <div className="space-y-4 pb-8">
@@ -298,14 +298,14 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       <button
                         onClick={() => speakText(translatedText)}
                         className="p-1.5 rounded-full hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
-                        title="Phát âm"
+                        title="Pronounce"
                       >
                         <span className="material-symbols-outlined text-lg">volume_up</span>
                       </button>
                       <button
                         onClick={() => handleCopyText(translatedText)}
                         className="p-1.5 rounded-full hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer relative"
-                        title="Sao chép"
+                        title="Copy"
                       >
                         <span className="material-symbols-outlined text-lg">
                           {copied ? 'check' : 'content_copy'}
@@ -315,7 +315,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   </div>
                 ) : (
                   <p className="text-xs text-white/30 italic">
-                    {sourceLang === 'EN' ? 'Bản dịch tiếng Việt sẽ xuất hiện trực tiếp tại đây...' : 'English translation will appear here directly...'}
+                    {sourceLang === 'EN' ? 'Vietnamese translation will appear here directly...' : 'English translation will appear here directly...'}
                   </p>
                 )}
               </div>
@@ -331,7 +331,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-white/20 text-white border border-white/30 scale-105'
                       : 'bg-black/30 text-white/70 hover:bg-white/10 border border-white/10'
                   }`}
-                  title="Nhập văn bản"
+                  title="Text input"
                 >
                   <span className="material-symbols-outlined text-xl">keyboard</span>
                 </button>
@@ -345,7 +345,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-red-500 text-white border-2 border-red-300 animate-pulse scale-110'
                       : 'bg-gradient-to-tr from-emerald-500 to-teal-400 text-white hover:scale-105 border-2 border-white/30'
                   }`}
-                  title="Dịch bằng Giọng Nói"
+                  title="Voice Translation"
                 >
                   <span className="material-symbols-outlined text-2xl">mic</span>
                 </button>
@@ -359,7 +359,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-white/20 text-white border border-white/30 scale-105'
                       : 'bg-black/30 text-white/70 hover:bg-white/10 border border-white/10'
                   }`}
-                  title="Dịch qua Camera / Biển báo"
+                  title="Camera & Sign Scan"
                 >
                   <span className="material-symbols-outlined text-xl">photo_camera</span>
                 </button>
@@ -371,7 +371,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-400 text-xl">photo_camera</span>
-                  <span className="font-bold text-sm text-white">Dịch Bằng Camera & Biển Báo</span>
+                  <span className="font-bold text-sm text-white">Camera & Sign Translation</span>
                 </div>
                 <button
                   onClick={() => {
@@ -381,7 +381,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   }}
                   className="text-xs text-white/60 hover:text-white underline cursor-pointer"
                 >
-                  Đóng camera
+                  Close camera
                 </button>
               </div>
 
@@ -393,12 +393,12 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     {isScanningCamera && (
                       <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center">
                         <span className="material-symbols-outlined animate-spin text-3xl text-emerald-400 mb-1">sync</span>
-                        <p className="text-xs font-bold text-white">Đang quét chữ trên ảnh...</p>
+                        <p className="text-xs font-bold text-white">Scanning text on image...</p>
                       </div>
                     )}
                     {cameraTranslationResult && (
                       <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-md p-3 rounded-xl border border-emerald-400/40 text-left animate-fadeIn">
-                        <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider block mb-0.5">Bản dịch camera:</span>
+                        <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider block mb-0.5">Camera Translation:</span>
                         <p className="text-xs font-bold text-white leading-snug">{cameraTranslationResult}</p>
                       </div>
                     )}
@@ -408,15 +408,15 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mx-auto border border-emerald-400/30">
                       <span className="material-symbols-outlined text-2xl">document_scanner</span>
                     </div>
-                    <p className="text-xs font-bold text-white">Chụp ảnh hoặc chọn hình ảnh Thực Đơn / Biển Báo Làng Nghề</p>
-                    <p className="text-[11px] text-white/60">Quét chữ trực tiếp bằng camera trên điện thoại</p>
+                    <p className="text-xs font-bold text-white">Scan Craft Village Signboards or Local Menus</p>
+                    <p className="text-[11px] text-white/60">Scan text directly using your camera</p>
                   </div>
                 )}
               </div>
 
               {/* Sample Scans for Testing */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase text-emerald-300 tracking-wider">Thử nghiệm chụp biển báo / menu thực tế:</label>
+                <label className="text-[10px] font-bold uppercase text-emerald-300 tracking-wider">Try sample signage or menu scan:</label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
@@ -429,8 +429,8 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   >
                     <span className="material-symbols-outlined text-emerald-400 text-lg">restaurant_menu</span>
                     <div>
-                      <p className="text-xs font-bold text-white">Biển Làng Nghề</p>
-                      <p className="text-[10px] text-white/60">Quét bảng hiệu xưởng</p>
+                      <p className="text-xs font-bold text-white">Village Signboard</p>
+                      <p className="text-[10px] text-white/60">Scan workshop sign</p>
                     </div>
                   </button>
 
@@ -445,8 +445,8 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   >
                     <span className="material-symbols-outlined text-emerald-400 text-lg">local_dining</span>
                     <div>
-                      <p className="text-xs font-bold text-white">Menu Ẩm Thực</p>
-                      <p className="text-[10px] text-white/60">Dịch món ăn địa phương</p>
+                      <p className="text-xs font-bold text-white">Local Menu</p>
+                      <p className="text-[10px] text-white/60">Translate local dish</p>
                     </div>
                   </button>
                 </div>
@@ -458,7 +458,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                 onClick={() => setActiveInputMode('text')}
                 className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
               >
-                Chuyển về nhập bàn phím
+                Switch to keyboard input
               </button>
             </div>
           )}
@@ -469,18 +469,18 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-white flex items-center gap-2">
               <span className="material-symbols-outlined text-emerald-400">menu_book</span>
-              Từ Vựng Văn Hóa Làng Nghề
+              Cultural Heritage Dictionary
             </h2>
           </div>
 
           {/* Categories Horizontal Filter */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
             {[
-              { id: 'all', label: 'Tất cả' },
-              { id: 'common', label: 'Thông dụng' },
-              { id: 'craft', label: 'Làng Nghề' },
-              { id: 'slang', label: 'Tiếng lóng Đà Nẵng' },
-              { id: 'dos_and_donts', label: 'Ứng xử' }
+              { id: 'all', label: 'All' },
+              { id: 'common', label: 'Common Phrases' },
+              { id: 'craft', label: 'Craft Heritage' },
+              { id: 'slang', label: 'Da Nang Slang' },
+              { id: 'dos_and_donts', label: 'Cultural Etiquette' }
             ].map(cat => (
               <button
                 key={cat.id}

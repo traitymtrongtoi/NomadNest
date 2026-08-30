@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 interface SplashScreenProps {
   onExplore: () => void;
-  onSkip: () => void;
 }
 
 const SLIDES = [
@@ -11,7 +10,7 @@ const SLIDES = [
   'https://images.unsplash.com/photo-1583417319070-4a69db38a482?auto=format&fit=crop&w=1920&q=80'
 ];
 
-export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore, onSkip }) => {
+export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
@@ -57,17 +56,7 @@ export const SplashScreen: React.FC<SplashScreenProps> = ({ onExplore, onSkip })
       </div>
 
       {/* UI Overlay Layer */}
-      <div className="relative z-20 w-full h-full flex flex-col justify-between items-center">
-        {/* Top Navigation */}
-        <header className="w-full flex justify-end p-6 md:p-10">
-          <button
-            onClick={onSkip}
-            type="button"
-            className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-6 py-2 rounded-full text-xs font-semibold uppercase tracking-widest hover:bg-white/20 transition-all active:scale-95 cursor-pointer shadow-lg"
-          >
-            Skip
-          </button>
-        </header>
+      <div className="relative z-20 w-full h-full flex flex-col justify-between items-center pt-8">
 
         {/* Brand Content */}
         <main className="flex-grow flex flex-col items-center justify-center w-full px-6 text-center max-w-2xl mx-auto -mt-10">

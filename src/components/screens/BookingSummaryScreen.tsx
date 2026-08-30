@@ -24,6 +24,7 @@ export const BookingSummaryScreen: React.FC<BookingSummaryScreenProps> = ({
   const totalPrice = roomPrice + packagePrice + serviceFee + taxes;
 
   const handlePay = () => {
+    alert('Đặt phòng thành công! Cảm ơn bạn.');
     setIsProcessing(true);
     setTimeout(() => {
       const newBooking: Booking = {

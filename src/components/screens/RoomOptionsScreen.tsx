@@ -4,6 +4,13 @@ import { Village } from '../../types';
 interface RoomOptionsScreenProps {
   village: Village;
   onBack: () => void;
+  onBookRoom?: (data: {
+    room: RoomItem;
+    checkIn: string;
+    checkOut: string;
+    nights: number;
+    guests: number;
+  }) => void;
 }
 
 export interface RoomItem {
@@ -26,7 +33,8 @@ export interface RoomItem {
 
 export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
   village,
-  onBack
+  onBack,
+  onBookRoom
 }) => {
   // Helper to format ISO YYYY-MM-DD to DD/MM/YYYY
   const formatDateDisplay = (isoStr: string) => {
@@ -89,7 +97,21 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
   }, []);
 
   const handleBookRoom = (room: RoomItem) => {
-    setBookingSuccessModal(room.title);
+    const formattedCheckIn = formatDateDisplay(checkInDate);
+    const formattedCheckOut = formatDateDisplay(checkOutDate);
+    const nights = getNightsCount(checkInDate, checkOutDate);
+
+    if (onBookRoom) {
+      onBookRoom({
+        room,
+        checkIn: formattedCheckIn,
+        checkOut: formattedCheckOut,
+        nights,
+        guests: guestCount
+      });
+    } else {
+      setBookingSuccessModal(room.title);
+    }
   };
 
   // Open calendar popup with targeted active tab

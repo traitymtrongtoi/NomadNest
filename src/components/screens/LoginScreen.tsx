@@ -16,10 +16,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
   const [lang, setLang] = useState<'VI' | 'EN'>('VI');
 
   const handleRoleSelected = (role: UserRole) => {
-    if (role === 'admin') {
-      onSelectRoleLogin('admin');
-      return;
-    }
     setSelectedRole(role);
     setStep('auth_form');
   };
@@ -37,17 +33,6 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
           </span>
           <span className="font-bold text-2xl tracking-tight text-white">NomadNest</span>
         </div>
-
-        {/* Language Selector */}
-        <button
-          type="button"
-          onClick={() => setLang(lang === 'VI' ? 'EN' : 'VI')}
-          className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/10 shadow-sm border border-white/20 hover:bg-white/20 transition-colors text-xs font-semibold cursor-pointer active:scale-95"
-        >
-          <span className="material-symbols-outlined text-sm text-primary-fixed-dim">language</span>
-          <span>{lang}</span>
-          <span className="material-symbols-outlined text-xs text-primary-fixed-dim">expand_more</span>
-        </button>
       </header>
 
       {/* Main Container Container */}
@@ -55,15 +40,12 @@ export const LoginScreen: React.FC<LoginScreenProps> = ({
         {step === 'role_select' ? (
           <RoleSelection
             onSelectRole={handleRoleSelected}
-            lang={lang}
-            onToggleLang={() => setLang(lang === 'VI' ? 'EN' : 'VI')}
           />
         ) : (
           <AuthForm
             role={selectedRole}
             onBackToRoleSelect={() => setStep('role_select')}
             onAuthSuccess={onSelectRoleLogin}
-            lang={lang}
           />
         )}
       </main>

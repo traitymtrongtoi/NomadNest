@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { saveCurrentUserToStorage } from '../../utils/userStorage';
+import { saveCurrentUserToStorage, extractNameFromEmail } from '../../utils/userStorage';
 
 interface HostRegistrationScreenProps {
   onSuccess: () => void;
@@ -10,21 +10,56 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
   onSuccess,
   onCancel
 }) => {
+  const DEFAULT_HOST_AVATAR = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80';
+
   const [hostName, setHostName] = useState('');
   const [propertyTitle, setPropertyTitle] = useState('');
   const [craftVillage, setCraftVillage] = useState('Làng nước mắm Nam Ô');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [avatar, setAvatar] = useState(DEFAULT_HOST_AVATAR);
+
+  const handleFileProcess = (file: File) => {
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (typeof reader.result === 'string') {
+          setAvatar(reader.result);
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) handleFileProcess(file);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const file = e.dataTransfer.files?.[0];
+    if (file) handleFileProcess(file);
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    const actualEmail = email.trim();
+    const actualName = hostName.trim() || extractNameFromEmail(actualEmail);
     saveCurrentUserToStorage({
       id: 'host_' + Date.now(),
-      name: hostName.trim() || 'Mrs. Mai',
-      email: email.trim() || 'mai.host@nomadnest.vn',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+      name: actualName,
+      email: actualEmail,
+      avatar: avatar,
       role: 'local_host',
+      language: 'vi', // Automatic language assignment for Local Host
       badge: 'Superhost'
     });
     onSuccess();
@@ -75,6 +110,56 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
                   placeholder="VD: Bà Mai / Ông Bình"
                   className="w-full h-11 pl-10 pr-4 bg-black/20 border border-white/20 rounded-xl text-sm text-white placeholder:text-white/40 focus:border-primary-fixed outline-none"
                 />
+              </div>
+            </div>
+
+            {/* Avatar Upload Zone */}
+            <div className="space-y-2">
+              <label className="text-xs font-semibold text-white/90 flex items-center justify-between">
+                <span>Ảnh đại diện (Avatar)</span>
+                <span className="text-[10px] text-emerald-300 font-semibold">Tải ảnh mới</span>
+              </label>
+              <div className="flex items-center gap-4 bg-black/20 p-3.5 rounded-2xl border border-white/10">
+                {/* Left Circular Avatar Preview */}
+                <div className="relative shrink-0">
+                  <img
+                    src={avatar}
+                    alt="Host Avatar Preview"
+                    className="w-16 h-16 rounded-full object-cover border-2 border-white shadow-md"
+                  />
+                  <label className="absolute -bottom-1 -right-1 w-6 h-6 bg-emerald-500 text-white rounded-full flex items-center justify-center cursor-pointer shadow hover:scale-110 transition-transform">
+                    <span className="material-symbols-outlined text-xs">photo_camera</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleFileUpload}
+                      className="hidden"
+                    />
+                  </label>
+                </div>
+                
+                {/* Right Drag & Drop Upload Zone */}
+                <label
+                  onDragOver={handleDragOver}
+                  onDrop={handleDrop}
+                  className="flex-1 border-2 border-dashed border-white/20 hover:border-emerald-400/60 bg-white/5 hover:bg-white/10 rounded-2xl p-3 flex flex-col items-center justify-center text-center cursor-pointer transition-all group"
+                >
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileUpload}
+                    className="hidden"
+                  />
+                  <span className="material-symbols-outlined text-emerald-400 text-2xl group-hover:scale-110 transition-transform mb-1">
+                    cloud_upload
+                  </span>
+                  <span className="text-xs font-bold text-white group-hover:text-emerald-300 transition-colors">
+                    Click hoặc Kéo & Thả ảnh vào đây
+                  </span>
+                  <span className="text-[10px] text-white/50 mt-0.5">
+                    JPG, PNG, WEBP (Max 5MB)
+                  </span>
+                </label>
               </div>
             </div>
 

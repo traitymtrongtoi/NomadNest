@@ -6,6 +6,7 @@ export interface User {
   email: string;
   avatar: string;
   role: UserRole;
+  language?: 'en' | 'vi';
   nationality?: string;
   languages?: string[];
   isVerified?: boolean;
@@ -20,6 +21,7 @@ export interface Village {
   slogan: string;
   description: string;
   image: string;
+  imageUrl?: string;
   location: string;
   distanceFromCenter: string;
   highlights: string[];

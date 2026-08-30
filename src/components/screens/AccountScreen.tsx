@@ -4,16 +4,34 @@ import { checkSupabaseConnection } from '../../lib/supabase';
 
 interface AccountScreenProps {
   currentUser: User | null;
+  initialMode?: 'guest' | 'host';
+  onModeChange?: (newMode: 'guest' | 'host') => void;
   onLogout: () => void;
-  onOpenQuickRoles?: () => void;
+  onNavigateMyBookings?: () => void;
+  onNavigateHostDashboard?: () => void;
+  onNavigateAddRoom?: () => void;
+  onNavigateHostReservations?: () => void;
+  onNavigateHostEarnings?: () => void;
 }
 
 export const AccountScreen: React.FC<AccountScreenProps> = ({
   currentUser,
+  initialMode = 'guest',
+  onModeChange,
   onLogout,
-  onOpenQuickRoles
+  onNavigateMyBookings,
+  onNavigateHostDashboard,
+  onNavigateAddRoom,
+  onNavigateHostReservations,
+  onNavigateHostEarnings,
 }) => {
-  const [supabaseStatus, setSupabaseStatus] = useState<string>('Đang kiểm tra Supabase...');
+  // 1. State to manage current mode (Guest vs Host)
+  const [userMode, setUserMode] = useState<'guest' | 'host'>(() => {
+    if (initialMode) return initialMode;
+    return currentUser?.role === 'local_host' ? 'host' : 'guest';
+  });
+
+  const [supabaseStatus, setSupabaseStatus] = useState<string>('Checking database status...');
 
   useEffect(() => {
     checkSupabaseConnection().then(res => {
@@ -21,129 +39,344 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
     });
   }, []);
 
+  // Update internal mode if initialMode prop updates
+  useEffect(() => {
+    if (initialMode) {
+      setUserMode(initialMode);
+    }
+  }, [initialMode]);
+
+  // Handle Mode Toggle (Guest <-> Host)
+  const handleToggleUserMode = () => {
+    const nextMode: 'guest' | 'host' = userMode === 'guest' ? 'host' : 'guest';
+    setUserMode(nextMode);
+    if (onModeChange) {
+      onModeChange(nextMode);
+    }
+  };
+
   return (
-    <div className="bg-[#002116] text-white min-h-screen pb-28 font-sans">
+    <div className="bg-[#002116] text-white min-h-screen pb-32 font-sans">
       {/* Top Header */}
-      <header className="fixed top-0 w-full z-50 bg-[#002116]/90 backdrop-blur-xl flex items-center justify-between px-6 h-16 border-b border-white/10">
+      <header className="fixed top-0 w-full z-50 bg-[#002116]/95 backdrop-blur-xl flex items-center justify-between px-6 h-16 border-b border-white/10 shadow-md">
         <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-primary-fixed">person</span>
-          <span className="font-bold text-lg text-white">Cá Nhân / Account</span>
+          <span className="material-symbols-outlined text-[#8bd6b6]">
+            {userMode === 'host' ? 'storefront' : 'person'}
+          </span>
+          <span className="font-extrabold text-lg text-white">
+            {userMode === 'host' ? 'Tài khoản Chủ nhà' : 'Tài khoản Khách Du Mục'}
+          </span>
         </div>
-        <button
-          onClick={onOpenQuickRoles}
-          className="px-3 py-1 bg-white/15 hover:bg-white/25 text-primary-fixed text-xs font-bold rounded-full border border-white/20 flex items-center gap-1"
-        >
-          <span className="material-symbols-outlined text-sm">published_with_changes</span>
-          <span>Đổi Role Test</span>
-        </button>
+
+        {/* Quick status pill */}
+        <div className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-white/90 border border-white/15">
+          {userMode === 'host' ? 'CHẾ ĐỘ CHỦ NHÀ' : 'CHẾ ĐỘ KHÁCH'}
+        </div>
       </header>
 
-      <main className="pt-20 px-6 max-w-2xl mx-auto space-y-6">
-        {/* Profile Card */}
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl flex items-center gap-4">
-          <img
-            src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
-            alt="Profile"
-            className="w-20 h-20 rounded-full object-cover border-2 border-primary-fixed shrink-0"
-          />
-          <div className="flex-1">
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-extrabold text-white">{currentUser?.name || 'Sarah Johnson'}</h1>
-              <span className="material-symbols-outlined text-primary-fixed text-lg" style={{ fontVariationSettings: "'FILL' 1" }}>verified</span>
-            </div>
-            <p className="text-xs text-primary-fixed-dim mt-0.5">{currentUser?.email || 'sarah.j@digitalnomad.io'}</p>
-            <div className="mt-2 flex flex-wrap items-center gap-2">
-              <div className="inline-flex items-center gap-1 px-3 py-1 bg-primary-fixed text-on-primary-fixed rounded-full text-[10px] font-bold">
-                <span className="material-symbols-outlined text-xs">workspace_premium</span>
-                {currentUser?.badge || 'Premium Nomad Member'}
-              </div>
-              <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[10px] font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                <span>Supabase Connected</span>
+      <main className="pt-20 px-4 sm:px-6 max-w-2xl mx-auto space-y-6">
+        {/* Profile Card with Switch Button */}
+        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5">
+          <div className="flex items-center gap-4">
+            <div className="relative">
+              <img
+                src={currentUser?.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80'}
+                alt="Profile"
+                className={`w-20 h-20 rounded-full object-cover border-2 shadow-lg shrink-0 ${
+                  userMode === 'host' ? 'border-emerald-400' : 'border-[#8bd6b6]'
+                }`}
+              />
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-[#002116] border border-white/20 flex items-center justify-center text-xs">
+                <span
+                  className="material-symbols-outlined text-sm text-[#8bd6b6]"
+                  style={{ fontVariationSettings: "'FILL' 1" }}
+                >
+                  verified
+                </span>
               </div>
             </div>
-            <p className="text-[11px] text-emerald-200/70 mt-1.5 font-mono truncate">{supabaseStatus}</p>
+
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <h1 className="text-xl font-black text-white truncate">
+                  {currentUser?.name || (userMode === 'host' ? 'Chủ nhà Bản địa' : 'Khách Du Mục')}
+                </h1>
+              </div>
+              <p className="text-xs text-white/60 mt-0.5 truncate">{currentUser?.email || 'user@nomadnest.local'}</p>
+
+              <div className="mt-2.5 flex flex-wrap items-center gap-2">
+                {/* Dynamic Badge based on userMode */}
+                {userMode === 'guest' ? (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#8bd6b6] text-[#002116] rounded-full text-xs font-black shadow-sm">
+                    <span className="material-symbols-outlined text-sm">workspace_premium</span>
+                    <span>Thành viên Nomad</span>
+                  </div>
+                ) : (
+                  <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-emerald-400 to-teal-400 text-[#002116] rounded-full text-xs font-black shadow-sm">
+                    <span className="material-symbols-outlined text-sm" style={{ fontVariationSettings: "'FILL' 1" }}>
+                      star
+                    </span>
+                    <span>Chủ nhà Tiêu biểu</span>
+                  </div>
+                )}
+
+                <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[10px] font-semibold">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+                  <span>Đã kết nối dữ liệu</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Switch Mode Button */}
+          <div className="pt-2 border-t border-white/10">
+            <button
+              onClick={handleToggleUserMode}
+              type="button"
+              className={`w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] cursor-pointer shadow-lg border ${
+                userMode === 'guest'
+                  ? 'bg-gradient-to-r from-[#8bd6b6] to-emerald-400 text-[#002116] border-emerald-300 hover:opacity-95'
+                  : 'bg-gradient-to-r from-teal-500 to-[#8bd6b6] text-[#002116] border-teal-300 hover:opacity-95'
+              }`}
+            >
+              <span className="material-symbols-outlined text-lg">
+                {userMode === 'guest' ? 'storefront' : 'flight_takeoff'}
+              </span>
+              <span>
+                {userMode === 'guest' ? 'Chuyển sang Chế độ Chủ nhà' : 'Chuyển sang làm Khách'}
+              </span>
+              <span className="material-symbols-outlined text-base">swap_horiz</span>
+            </button>
           </div>
         </div>
 
-        {/* Menu Options Group 1 */}
+        {/* ================= CONDITIONAL MENU SECTION ================= */}
+
+        {/* 2A. GUEST MODE MENU: JOURNEY & RESERVATIONS */}
+        {userMode === 'guest' && (
+          <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl animate-fadeIn">
+            <div className="p-4 border-b border-white/10 text-xs font-black uppercase tracking-wider text-[#8bd6b6] flex items-center justify-between">
+              <span>HÀNH TRÌNH & ĐẶT CHỖ</span>
+              <span className="text-[10px] text-white/50 lowercase font-normal">dành cho khách</span>
+            </div>
+
+            {/* My Bookings */}
+            <div
+              id="menu-my-bookings"
+              onClick={() => {
+                if (onNavigateMyBookings) {
+                  onNavigateMyBookings();
+                } else {
+                  alert('Đang mở: Chuyến đi của tôi');
+                }
+              }}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#8bd6b6]/20 text-[#8bd6b6] flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">receipt_long</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Chuyến đi của tôi</span>
+                  <p className="text-xs text-white/60">Xem các phòng homestay đã đặt & lịch sử chuyến đi</p>
+                </div>
+              </div>
+              <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+            </div>
+
+            {/* Saved Stays */}
+            <div
+              id="menu-saved-stays"
+              onClick={() => alert('Đang mở: Danh sách phòng & Trải nghiệm đã lưu')}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#8bd6b6]/20 text-[#8bd6b6] flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">favorite</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Yêu thích</span>
+                  <p className="text-xs text-white/60">Làng nghề, phòng nghỉ & trải nghiệm thủ công đã lưu</p>
+                </div>
+              </div>
+              <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+            </div>
+
+            {/* My Journey Log */}
+            <div
+              id="menu-journey-log"
+              onClick={() => alert('Đang mở: Nhật ký hành trình')}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-[#8bd6b6]/20 text-[#8bd6b6] flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">route</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Nhật ký hành trình</span>
+                  <p className="text-xs text-white/60">Lịch trình khám phá, dấu ấn văn hóa & hoạt động trải nghiệm</p>
+                </div>
+              </div>
+              <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+            </div>
+          </div>
+        )}
+
+        {/* 2B. HOST MODE MENU: HOSTING DASHBOARD */}
+        {userMode === 'host' && (
+          <div className="bg-white/5 border border-emerald-500/20 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl animate-fadeIn">
+            <div className="p-4 border-b border-emerald-500/20 text-xs font-black uppercase tracking-wider text-emerald-400 flex items-center justify-between">
+              <span>QUẢN LÝ ĐÓN KHÁCH</span>
+              <span className="text-[10px] text-emerald-300/60 lowercase font-normal">quản lý vận hành</span>
+            </div>
+
+            {/* My Listings */}
+            <div
+              id="menu-host-listings"
+              onClick={() => {
+                if (onNavigateHostDashboard) {
+                  onNavigateHostDashboard();
+                } else {
+                  alert('Đang mở: Danh sách phòng');
+                }
+              }}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">domain</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">Danh sách phòng</span>
+                  <p className="text-xs text-white/60">Quản lý phòng homestay, giá cả & tình trạng</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-xs font-extrabold text-emerald-300 bg-emerald-500/20 px-2 py-0.5 rounded-lg border border-emerald-500/30">
+                  Hoạt động
+                </span>
+                <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+              </div>
+            </div>
+
+            {/* Reservations */}
+            <div
+              id="menu-host-reservations"
+              onClick={() => {
+                if (onNavigateHostReservations) {
+                  onNavigateHostReservations();
+                } else {
+                  alert('Đang mở: Đơn đặt phòng');
+                }
+              }}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">calendar_month</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">Đơn đặt phòng</span>
+                  <p className="text-xs text-white/60">Quản lý đơn đặt, yêu cầu check-in & lịch trình</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
+                <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+              </div>
+            </div>
+
+            {/* Earnings */}
+            <div
+              id="menu-host-earnings"
+              onClick={() => {
+                if (onNavigateHostEarnings) {
+                  onNavigateHostEarnings();
+                } else {
+                  alert('Đang mở: Báo cáo Doanh thu');
+                }
+              }}
+              className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer group"
+              style={{ cursor: 'pointer' }}
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-2xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-[#002116] transition-colors">
+                  <span className="material-symbols-outlined text-xl">account_balance_wallet</span>
+                </div>
+                <div>
+                  <span className="text-sm font-bold text-white group-hover:text-emerald-300 transition-colors">Doanh thu</span>
+                  <p className="text-xs text-white/60">Tổng quan doanh thu, phương thức thanh toán & báo cáo</p>
+                </div>
+              </div>
+              <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
+            </div>
+          </div>
+        )}
+
+        {/* Menu Options Group: SETTINGS & PAYMENT */}
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-primary-fixed">
-            Hành Trình & Đặt Phòng
+          <div className="p-4 border-b border-white/10 text-xs font-black uppercase tracking-wider text-[#8bd6b6]">
+            CÀI ĐẶT & THANH TOÁN
           </div>
 
           <div
-            onClick={() => alert('Danh sách chỗ ở đã đặt: Ocean Breeze Villa (12/11 - 15/11/2026)')}
-            className="p-4 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer border-b border-white/5"
+            id="menu-payments-cards"
+            onClick={() => alert(userMode === 'host' ? 'Đang mở: Phương thức chi trả & Tài khoản ngân hàng' : 'Đang mở: Phương thức thanh toán & Thẻ')}
+            className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
+            style={{ cursor: 'pointer' }}
           >
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed">receipt_long</span>
-              <span className="text-sm font-semibold">Chỗ Ở Đã Đặt (My Bookings)</span>
+              <div className="w-10 h-10 rounded-2xl bg-[#8bd6b6]/20 text-[#8bd6b6] flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors">
+                <span className="material-symbols-outlined text-xl">credit_card</span>
+              </div>
+              <div>
+                <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">
+                  {userMode === 'host' ? 'Tài khoản ngân hàng & Chi trả' : 'Thanh toán & Thẻ'}
+                </span>
+                <p className="text-xs text-white/60">
+                  {userMode === 'host' ? 'Tài khoản ngân hàng & thiết lập nhận tiền' : 'Thẻ thanh toán & phương thức giao dịch'}
+                </p>
+              </div>
             </div>
-            <span className="material-symbols-outlined text-white/50 text-base">chevron_right</span>
+            <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
           </div>
 
           <div
-            onClick={() => alert('Danh sách địa điểm ưa thích: Nam O Village, Ocean Breeze Villa')}
-            className="p-4 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer border-b border-white/5"
+            id="menu-app-language"
+            onClick={() => alert('Tùy chọn ngôn ngữ: Tiếng Việt / English (US)')}
+            className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer group"
+            style={{ cursor: 'pointer' }}
           >
             <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed">favorite</span>
-              <span className="text-sm font-semibold">Địa Điểm Đã Lưu (Saved)</span>
+              <div className="w-10 h-10 rounded-2xl bg-[#8bd6b6]/20 text-[#8bd6b6] flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors">
+                <span className="material-symbols-outlined text-xl">language</span>
+              </div>
+              <div>
+                <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Ngôn ngữ ứng dụng</span>
+                <p className="text-xs text-white/60">Tiếng Việt / English (US)</p>
+              </div>
             </div>
-            <span className="material-symbols-outlined text-white/50 text-base">chevron_right</span>
-          </div>
-
-          <div
-            onClick={() => alert('Lịch sử di chuyển Grab & Trải nghiệm Làng nghề')}
-            className="p-4 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed">route</span>
-              <span className="text-sm font-semibold">Nhật Ký Hành Trình (My Journey)</span>
-            </div>
-            <span className="material-symbols-outlined text-white/50 text-base">chevron_right</span>
-          </div>
-        </div>
-
-        {/* Menu Options Group 2 */}
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl">
-          <div className="p-4 border-b border-white/10 text-xs font-bold uppercase tracking-wider text-primary-fixed">
-            Cài Đặt & Thanh Toán
-          </div>
-
-          <div
-            onClick={() => alert('Phương thức thanh toán: Visa **** 4242 (Active)')}
-            className="p-4 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer border-b border-white/5"
-          >
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed">credit_card</span>
-              <span className="text-sm font-semibold">Thanh Toán & Thẻ (Payments)</span>
-            </div>
-            <span className="material-symbols-outlined text-white/50 text-base">chevron_right</span>
-          </div>
-
-          <div
-            onClick={() => alert('Ngôn ngữ hiện tại: English / Tiếng Việt')}
-            className="p-4 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer"
-          >
-            <div className="flex items-center gap-3">
-              <span className="material-symbols-outlined text-primary-fixed">language</span>
-              <span className="text-sm font-semibold">Ngôn Ngữ & Ứng Dụng</span>
-            </div>
-            <span className="text-xs text-primary-fixed-dim font-bold">Tiếng Việt / EN</span>
+            <span className="text-xs text-[#8bd6b6] font-bold bg-[#8bd6b6]/10 px-2.5 py-1 rounded-lg border border-[#8bd6b6]/20">
+              Tiếng Việt
+            </span>
           </div>
         </div>
 
         {/* Logout Button */}
         <button
           onClick={onLogout}
-          className="w-full h-14 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-bold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm shadow"
+          className="w-full h-14 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-extrabold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg cursor-pointer active:scale-95"
         >
-          <span className="material-symbols-outlined text-base">logout</span>
-          <span>Đăng Xuất / Đổi Màn Hình Đăng Nhập</span>
+          <span className="material-symbols-outlined text-lg">logout</span>
+          <span>Đăng xuất</span>
         </button>
       </main>
     </div>
   );
 };
+

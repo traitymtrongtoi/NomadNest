@@ -14,6 +14,7 @@ import { PropertyDetailScreen } from './components/screens/PropertyDetailScreen'
 import { RoomOptionsScreen } from './components/screens/RoomOptionsScreen';
 import { AddRoomScreen } from './components/screens/AddRoomScreen';
 import { BookingSummaryScreen } from './components/screens/BookingSummaryScreen';
+import { BookingCheckoutScreen, BookingCheckoutData } from './components/screens/BookingCheckoutScreen';
 import { TranslatorScreen } from './components/screens/TranslatorScreen';
 import { MapScreen } from './components/screens/MapScreen';
 import { GrabServicesScreen } from './components/screens/GrabServicesScreen';
@@ -22,61 +23,98 @@ import { LocalGuideScreen } from './components/screens/LocalGuideScreen';
 import { ChatListScreen } from './components/screens/ChatListScreen';
 import { HostChatScreen } from './components/screens/HostChatScreen';
 import { HostDashboardScreen } from './components/screens/HostDashboardScreen';
-import { AdminDashboardScreen } from './components/screens/AdminDashboardScreen';
 import { AccountScreen } from './components/screens/AccountScreen';
+import { MyBookingsScreen } from './components/screens/MyBookingsScreen';
 
 // Common UI
 import { Header } from './components/common/Header';
 import { GuestBottomNav } from './components/common/GuestBottomNav';
 import { HostBottomNav } from './components/common/HostBottomNav';
 
-import { saveCurrentUserToStorage } from './utils/userStorage';
+import { saveCurrentUserToStorage, getCurrentUserFromStorage, CurrentUserProfile } from './utils/userStorage';
 
 export default function App() {
-  const [currentRole, setCurrentRole] = useState<UserRole>('nomad_user');
+  const [currentUser, setCurrentUser] = useState<CurrentUserProfile>(() => getCurrentUserFromStorage('nomad_user'));
+  const [currentRole, setCurrentRole] = useState<UserRole>(() => currentUser?.role || 'nomad_user');
   const [currentScreen, setCurrentScreen] = useState<string>('splash');
   const [selectedVillage, setSelectedVillage] = useState<Village>(MOCK_VILLAGES[0]);
   const [selectedProperty, setSelectedProperty] = useState<Property>(MOCK_PROPERTIES[0]);
   const [activeBottomTab, setActiveBottomTab] = useState<string>('home');
 
-  const currentUser = MOCK_USERS[currentRole] || MOCK_USERS.nomad_user;
+  const [selectedBookingCheckoutData, setSelectedBookingCheckoutData] = useState<BookingCheckoutData>({
+    title: 'Phòng Homestay Làng Nam Ô',
+    image: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
+    location: 'Làng nước mắm Nam Ô, Đà Nẵng',
+    villageName: 'Làng nước mắm Nam Ô',
+    checkIn: '10/08/2026',
+    checkOut: '15/08/2026',
+    nightsCount: 5,
+    guestsCount: 1,
+    pricePerNight: 850000
+  });
 
-  // Sync current user to localStorage whenever role changes
+  // Keep state synchronized with storage updates
   React.useEffect(() => {
-    saveCurrentUserToStorage({
-      id: currentUser.id,
-      name: currentUser.name,
-      email: currentUser.email,
-      avatar: currentUser.avatar,
-      role: currentUser.role,
-      badge: currentUser.badge
-    });
-  }, [currentRole, currentUser]);
+    const syncUser = () => {
+      const user = getCurrentUserFromStorage(currentRole);
+      setCurrentUser(user);
+      if (user?.role) {
+        setCurrentRole(user.role);
+      }
+    };
+
+    syncUser();
+
+    window.addEventListener('nomad_user_updated', syncUser);
+    window.addEventListener('storage', syncUser);
+    return () => {
+      window.removeEventListener('nomad_user_updated', syncUser);
+      window.removeEventListener('storage', syncUser);
+    };
+  }, [currentRole]);
 
   // Helper to get role home screen
   const getRoleHome = (role: UserRole) => {
     if (role === 'local_host') return 'host_dashboard';
-    if (role === 'admin') return 'admin_dashboard';
     return 'home';
   };
 
-  // Handle Quick Role Login
-  const handleQuickRoleLogin = (role: UserRole) => {
+  // Called when user completes login or sign up form
+  const handleAuthSuccess = (role: UserRole) => {
+    const user = getCurrentUserFromStorage(role);
+    setCurrentUser(user);
     setCurrentRole(role);
-    const userToSave = MOCK_USERS[role] || MOCK_USERS.nomad_user;
-    saveCurrentUserToStorage({
-      id: userToSave.id,
-      name: userToSave.name,
-      email: userToSave.email,
-      avatar: userToSave.avatar,
-      role: userToSave.role,
-      badge: userToSave.badge
-    });
     if (role === 'local_host') {
       setCurrentScreen('host_dashboard');
       setActiveBottomTab('dashboard');
-    } else if (role === 'admin') {
-      setCurrentScreen('admin_dashboard');
+    } else {
+      setCurrentScreen('home');
+      setActiveBottomTab('home');
+    }
+  };
+
+  // Handle Quick Role Login (Skip or direct demo role switch)
+  const handleQuickRoleLogin = (role: UserRole) => {
+    const existing = getCurrentUserFromStorage(role);
+    if (existing && existing.name) {
+      setCurrentUser(existing);
+      setCurrentRole(role);
+    } else {
+      const userToSave = MOCK_USERS[role] || MOCK_USERS.nomad_user;
+      saveCurrentUserToStorage({
+        id: userToSave.id,
+        name: userToSave.name,
+        email: userToSave.email,
+        avatar: userToSave.avatar,
+        role: userToSave.role,
+        badge: userToSave.badge
+      });
+      setCurrentUser(userToSave);
+      setCurrentRole(role);
+    }
+
+    if (role === 'local_host') {
+      setCurrentScreen('host_dashboard');
       setActiveBottomTab('dashboard');
     } else {
       setCurrentScreen('home');
@@ -94,10 +132,11 @@ export default function App() {
   };
 
   // Handle Host Bottom Nav Navigation
-  const handleHostTabChange = (tab: 'dashboard' | 'add_room' | 'chat' | 'account') => {
+  const handleHostTabChange = (tab: 'dashboard' | 'add_room' | 'translator' | 'chat' | 'account') => {
     setActiveBottomTab(tab);
     if (tab === 'dashboard') setCurrentScreen('host_dashboard');
     else if (tab === 'add_room') setCurrentScreen('add_room');
+    else if (tab === 'translator') setCurrentScreen('translator');
     else if (tab === 'chat') setCurrentScreen('chat');
     else if (tab === 'account') setCurrentScreen('account');
   };
@@ -108,14 +147,13 @@ export default function App() {
         return (
           <SplashScreen
             onExplore={() => setCurrentScreen('login')}
-            onSkip={() => handleQuickRoleLogin('nomad_user')}
           />
         );
 
       case 'login':
         return (
           <LoginScreen
-            onSelectRoleLogin={handleQuickRoleLogin}
+            onSelectRoleLogin={handleAuthSuccess}
             onContinueEmail={(role) => {
               if (role === 'local_host') setCurrentScreen('host_register');
               else setCurrentScreen('guest_register');
@@ -126,7 +164,7 @@ export default function App() {
       case 'guest_register':
         return (
           <GuestRegistrationScreen
-            onSuccess={() => handleQuickRoleLogin('nomad_user')}
+            onSuccess={() => handleAuthSuccess('nomad_user')}
             onCancel={() => setCurrentScreen('login')}
           />
         );
@@ -134,7 +172,7 @@ export default function App() {
       case 'host_register':
         return (
           <HostRegistrationScreen
-            onSuccess={() => handleQuickRoleLogin('local_host')}
+            onSuccess={() => handleAuthSuccess('local_host')}
             onCancel={() => setCurrentScreen('login')}
           />
         );
@@ -186,6 +224,21 @@ export default function App() {
           <RoomOptionsScreen
             village={selectedVillage}
             onBack={() => setCurrentScreen('village_detail')}
+            onBookRoom={(data) => {
+              setSelectedBookingCheckoutData({
+                propertyId: data.room.id,
+                title: data.room.title,
+                image: data.room.image || data.room.images?.[0] || 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
+                location: data.room.villageName || selectedVillage.name || 'Làng Nghề Đà Nẵng',
+                villageName: data.room.villageName || selectedVillage.name,
+                checkIn: data.checkIn,
+                checkOut: data.checkOut,
+                nightsCount: data.nights,
+                guestsCount: data.guests,
+                pricePerNight: data.room.price || data.room.pricing?.nightlyVND || '850.000 VNĐ'
+              });
+              setCurrentScreen('booking_checkout');
+            }}
           />
         );
 
@@ -196,25 +249,62 @@ export default function App() {
             onBack={() => setCurrentScreen('village_detail')}
             onBookNow={(p) => {
               setSelectedProperty(p);
-              setCurrentScreen('booking_summary');
+              setSelectedBookingCheckoutData({
+                propertyId: p.id,
+                title: p.title,
+                image: p.images[0] || 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
+                location: p.location,
+                villageName: p.villageName,
+                checkIn: '12/11/2026',
+                checkOut: '15/11/2026',
+                nightsCount: 3,
+                guestsCount: 1,
+                pricePerNight: p.pricePerNight
+              });
+              setCurrentScreen('booking_checkout');
             }}
           />
         );
 
+      case 'booking_checkout':
       case 'booking_summary':
         return (
-          <BookingSummaryScreen
-            property={selectedProperty}
-            onConfirmBooking={() => {
-              alert('Đặt phòng thành công! Chúc bạn có trải nghiệm tuyệt vời tại làng nghề.');
-              setCurrentScreen(getRoleHome(currentRole));
+          <BookingCheckoutScreen
+            bookingData={selectedBookingCheckoutData}
+            currentUser={currentUser}
+            onBack={() => setCurrentScreen('room_options')}
+            onConfirmSuccess={() => {
+              setCurrentScreen('my_bookings');
             }}
-            onCancel={() => setCurrentScreen('property_detail')}
+          />
+        );
+
+      case 'my_bookings':
+      case 'bookings':
+        return (
+          <MyBookingsScreen
+            onBack={() => {
+              setCurrentScreen('account');
+              setActiveBottomTab('account');
+            }}
+            onExplore={() => {
+              setCurrentScreen('home');
+              setActiveBottomTab('home');
+            }}
           />
         );
 
       case 'translator':
-        return <TranslatorScreen onBack={() => setCurrentScreen(getRoleHome(currentRole))} />;
+        return (
+          <TranslatorScreen
+            onBack={() => {
+              const home = getRoleHome(currentRole);
+              setCurrentScreen(home);
+              if (currentRole === 'local_host') setActiveBottomTab('dashboard');
+              else setActiveBottomTab('home');
+            }}
+          />
+        );
 
       case 'map':
         return <MapScreen onBack={() => setCurrentScreen(getRoleHome(currentRole))} />;
@@ -289,20 +379,40 @@ export default function App() {
           />
         );
 
-      case 'admin_dashboard':
-        return (
-          <AdminDashboardScreen
-            currentUser={currentUser}
-            onNavigateHome={() => setCurrentScreen('admin_dashboard')}
-          />
-        );
-
       case 'account':
         return (
           <AccountScreen
             currentUser={currentUser}
+            initialMode={currentRole === 'local_host' ? 'host' : 'guest'}
+            onModeChange={(newMode) => {
+              const newRole: UserRole = newMode === 'host' ? 'local_host' : 'nomad_user';
+              setCurrentRole(newRole);
+              const updatedUser: CurrentUserProfile = {
+                ...currentUser,
+                role: newRole,
+                badge: newRole === 'local_host' ? 'Superhost' : 'Premium Nomad'
+              };
+              setCurrentUser(updatedUser);
+              saveCurrentUserToStorage(updatedUser);
+            }}
             onLogout={() => setCurrentScreen('login')}
-            onOpenQuickRoles={() => setCurrentScreen('login')}
+            onNavigateMyBookings={() => setCurrentScreen('my_bookings')}
+            onNavigateHostDashboard={() => {
+              setCurrentScreen('host_dashboard');
+              setActiveBottomTab('dashboard');
+            }}
+            onNavigateAddRoom={() => {
+              setCurrentScreen('add_room');
+              setActiveBottomTab('add_room');
+            }}
+            onNavigateHostReservations={() => {
+              setCurrentScreen('host_dashboard');
+              setActiveBottomTab('dashboard');
+            }}
+            onNavigateHostEarnings={() => {
+              setCurrentScreen('host_dashboard');
+              setActiveBottomTab('dashboard');
+            }}
           />
         );
 
@@ -324,7 +434,14 @@ export default function App() {
     }
   };
 
-  const showHeaderAndBottomNav = !['splash', 'login', 'guest_register', 'host_register'].includes(currentScreen);
+  const showHeaderAndBottomNav = ![
+    'splash',
+    'login',
+    'guest_register',
+    'host_register',
+    'booking_checkout',
+    'booking_summary'
+  ].includes(currentScreen);
 
   return (
     <div className="min-h-screen bg-[#001710] font-sans relative selection:bg-primary-fixed selection:text-on-primary-fixed">
@@ -338,8 +455,7 @@ export default function App() {
             if (currentRole === 'local_host') setActiveBottomTab('dashboard');
             else setActiveBottomTab('home');
           }}
-          onOpenNotifications={() => alert('Thông báo: 1 lịch hẹn trải nghiệm mới tại Làng Nước Mắm Nam Ô')}
-          onOpenQuickRoles={() => setCurrentScreen('login')}
+          onOpenNotifications={() => alert('Notification: 1 new workshop booking request at Nam O Fish Sauce Village')}
         />
       )}
 
