@@ -67,11 +67,112 @@ export function saveUserToDb(user: CurrentUserProfile) {
 }
 
 /**
+ * Normalize an email address, with strict Gmail address deduplication (strips dots and +aliases).
+ * e.g., "John.Doe+tag@gmail.com" -> "johndoe@gmail.com"
+ */
+export function normalizeEmail(email: string): string {
+  const trimmed = email.trim().toLowerCase();
+  const atIndex = trimmed.indexOf('@');
+  if (atIndex === -1) return trimmed;
+  const localPart = trimmed.slice(0, atIndex);
+  const domain = trimmed.slice(atIndex + 1);
+
+  if (domain === 'gmail.com' || domain === 'googlemail.com') {
+    const cleanLocal = localPart.split('+')[0].replace(/\./g, '');
+    return `${cleanLocal}@gmail.com`;
+  }
+  return trimmed;
+}
+
+/**
+ * Check whether an email is already registered in Supabase database or local storage.
+ * Strictly enforces one account per email/Gmail address.
+ */
+export async function checkEmailAlreadyExists(rawEmail: string): Promise<boolean> {
+  const trimmed = rawEmail.trim().toLowerCase();
+  if (!trimmed) return false;
+  const canonical = normalizeEmail(trimmed);
+
+  // 1. Check local storage DB first
+  const localUsers = getRegisteredUsersFromDb();
+  const localExists = localUsers.some(u => {
+    if (!u.email) return false;
+    const uTrimmed = u.email.trim().toLowerCase();
+    return uTrimmed === trimmed || normalizeEmail(uTrimmed) === canonical;
+  });
+  if (localExists) {
+    return true;
+  }
+
+  // 2. Query Supabase profiles table
+  try {
+    // Check direct match (case-insensitive)
+    const { data: directMatch, error: directErr } = await supabase
+      .from('profiles')
+      .select('id, email')
+      .ilike('email', trimmed)
+      .limit(1);
+
+    if (!directErr && directMatch && directMatch.length > 0) {
+      return true;
+    }
+
+    // If it's a Gmail address, also verify canonical form across existing profiles
+    if (trimmed.endsWith('@gmail.com') || trimmed.endsWith('@googlemail.com')) {
+      const { data: allProfiles, error: allErr } = await supabase
+        .from('profiles')
+        .select('id, email')
+        .ilike('email', '%@%');
+
+      if (!allErr && allProfiles) {
+        const hasDuplicateGmail = allProfiles.some(p => {
+          if (!p.email) return false;
+          return normalizeEmail(p.email) === canonical;
+        });
+        if (hasDuplicateGmail) {
+          return true;
+        }
+      }
+    }
+  } catch (err) {
+    console.error('Error querying Supabase profiles table for duplicate email check:', err);
+  }
+
+  return false;
+}
+
+/**
  * Find registered user by email
  */
 export function findUserByEmail(email: string): CurrentUserProfile | undefined {
   const users = getRegisteredUsersFromDb();
-  return users.find(u => u.email.toLowerCase() === email.trim().toLowerCase());
+  const target = email.trim().toLowerCase();
+  const canonical = normalizeEmail(target);
+  return users.find(u => {
+    if (!u.email) return false;
+    const uTrimmed = u.email.trim().toLowerCase();
+    return uTrimmed === target || normalizeEmail(uTrimmed) === canonical;
+  });
+}
+
+/**
+ * Safe registration function that strictly enforces unique email.
+ * Rejects submission and prevents any database insert if email already exists.
+ */
+export async function registerNewUser(
+  user: CurrentUserProfile
+): Promise<{ success: boolean; error?: string }> {
+  const exists = await checkEmailAlreadyExists(user.email);
+  if (exists) {
+    return {
+      success: false,
+      error: 'This email is already registered. Please sign in instead.'
+    };
+  }
+
+  // Proceed with saving only after verifying email does not exist
+  saveCurrentUserToStorage(user);
+  return { success: true };
 }
 
 export const saveCurrentUserToStorage = (user: CurrentUserProfile) => {

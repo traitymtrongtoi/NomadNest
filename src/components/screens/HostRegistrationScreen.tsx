@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { saveCurrentUserToStorage, extractNameFromEmail } from '../../utils/userStorage';
+import { saveCurrentUserToStorage, extractNameFromEmail, checkEmailAlreadyExists } from '../../utils/userStorage';
 
 interface HostRegistrationScreenProps {
   onSuccess: () => void;
@@ -19,6 +19,8 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [avatar, setAvatar] = useState(DEFAULT_HOST_AVATAR);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleFileProcess = (file: File) => {
     if (file && file.type.startsWith('image/')) {
@@ -49,9 +51,25 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
     e.stopPropagation();
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
     const actualEmail = email.trim();
+    if (!actualEmail) return;
+
+    setIsSubmitting(true);
+    try {
+      // Check if email already exists in Supabase profiles or local storage
+      const alreadyRegistered = await checkEmailAlreadyExists(actualEmail);
+      if (alreadyRegistered) {
+        setErrorMessage('This email is already registered. Please sign in instead.');
+        setIsSubmitting(false);
+        return;
+      }
+    } catch (err) {
+      console.error('Error checking email uniqueness:', err);
+    }
+
     const actualName = hostName.trim() || extractNameFromEmail(actualEmail);
     saveCurrentUserToStorage({
       id: 'host_' + Date.now(),
@@ -62,6 +80,7 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
       language: 'vi', // Automatic language assignment for Local Host
       badge: 'Superhost'
     });
+    setIsSubmitting(false);
     onSuccess();
   };
 
@@ -242,14 +261,55 @@ export const HostRegistrationScreen: React.FC<HostRegistrationScreenProps> = ({
               </div>
             </div>
 
+            {/* Clear Error Alert on UI if email already exists */}
+            {errorMessage && (
+              <div
+                id="host-registration-error-alert"
+                role="alert"
+                className="p-4 rounded-2xl bg-rose-500/20 border-2 border-rose-500/80 text-rose-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-rose-500/30 text-rose-300 border border-rose-500/50 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-2xl">error</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white tracking-wide">
+                      {errorMessage}
+                    </p>
+                    <p className="text-xs text-rose-300/90 mt-0.5">
+                      Email này đã được đăng ký. Vui lòng quay lại để đăng nhập.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={onCancel}
+                  className="px-3.5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition-all shrink-0 cursor-pointer shadow flex items-center gap-1 active:scale-95"
+                >
+                  <span>Đăng nhập ngay</span>
+                  <span className="material-symbols-outlined text-sm">login</span>
+                </button>
+              </div>
+            )}
+
             {/* Submit Button */}
             <div className="pt-3">
               <button
                 type="submit"
-                className="w-full h-13 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98"
+                disabled={isSubmitting}
+                className="w-full h-13 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer"
               >
-                <span>Trở Thành Local Host</span>
-                <span className="material-symbols-outlined text-base">verified</span>
+                {isSubmitting ? (
+                  <>
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    <span>Đang kiểm tra tài khoản...</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Trở Thành Local Host</span>
+                    <span className="material-symbols-outlined text-base">verified</span>
+                  </>
+                )}
               </button>
             </div>
           </form>

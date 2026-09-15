@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { UserRole } from '../../types';
-import { saveCurrentUserToStorage, findUserByEmail, extractNameFromEmail, CurrentUserProfile } from '../../utils/userStorage';
+import {
+  saveCurrentUserToStorage,
+  findUserByEmail,
+  extractNameFromEmail,
+  checkEmailAlreadyExists,
+  CurrentUserProfile
+} from '../../utils/userStorage';
 
 interface AuthFormProps {
   role: UserRole;
@@ -21,6 +27,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
 
   // Auth Mode State ('login' | 'signup') - Default to login for fast access
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
+
+  // Error message and loading state for duplicate checks
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // ===================== GUEST (DIGITAL NOMAD) STATES =====================
   const [nomadName, setNomadName] = useState('');
@@ -75,8 +85,9 @@ export const AuthForm: React.FC<AuthFormProps> = ({
   };
 
   // ===================== GUEST SUBMIT HANDLER =====================
-  const handleGuestSubmit = (e: React.FormEvent) => {
+  const handleGuestSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
 
     let actualName = '';
     let actualEmail = '';
@@ -86,6 +97,21 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       actualEmail = nomadEmail.trim();
       actualName = nomadName.trim() || extractNameFromEmail(actualEmail);
       chosenAvatar = nomadAvatar;
+
+      if (!actualEmail) return;
+
+      setIsSubmitting(true);
+      try {
+        // Strictly check if email is already registered before creating user
+        const alreadyRegistered = await checkEmailAlreadyExists(actualEmail);
+        if (alreadyRegistered) {
+          setErrorMessage('This email is already registered. Please sign in instead.');
+          setIsSubmitting(false);
+          return;
+        }
+      } catch (err) {
+        console.error('Email uniqueness check error:', err);
+      }
     } else {
       actualEmail = guestLoginEmail.trim();
       const existingUser = findUserByEmail(actualEmail);
@@ -109,12 +135,14 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     };
 
     saveCurrentUserToStorage(newUserProfile);
+    setIsSubmitting(false);
     onAuthSuccess('nomad_user');
   };
 
   // ===================== HOST SUBMIT HANDLER =====================
-  const handleHostSubmit = (e: React.FormEvent) => {
+  const handleHostSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage(null);
 
     let actualName = '';
     let actualEmail = '';
@@ -124,6 +152,21 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       actualEmail = hostEmail.trim();
       actualName = hostName.trim() || extractNameFromEmail(actualEmail);
       chosenAvatar = hostAvatar;
+
+      if (!actualEmail) return;
+
+      setIsSubmitting(true);
+      try {
+        // Strictly check if email is already registered before creating user
+        const alreadyRegistered = await checkEmailAlreadyExists(actualEmail);
+        if (alreadyRegistered) {
+          setErrorMessage('This email is already registered. Please sign in instead.');
+          setIsSubmitting(false);
+          return;
+        }
+      } catch (err) {
+        console.error('Email uniqueness check error:', err);
+      }
     } else {
       actualEmail = hostLoginEmail.trim();
       const existingUser = findUserByEmail(actualEmail);
@@ -147,6 +190,7 @@ export const AuthForm: React.FC<AuthFormProps> = ({
     };
 
     saveCurrentUserToStorage(newUserProfile);
+    setIsSubmitting(false);
     onAuthSuccess('local_host');
   };
 
@@ -177,7 +221,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         <div className="w-full bg-white/10 p-1.5 rounded-2xl border border-white/20 flex items-center mb-6 shadow-inner">
           <button
             type="button"
-            onClick={() => setAuthMode('login')}
+            onClick={() => {
+              setAuthMode('login');
+              setErrorMessage(null);
+            }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
               authMode === 'login'
                 ? 'bg-gradient-to-r from-emerald-500 to-[#8bd6b6] text-[#002116] shadow-lg scale-[1.02]'
@@ -188,7 +235,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setAuthMode('signup')}
+            onClick={() => {
+              setAuthMode('signup');
+              setErrorMessage(null);
+            }}
             className={`flex-1 py-2.5 rounded-xl text-xs font-black transition-all cursor-pointer ${
               authMode === 'signup'
                 ? 'bg-gradient-to-r from-emerald-500 to-[#8bd6b6] text-[#002116] shadow-lg scale-[1.02]'
@@ -454,13 +504,58 @@ export const AuthForm: React.FC<AuthFormProps> = ({
               </div>
             </div>
 
+            {/* Clear Error Alert on UI if duplicate email is detected */}
+            {errorMessage && authMode === 'signup' && (
+              <div
+                id="host-signup-error-alert"
+                role="alert"
+                className="w-full p-4 rounded-2xl bg-rose-500/20 border-2 border-rose-500/80 text-rose-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl animate-shake"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-rose-500/30 text-rose-300 border border-rose-500/50 flex items-center justify-center shrink-0">
+                    <span className="material-symbols-outlined text-2xl">error</span>
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-white tracking-wide">
+                      {errorMessage}
+                    </p>
+                    <p className="text-xs text-rose-300/90 mt-0.5">
+                      Email này đã được sử dụng. Nhấn nút bên cạnh để đăng nhập.
+                    </p>
+                  </div>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthMode('login');
+                    setHostLoginEmail(hostEmail);
+                    setErrorMessage(null);
+                  }}
+                  className="px-3.5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition-all shrink-0 cursor-pointer shadow flex items-center gap-1 active:scale-95"
+                >
+                  <span>Đăng nhập ngay</span>
+                  <span className="material-symbols-outlined text-sm">login</span>
+                </button>
+              </div>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
-              className="w-full h-12 mt-4 bg-gradient-to-r from-emerald-500 to-[#8bd6b6] text-[#002116] font-black text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
+              disabled={isSubmitting}
+              className="w-full h-12 mt-4 bg-gradient-to-r from-emerald-500 to-[#8bd6b6] text-[#002116] font-black text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
             >
-              <span>Đăng ký & Vào Kênh Chủ Nhà</span>
-              <span className="material-symbols-outlined text-base">verified</span>
+              {isSubmitting ? (
+                <>
+                  <div className="w-4 h-4 border-2 border-[#002116] border-t-transparent rounded-full animate-spin" />
+                  <span>Đang kiểm tra tài khoản...</span>
+                </>
+              ) : (
+                <>
+                  <span>Đăng ký & Vào Kênh Chủ Nhà</span>
+                  <span className="material-symbols-outlined text-base">verified</span>
+                </>
+              )}
             </button>
           </form>
         )}
@@ -494,7 +589,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
       <div className="w-full bg-white/10 p-1.5 rounded-2xl border border-white/20 flex items-center mb-6 shadow-inner">
         <button
           type="button"
-          onClick={() => setAuthMode('login')}
+          onClick={() => {
+            setAuthMode('login');
+            setErrorMessage(null);
+          }}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             authMode === 'login'
               ? 'bg-primary-fixed text-on-primary-fixed shadow-md font-black'
@@ -505,7 +603,10 @@ export const AuthForm: React.FC<AuthFormProps> = ({
         </button>
         <button
           type="button"
-          onClick={() => setAuthMode('signup')}
+          onClick={() => {
+            setAuthMode('signup');
+            setErrorMessage(null);
+          }}
           className={`flex-1 py-2.5 rounded-xl text-xs font-bold transition-all cursor-pointer ${
             authMode === 'signup'
               ? 'bg-primary-fixed text-on-primary-fixed shadow-md font-black'
@@ -747,13 +848,58 @@ export const AuthForm: React.FC<AuthFormProps> = ({
             </div>
           </div>
 
+          {/* Clear Error Alert on UI if duplicate email is detected */}
+          {errorMessage && authMode === 'signup' && (
+            <div
+              id="guest-signup-error-alert"
+              role="alert"
+              className="w-full p-4 rounded-2xl bg-rose-500/20 border-2 border-rose-500/80 text-rose-100 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-xl animate-shake"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-xl bg-rose-500/30 text-rose-300 border border-rose-500/50 flex items-center justify-center shrink-0">
+                  <span className="material-symbols-outlined text-2xl">error</span>
+                </div>
+                <div>
+                  <p className="text-sm font-bold text-white tracking-wide">
+                    {errorMessage}
+                  </p>
+                  <p className="text-xs text-rose-300/90 mt-0.5">
+                    An account with this email already exists. Click to sign in instead.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => {
+                  setAuthMode('login');
+                  setGuestLoginEmail(nomadEmail);
+                  setErrorMessage(null);
+                }}
+                className="px-3.5 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 text-white text-xs font-bold transition-all shrink-0 cursor-pointer shadow flex items-center gap-1 active:scale-95"
+              >
+                <span>Sign in instead</span>
+                <span className="material-symbols-outlined text-sm">login</span>
+              </button>
+            </div>
+          )}
+
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full h-12 mt-4 bg-primary-fixed hover:bg-primary-fixed-dim text-on-primary-fixed font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98 cursor-pointer"
+            disabled={isSubmitting}
+            className="w-full h-12 mt-4 bg-primary-fixed hover:bg-primary-fixed-dim text-on-primary-fixed font-bold text-sm rounded-xl transition-all shadow-lg flex items-center justify-center gap-2 active:scale-98 cursor-pointer disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            <span>Create Guest Account & Find Home</span>
-            <span className="material-symbols-outlined text-base">check_circle</span>
+            {isSubmitting ? (
+              <>
+                <div className="w-4 h-4 border-2 border-on-primary-fixed border-t-transparent rounded-full animate-spin" />
+                <span>Checking email availability...</span>
+              </>
+            ) : (
+              <>
+                <span>Create Guest Account & Find Home</span>
+                <span className="material-symbols-outlined text-base">check_circle</span>
+              </>
+            )}
           </button>
         </form>
       )}
