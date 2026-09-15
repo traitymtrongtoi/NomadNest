@@ -9,8 +9,10 @@ interface AccountScreenProps {
   onLogout: () => void;
   onNavigateMyBookings?: () => void;
   onNavigateHostDashboard?: () => void;
+  onNavigateHostListings?: () => void;
   onNavigateAddRoom?: () => void;
   onNavigateHostReservations?: () => void;
+  onNavigateHostRevenue?: () => void;
   onNavigateHostEarnings?: () => void;
 }
 
@@ -21,8 +23,10 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
   onLogout,
   onNavigateMyBookings,
   onNavigateHostDashboard,
+  onNavigateHostListings,
   onNavigateAddRoom,
   onNavigateHostReservations,
+  onNavigateHostRevenue,
   onNavigateHostEarnings,
 }) => {
   // 1. State to manage current mode (Guest vs Host)
@@ -64,18 +68,18 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
             {userMode === 'host' ? 'storefront' : 'person'}
           </span>
           <span className="font-extrabold text-lg text-white">
-            {userMode === 'host' ? 'Tài khoản Chủ nhà' : 'Tài khoản Khách Du Mục'}
+            {userMode === 'host' ? 'Tài khoản Chủ nhà' : 'Nomad Account'}
           </span>
         </div>
 
         {/* Quick status pill */}
         <div className="px-3 py-1 rounded-full text-xs font-black uppercase tracking-wider bg-white/10 text-white/90 border border-white/15">
-          {userMode === 'host' ? 'CHẾ ĐỘ CHỦ NHÀ' : 'CHẾ ĐỘ KHÁCH'}
+          {userMode === 'host' ? 'CHẾ ĐỘ CHỦ NHÀ' : 'GUEST MODE'}
         </div>
       </header>
 
       <main className="pt-20 px-4 sm:px-6 max-w-2xl mx-auto space-y-6">
-        {/* Profile Card with Switch Button */}
+        {/* Profile Card */}
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-5 sm:p-6 shadow-2xl space-y-5">
           <div className="flex items-center gap-4">
             <div className="relative">
@@ -99,7 +103,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <h1 className="text-xl font-black text-white truncate">
-                  {currentUser?.name || (userMode === 'host' ? 'Chủ nhà Bản địa' : 'Khách Du Mục')}
+                  {currentUser?.name || (userMode === 'host' ? 'Chủ nhà Bản địa' : 'Nomad Traveler')}
                 </h1>
               </div>
               <p className="text-xs text-white/60 mt-0.5 truncate">{currentUser?.email || 'user@nomadnest.local'}</p>
@@ -109,7 +113,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                 {userMode === 'guest' ? (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-[#8bd6b6] text-[#002116] rounded-full text-xs font-black shadow-sm">
                     <span className="material-symbols-outlined text-sm">workspace_premium</span>
-                    <span>Thành viên Nomad</span>
+                    <span>Nomad Member</span>
                   </div>
                 ) : (
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-gradient-to-r from-emerald-400 to-teal-400 text-[#002116] rounded-full text-xs font-black shadow-sm">
@@ -122,31 +126,10 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
 
                 <div className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-full text-[10px] font-semibold">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                  <span>Đã kết nối dữ liệu</span>
+                  <span>{userMode === 'host' ? 'Đã kết nối dữ liệu' : 'Database Connected'}</span>
                 </div>
               </div>
             </div>
-          </div>
-
-          {/* Switch Mode Button */}
-          <div className="pt-2 border-t border-white/10">
-            <button
-              onClick={handleToggleUserMode}
-              type="button"
-              className={`w-full py-3 px-4 rounded-2xl font-black text-xs sm:text-sm flex items-center justify-center gap-2.5 transition-all active:scale-[0.98] cursor-pointer shadow-lg border ${
-                userMode === 'guest'
-                  ? 'bg-gradient-to-r from-[#8bd6b6] to-emerald-400 text-[#002116] border-emerald-300 hover:opacity-95'
-                  : 'bg-gradient-to-r from-teal-500 to-[#8bd6b6] text-[#002116] border-teal-300 hover:opacity-95'
-              }`}
-            >
-              <span className="material-symbols-outlined text-lg">
-                {userMode === 'guest' ? 'storefront' : 'flight_takeoff'}
-              </span>
-              <span>
-                {userMode === 'guest' ? 'Chuyển sang Chế độ Chủ nhà' : 'Chuyển sang làm Khách'}
-              </span>
-              <span className="material-symbols-outlined text-base">swap_horiz</span>
-            </button>
           </div>
         </div>
 
@@ -156,8 +139,8 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
         {userMode === 'guest' && (
           <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl animate-fadeIn">
             <div className="p-4 border-b border-white/10 text-xs font-black uppercase tracking-wider text-[#8bd6b6] flex items-center justify-between">
-              <span>HÀNH TRÌNH & ĐẶT CHỖ</span>
-              <span className="text-[10px] text-white/50 lowercase font-normal">dành cho khách</span>
+              <span>JOURNEY & RESERVATIONS</span>
+              <span className="text-[10px] text-white/50 lowercase font-normal">guest management</span>
             </div>
 
             {/* My Bookings */}
@@ -167,7 +150,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                 if (onNavigateMyBookings) {
                   onNavigateMyBookings();
                 } else {
-                  alert('Đang mở: Chuyến đi của tôi');
+                  alert('Opening: My Bookings');
                 }
               }}
               className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
@@ -178,8 +161,8 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                   <span className="material-symbols-outlined text-xl">receipt_long</span>
                 </div>
                 <div>
-                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Chuyến đi của tôi</span>
-                  <p className="text-xs text-white/60">Xem các phòng homestay đã đặt & lịch sử chuyến đi</p>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">My Bookings</span>
+                  <p className="text-xs text-white/60">View booked homestay rooms & trip history</p>
                 </div>
               </div>
               <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
@@ -188,7 +171,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
             {/* Saved Stays */}
             <div
               id="menu-saved-stays"
-              onClick={() => alert('Đang mở: Danh sách phòng & Trải nghiệm đã lưu')}
+              onClick={() => alert('Opening: Saved Stays & Experiences')}
               className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
               style={{ cursor: 'pointer' }}
             >
@@ -197,8 +180,8 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                   <span className="material-symbols-outlined text-xl">favorite</span>
                 </div>
                 <div>
-                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Yêu thích</span>
-                  <p className="text-xs text-white/60">Làng nghề, phòng nghỉ & trải nghiệm thủ công đã lưu</p>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Saved</span>
+                  <p className="text-xs text-white/60">Saved craft villages, stays & craft experiences</p>
                 </div>
               </div>
               <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
@@ -207,7 +190,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
             {/* My Journey Log */}
             <div
               id="menu-journey-log"
-              onClick={() => alert('Đang mở: Nhật ký hành trình')}
+              onClick={() => alert('Opening: My Journey Log')}
               className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer group"
               style={{ cursor: 'pointer' }}
             >
@@ -216,8 +199,8 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                   <span className="material-symbols-outlined text-xl">route</span>
                 </div>
                 <div>
-                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Nhật ký hành trình</span>
-                  <p className="text-xs text-white/60">Lịch trình khám phá, dấu ấn văn hóa & hoạt động trải nghiệm</p>
+                  <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">My Journey Log</span>
+                  <p className="text-xs text-white/60">Travel itinerary, cultural footprints & activities</p>
                 </div>
               </div>
               <span className="material-symbols-outlined text-white/40 group-hover:text-white group-hover:translate-x-1 transition-all text-base">chevron_right</span>
@@ -237,7 +220,9 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
             <div
               id="menu-host-listings"
               onClick={() => {
-                if (onNavigateHostDashboard) {
+                if (onNavigateHostListings) {
+                  onNavigateHostListings();
+                } else if (onNavigateHostDashboard) {
                   onNavigateHostDashboard();
                 } else {
                   alert('Đang mở: Danh sách phòng');
@@ -291,11 +276,13 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
               </div>
             </div>
 
-            {/* Earnings */}
+            {/* Earnings / Revenue */}
             <div
               id="menu-host-earnings"
               onClick={() => {
-                if (onNavigateHostEarnings) {
+                if (onNavigateHostRevenue) {
+                  onNavigateHostRevenue();
+                } else if (onNavigateHostEarnings) {
                   onNavigateHostEarnings();
                 } else {
                   alert('Đang mở: Báo cáo Doanh thu');
@@ -321,12 +308,12 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
         {/* Menu Options Group: SETTINGS & PAYMENT */}
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl overflow-hidden shadow-xl">
           <div className="p-4 border-b border-white/10 text-xs font-black uppercase tracking-wider text-[#8bd6b6]">
-            CÀI ĐẶT & THANH TOÁN
+            {userMode === 'host' ? 'CÀI ĐẶT & THANH TOÁN' : 'SETTINGS & PAYMENT'}
           </div>
 
           <div
             id="menu-payments-cards"
-            onClick={() => alert(userMode === 'host' ? 'Đang mở: Phương thức chi trả & Tài khoản ngân hàng' : 'Đang mở: Phương thức thanh toán & Thẻ')}
+            onClick={() => alert(userMode === 'host' ? 'Đang mở: Phương thức chi trả & Tài khoản ngân hàng' : 'Opening: Payment Methods & Cards')}
             className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer border-b border-white/5 group"
             style={{ cursor: 'pointer' }}
           >
@@ -336,10 +323,10 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
               </div>
               <div>
                 <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">
-                  {userMode === 'host' ? 'Tài khoản ngân hàng & Chi trả' : 'Thanh toán & Thẻ'}
+                  {userMode === 'host' ? 'Tài khoản ngân hàng & Chi trả' : 'Payments & Cards'}
                 </span>
                 <p className="text-xs text-white/60">
-                  {userMode === 'host' ? 'Tài khoản ngân hàng & thiết lập nhận tiền' : 'Thẻ thanh toán & phương thức giao dịch'}
+                  {userMode === 'host' ? 'Tài khoản ngân hàng & thiết lập nhận tiền' : 'Credit/Debit cards & transaction methods'}
                 </p>
               </div>
             </div>
@@ -348,7 +335,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
 
           <div
             id="menu-app-language"
-            onClick={() => alert('Tùy chọn ngôn ngữ: Tiếng Việt / English (US)')}
+            onClick={() => alert('Language: English (US) / Tiếng Việt')}
             className="p-4 flex items-center justify-between hover:bg-white/10 active:bg-white/15 active:scale-[0.99] transition-all cursor-pointer group"
             style={{ cursor: 'pointer' }}
           >
@@ -357,12 +344,14 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
                 <span className="material-symbols-outlined text-xl">language</span>
               </div>
               <div>
-                <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">Ngôn ngữ ứng dụng</span>
-                <p className="text-xs text-white/60">Tiếng Việt / English (US)</p>
+                <span className="text-sm font-bold text-white group-hover:text-[#8bd6b6] transition-colors">
+                  {userMode === 'host' ? 'Ngôn ngữ ứng dụng' : 'App Language'}
+                </span>
+                <p className="text-xs text-white/60">English (US) / Tiếng Việt</p>
               </div>
             </div>
             <span className="text-xs text-[#8bd6b6] font-bold bg-[#8bd6b6]/10 px-2.5 py-1 rounded-lg border border-[#8bd6b6]/20">
-              Tiếng Việt
+              {userMode === 'host' ? 'Tiếng Việt' : 'English (US)'}
             </span>
           </div>
         </div>
@@ -373,7 +362,7 @@ export const AccountScreen: React.FC<AccountScreenProps> = ({
           className="w-full h-14 bg-red-500/20 hover:bg-red-500/30 text-red-300 border border-red-500/30 font-extrabold rounded-2xl transition-all flex items-center justify-center gap-2 text-sm shadow-lg cursor-pointer active:scale-95"
         >
           <span className="material-symbols-outlined text-lg">logout</span>
-          <span>Đăng xuất</span>
+          <span>{userMode === 'host' ? 'Đăng xuất' : 'Sign Out'}</span>
         </button>
       </main>
     </div>

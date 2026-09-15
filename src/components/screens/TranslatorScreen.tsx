@@ -1,12 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { CULTURAL_PHRASES } from '../../data/mockData';
+import { UserRole } from '../../types';
 
 interface TranslatorScreenProps {
   onBack?: () => void;
+  role?: UserRole;
+  userMode?: 'guest' | 'host';
 }
 
-export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) => {
-  const [sourceLang, setSourceLang] = useState<'EN' | 'VI'>('EN');
+export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack, role, userMode }) => {
+  // Determine if active user is Host
+  const isHost = userMode === 'host' || role === 'local_host' || (!userMode && !role && typeof window !== 'undefined' && localStorage.getItem('nomad_current_role') === 'local_host');
+
+  // For Host: Default source language is 'VI' (Vietnamese -> English)
+  // For Guest: Default source language is 'EN' (English -> Vietnamese)
+  const [sourceLang, setSourceLang] = useState<'EN' | 'VI'>(isHost ? 'VI' : 'EN');
   const [text, setText] = useState('');
   const [translatedText, setTranslatedText] = useState('');
   const [isTranslating, setIsTranslating] = useState(false);
@@ -19,6 +27,13 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
   const [cameraImage, setCameraImage] = useState<string | null>(null);
   const [cameraTranslationResult, setCameraTranslationResult] = useState<string | null>(null);
   const [isScanningCamera, setIsScanningCamera] = useState(false);
+
+  // Sync default source language when role or mode changes
+  useEffect(() => {
+    setSourceLang(isHost ? 'VI' : 'EN');
+    setText('');
+    setTranslatedText('');
+  }, [isHost]);
 
   // Auto-translate effect when text changes - Strict 1:1 literal translation engine
   useEffect(() => {
@@ -126,12 +141,15 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
           const exactMapViEn: Record<string, string> = {
             'xin chào': 'Hello',
             'chào': 'Hello',
+            'chào bạn': 'Hello and welcome',
             'chào buổi sáng': 'Good morning',
             'tạm biệt': 'Goodbye',
             'cảm ơn': 'Thank you',
+            'cảm ơn bạn': 'Thank you very much',
             'bao nhiêu': 'How much?',
             'bao nhiêu tiền': 'How much money?',
             'giá bao nhiêu': 'How much does it cost?',
+            'một chai nước mắm nam ô nguyên chất giá bao nhiêu': 'How much is a bottle of authentic Nam O fish sauce?',
             'ở đâu': 'Where is it?',
             'phòng vệ sinh': 'Bathroom',
             'nước': 'Water',
@@ -139,6 +157,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
             'tính tiền': 'Check, please',
             'ngon': 'Delicious',
             'giúp tôi': 'Help me',
+            'tôi có thể giúp gì cho bạn': 'How can I help you?',
             'có': 'Yes',
             'không': 'No',
             'xin lỗi': 'Sorry / Excuse me',
@@ -146,7 +165,9 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
             'nước mắm': 'Fish sauce',
             'làng nghề': 'Craft village',
             'phòng': 'Room',
-            'mật khẩu wifi': 'Wifi password'
+            'mật khẩu wifi': 'Wifi password',
+            'wifi ở đây rất mạnh': 'The Wi-Fi here is very fast',
+            'chúc bạn một ngày tốt lành': 'Have a wonderful day!'
           };
 
           if (exactMapViEn[lower]) {
@@ -156,7 +177,33 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
           } else if (lower.includes('ở đâu')) {
             setTranslatedText('Where is it located?');
           } else {
-            setTranslatedText(trimmed);
+            // Simple word-by-word fallback VI -> EN
+            const viToEnDict: Record<string, string> = {
+              'xin': '',
+              'chào': 'Hello',
+              'cảm': '',
+              'ơn': 'Thank you',
+              'bao': '',
+              'nhiêu': 'How much',
+              'tiền': 'money',
+              'nước': 'water',
+              'mắm': 'fish sauce',
+              'phòng': 'room',
+              'giường': 'bed',
+              'nhà': 'house',
+              'tốt': 'good',
+              'ngon': 'delicious',
+              'đẹp': 'beautiful',
+              'làng': 'village',
+              'nghề': 'craft'
+            };
+
+            const translatedWords = trimmed.split(' ').map(w => {
+              const cleanW = w.toLowerCase().replace(/[.,?!;:]/g, '');
+              return viToEnDict[cleanW] !== undefined ? viToEnDict[cleanW] : w;
+            }).filter(Boolean).join(' ');
+
+            setTranslatedText(translatedWords || trimmed);
           }
         }
         setIsTranslating(false);
@@ -188,7 +235,11 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
     setIsListening(true);
     setTimeout(() => {
       setIsListening(false);
-      setText('How much is a bottle of authentic Nam O fish sauce?');
+      if (sourceLang === 'VI') {
+        setText('Một chai nước mắm Nam Ô nguyên chất giá bao nhiêu?');
+      } else {
+        setText('How much is a bottle of authentic Nam O fish sauce?');
+      }
     }, 1800);
   };
 
@@ -206,21 +257,70 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
     ? CULTURAL_PHRASES
     : CULTURAL_PHRASES.filter(p => p.category === activeCategory);
 
+  // Dynamic Text mappings based on Role / Mode
+  const headerTitle = isHost ? 'Công cụ Dịch thuật' : 'Cultural Translator';
+  const brandingTitle = isHost ? 'Dịch thuật NomadNest' : 'Nomad Translator';
+
+  // Language selectors label based on Host / Guest mode
+  // If Host: Left is 'Tiếng Việt', Right is 'Tiếng Anh' (when sourceLang === 'VI')
+  // If Guest: Left is 'English', Right is 'Vietnamese' (when sourceLang === 'EN')
+  const leftLangLabel = isHost
+    ? (sourceLang === 'VI' ? 'Tiếng Việt' : 'Tiếng Anh')
+    : (sourceLang === 'EN' ? 'English' : 'Vietnamese');
+
+  const rightLangLabel = isHost
+    ? (sourceLang === 'VI' ? 'Tiếng Anh' : 'Tiếng Việt')
+    : (sourceLang === 'EN' ? 'Vietnamese' : 'English');
+
+  // Input placeholder
+  const inputPlaceholder = isHost
+    ? (sourceLang === 'VI' ? 'Nhập văn bản hoặc chạm micro để nói...' : 'Type English text or tap mic to speak...')
+    : (sourceLang === 'EN' ? 'Type text or tap mic to speak...' : 'Nhập văn bản tiếng Việt để dịch...');
+
+  // Result placeholder
+  const resultPlaceholder = isHost
+    ? (sourceLang === 'VI' ? 'Bản dịch tiếng Anh sẽ hiển thị tại đây...' : 'Bản dịch tiếng Việt sẽ hiển thị tại đây...')
+    : (sourceLang === 'EN' ? 'Vietnamese translation will appear here directly...' : 'English translation will appear here directly...');
+
+  // Dictionary heading
+  const dictionaryTitle = isHost ? 'Từ điển Văn hóa Làng nghề' : 'Cultural Heritage Dictionary';
+
+  // Category labels for dictionary tabs
+  const categoryTabs = isHost
+    ? [
+        { id: 'all', label: 'Tất cả' },
+        { id: 'common', label: 'Câu thông dụng' },
+        { id: 'craft', label: 'Văn hóa làng nghề' },
+        { id: 'slang', label: 'Tiếng địa phương ĐN' },
+        { id: 'dos_and_donts', label: 'Quy tắc ứng xử' }
+      ]
+    : [
+        { id: 'all', label: 'All' },
+        { id: 'common', label: 'Common Phrases' },
+        { id: 'craft', label: 'Craft Heritage' },
+        { id: 'slang', label: 'Da Nang Slang' },
+        { id: 'dos_and_donts', label: 'Cultural Etiquette' }
+      ];
+
   return (
     <div className="bg-gradient-to-b from-[#00281D] via-[#001D15] to-[#00120D] text-white min-h-screen pb-28 font-sans">
       {/* Top Header */}
       <header className="fixed top-0 w-full z-50 bg-[#00281D]/95 backdrop-blur-xl flex items-center justify-between px-5 h-16 border-b border-white/10 shadow-lg">
         {onBack ? (
-          <button onClick={onBack} className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer">
+          <button
+            onClick={onBack}
+            className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+            title={isHost ? 'Quay lại' : 'Back'}
+          >
             <span className="material-symbols-outlined text-xl">arrow_back</span>
           </button>
         ) : (
           <div className="flex items-center gap-2">
             <span className="material-symbols-outlined text-emerald-400 text-xl">g_translate</span>
-            <span className="font-extrabold text-base text-white">Nomad Translator</span>
+            <span className="font-extrabold text-base text-white">{brandingTitle}</span>
           </div>
         )}
-        <h1 className="font-extrabold text-base text-white">Cultural Translator</h1>
+        <h1 className="font-extrabold text-base text-white">{headerTitle}</h1>
         <div className="w-10" />
       </header>
 
@@ -231,13 +331,13 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
             className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors cursor-pointer"
           >
-            {sourceLang === 'EN' ? 'English' : 'Vietnamese'}
+            {leftLangLabel}
           </button>
 
           <button
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
-            className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:rotate-180 transition-transform duration-300 shadow cursor-pointer"
-            title="Swap languages"
+            className="w-9 h-9 rounded-full bg-emerald-500 text-white flex items-center justify-center hover:rotate-180 transition-transform duration-300 shadow cursor-pointer active:scale-95"
+            title={isHost ? 'Đổi chiều ngôn ngữ' : 'Swap languages'}
           >
             <span className="material-symbols-outlined text-lg">swap_horiz</span>
           </button>
@@ -246,7 +346,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
             onClick={() => setSourceLang(sourceLang === 'EN' ? 'VI' : 'EN')}
             className="flex-1 py-2 text-center text-xs font-bold text-emerald-300 hover:text-white transition-colors cursor-pointer"
           >
-            {sourceLang === 'EN' ? 'Vietnamese' : 'English'}
+            {rightLangLabel}
           </button>
         </div>
 
@@ -263,13 +363,14 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     setText(e.target.value);
                     if (activeInputMode !== 'text') setActiveInputMode('text');
                   }}
-                  placeholder={sourceLang === 'EN' ? 'Type text or tap mic to speak...' : 'Nhập văn bản tiếng Việt để dịch...'}
+                  placeholder={inputPlaceholder}
                   className="w-full bg-transparent text-white placeholder:text-white/40 text-lg font-medium outline-none resize-none leading-relaxed"
                 />
                 {text && (
                   <button
                     onClick={() => { setText(''); setTranslatedText(''); }}
                     className="absolute top-0 right-0 w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white/70 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
+                    title={isHost ? 'Xóa nội dung' : 'Clear text'}
                   >
                     <span className="material-symbols-outlined text-base">close</span>
                   </button>
@@ -284,11 +385,11 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                 {isTranslating ? (
                   <div className="flex items-center gap-2 text-xs text-emerald-300 font-medium">
                     <span className="material-symbols-outlined animate-spin text-base">sync</span>
-                    <span>Translating...</span>
+                    <span>{isHost ? 'Đang dịch...' : 'Translating...'}</span>
                   </div>
                 ) : translatedText ? (
                   <div className="space-y-4 pb-8">
-                    {/* Direct Clean Translation Display without AI prefixes */}
+                    {/* Direct Clean Translation Display */}
                     <p className="text-xl font-bold text-emerald-300 leading-relaxed pr-12">
                       {translatedText}
                     </p>
@@ -298,14 +399,14 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       <button
                         onClick={() => speakText(translatedText)}
                         className="p-1.5 rounded-full hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer"
-                        title="Pronounce"
+                        title={isHost ? 'Phát âm' : 'Pronounce'}
                       >
                         <span className="material-symbols-outlined text-lg">volume_up</span>
                       </button>
                       <button
                         onClick={() => handleCopyText(translatedText)}
                         className="p-1.5 rounded-full hover:bg-white/20 text-white/80 hover:text-white transition-colors cursor-pointer relative"
-                        title="Copy"
+                        title={isHost ? 'Sao chép' : 'Copy'}
                       >
                         <span className="material-symbols-outlined text-lg">
                           {copied ? 'check' : 'content_copy'}
@@ -315,7 +416,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   </div>
                 ) : (
                   <p className="text-xs text-white/30 italic">
-                    {sourceLang === 'EN' ? 'Vietnamese translation will appear here directly...' : 'English translation will appear here directly...'}
+                    {resultPlaceholder}
                   </p>
                 )}
               </div>
@@ -331,7 +432,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-white/20 text-white border border-white/30 scale-105'
                       : 'bg-black/30 text-white/70 hover:bg-white/10 border border-white/10'
                   }`}
-                  title="Text input"
+                  title={isHost ? 'Nhập bàn phím' : 'Text input'}
                 >
                   <span className="material-symbols-outlined text-xl">keyboard</span>
                 </button>
@@ -345,7 +446,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-red-500 text-white border-2 border-red-300 animate-pulse scale-110'
                       : 'bg-gradient-to-tr from-emerald-500 to-teal-400 text-white hover:scale-105 border-2 border-white/30'
                   }`}
-                  title="Voice Translation"
+                  title={isHost ? 'Dịch bằng giọng nói' : 'Voice Translation'}
                 >
                   <span className="material-symbols-outlined text-2xl">mic</span>
                 </button>
@@ -359,7 +460,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                       ? 'bg-white/20 text-white border border-white/30 scale-105'
                       : 'bg-black/30 text-white/70 hover:bg-white/10 border border-white/10'
                   }`}
-                  title="Camera & Sign Scan"
+                  title={isHost ? 'Dịch biển hiệu qua Camera' : 'Camera & Sign Scan'}
                 >
                   <span className="material-symbols-outlined text-xl">photo_camera</span>
                 </button>
@@ -371,7 +472,9 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
               <div className="flex items-center justify-between border-b border-white/10 pb-3">
                 <div className="flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-400 text-xl">photo_camera</span>
-                  <span className="font-bold text-sm text-white">Camera & Sign Translation</span>
+                  <span className="font-bold text-sm text-white">
+                    {isHost ? 'Dịch Biển hiệu & Thực đơn qua Camera' : 'Camera & Sign Translation'}
+                  </span>
                 </div>
                 <button
                   onClick={() => {
@@ -381,7 +484,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                   }}
                   className="text-xs text-white/60 hover:text-white underline cursor-pointer"
                 >
-                  Close camera
+                  {isHost ? 'Đóng camera' : 'Close camera'}
                 </button>
               </div>
 
@@ -393,12 +496,16 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     {isScanningCamera && (
                       <div className="absolute inset-0 bg-black/50 backdrop-blur-xs flex flex-col items-center justify-center">
                         <span className="material-symbols-outlined animate-spin text-3xl text-emerald-400 mb-1">sync</span>
-                        <p className="text-xs font-bold text-white">Scanning text on image...</p>
+                        <p className="text-xs font-bold text-white">
+                          {isHost ? 'Đang quét văn bản trên hình ảnh...' : 'Scanning text on image...'}
+                        </p>
                       </div>
                     )}
                     {cameraTranslationResult && (
                       <div className="absolute bottom-2 left-2 right-2 bg-black/85 backdrop-blur-md p-3 rounded-xl border border-emerald-400/40 text-left animate-fadeIn">
-                        <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider block mb-0.5">Camera Translation:</span>
+                        <span className="text-[9px] uppercase font-bold text-emerald-400 tracking-wider block mb-0.5">
+                          {isHost ? 'Kết quả dịch thuật:' : 'Camera Translation:'}
+                        </span>
                         <p className="text-xs font-bold text-white leading-snug">{cameraTranslationResult}</p>
                       </div>
                     )}
@@ -408,29 +515,41 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     <div className="w-12 h-12 rounded-2xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center mx-auto border border-emerald-400/30">
                       <span className="material-symbols-outlined text-2xl">document_scanner</span>
                     </div>
-                    <p className="text-xs font-bold text-white">Scan Craft Village Signboards or Local Menus</p>
-                    <p className="text-[11px] text-white/60">Scan text directly using your camera</p>
+                    <p className="text-xs font-bold text-white">
+                      {isHost ? 'Quét biển hiệu xưởng nghề hoặc thực đơn quán ăn' : 'Scan Craft Village Signboards or Local Menus'}
+                    </p>
+                    <p className="text-[11px] text-white/60">
+                      {isHost ? 'Hệ thống AI tự động nhận diện và dịch nghĩa' : 'Scan text directly using your camera'}
+                    </p>
                   </div>
                 )}
               </div>
 
               {/* Sample Scans for Testing */}
               <div className="space-y-2">
-                <label className="text-[10px] font-bold uppercase text-emerald-300 tracking-wider">Try sample signage or menu scan:</label>
+                <label className="text-[10px] font-bold uppercase text-emerald-300 tracking-wider">
+                  {isHost ? 'Thử quét mẫu biển hiệu hoặc thực đơn:' : 'Try sample signage or menu scan:'}
+                </label>
                 <div className="grid grid-cols-2 gap-2">
                   <button
                     type="button"
                     onClick={() => handleCameraScanSample(
                       'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80',
                       'Nước mắm Nam Ô truyền thống',
-                      'Authentic Traditional Nam O Fish Sauce - Aged 12 months in wooden barrels'
+                      isHost
+                        ? 'Authentic Traditional Nam O Fish Sauce - Aged 12 months in wooden barrels'
+                        : 'Nước mắm truyền thống Nam Ô ủ chượp 12 tháng'
                     )}
                     className="p-2.5 bg-black/30 hover:bg-white/10 border border-white/15 rounded-xl text-left transition-all cursor-pointer flex items-center gap-2"
                   >
                     <span className="material-symbols-outlined text-emerald-400 text-lg">restaurant_menu</span>
                     <div>
-                      <p className="text-xs font-bold text-white">Village Signboard</p>
-                      <p className="text-[10px] text-white/60">Scan workshop sign</p>
+                      <p className="text-xs font-bold text-white">
+                        {isHost ? 'Biển hiệu làng nghề' : 'Village Signboard'}
+                      </p>
+                      <p className="text-[10px] text-white/60">
+                        {isHost ? 'Xưởng Nam Ô' : 'Scan workshop sign'}
+                      </p>
                     </div>
                   </button>
 
@@ -439,14 +558,20 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                     onClick={() => handleCameraScanSample(
                       'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=600&q=80',
                       'Bánh tráng Túy Loan nướng than hồng',
-                      'Tuy Loan Charcoal-Grilled Rice Paper - Special Local Snack'
+                      isHost
+                        ? 'Tuy Loan Charcoal-Grilled Rice Paper - Special Local Snack'
+                        : 'Bánh tráng nướng than hồng Túy Loan thơm giòn'
                     )}
                     className="p-2.5 bg-black/30 hover:bg-white/10 border border-white/15 rounded-xl text-left transition-all cursor-pointer flex items-center gap-2"
                   >
                     <span className="material-symbols-outlined text-emerald-400 text-lg">local_dining</span>
                     <div>
-                      <p className="text-xs font-bold text-white">Local Menu</p>
-                      <p className="text-[10px] text-white/60">Translate local dish</p>
+                      <p className="text-xs font-bold text-white">
+                        {isHost ? 'Thực đơn đặc sản' : 'Local Menu'}
+                      </p>
+                      <p className="text-[10px] text-white/60">
+                        {isHost ? 'Món Túy Loan' : 'Translate local dish'}
+                      </p>
                     </div>
                   </button>
                 </div>
@@ -458,7 +583,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                 onClick={() => setActiveInputMode('text')}
                 className="w-full py-2.5 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs font-bold transition-all cursor-pointer"
               >
-                Switch to keyboard input
+                {isHost ? 'Chuyển về nhập phím' : 'Switch to keyboard input'}
               </button>
             </div>
           )}
@@ -469,19 +594,13 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
           <div className="flex items-center justify-between">
             <h2 className="text-base font-extrabold text-white flex items-center gap-2">
               <span className="material-symbols-outlined text-emerald-400">menu_book</span>
-              Cultural Heritage Dictionary
+              {dictionaryTitle}
             </h2>
           </div>
 
           {/* Categories Horizontal Filter */}
           <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'common', label: 'Common Phrases' },
-              { id: 'craft', label: 'Craft Heritage' },
-              { id: 'slang', label: 'Da Nang Slang' },
-              { id: 'dos_and_donts', label: 'Cultural Etiquette' }
-            ].map(cat => (
+            {categoryTabs.map(cat => (
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id as any)}
@@ -502,11 +621,15 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
               <div
                 key={item.id}
                 className="bg-white/5 border border-white/10 rounded-2xl p-3.5 flex items-center justify-between hover:bg-white/10 transition-colors cursor-pointer group"
-                onClick={() => speakText(item.vietnamese)}
+                onClick={() => speakText(isHost ? item.english : item.vietnamese)}
               >
                 <div>
-                  <h3 className="text-sm font-bold text-white">{item.vietnamese}</h3>
-                  <p className="text-xs text-emerald-300 mt-0.5">{item.english}</p>
+                  <h3 className="text-sm font-bold text-white">
+                    {isHost ? item.vietnamese : item.english}
+                  </h3>
+                  <p className="text-xs text-emerald-300 mt-0.5">
+                    {isHost ? item.english : item.vietnamese}
+                  </p>
                   {item.pronunciation && (
                     <span className="text-[10px] text-white/50 block italic">[{item.pronunciation}]</span>
                   )}
@@ -514,6 +637,7 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
                 <button
                   type="button"
                   className="w-8 h-8 rounded-full bg-white/10 text-emerald-300 flex items-center justify-center group-hover:bg-emerald-500 group-hover:text-white transition-colors cursor-pointer shrink-0 ml-2"
+                  title={isHost ? 'Phát âm' : 'Pronounce'}
                 >
                   <span className="material-symbols-outlined text-base">volume_up</span>
                 </button>
@@ -525,4 +649,3 @@ export const TranslatorScreen: React.FC<TranslatorScreenProps> = ({ onBack }) =>
     </div>
   );
 };
-

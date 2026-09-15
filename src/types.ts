@@ -118,6 +118,44 @@ export interface MapSpot {
   lng: number;
 }
 
+export interface NormalizedMapPlace {
+  place_id?: string;
+  title: string;
+  address?: string;
+  rating?: number;
+  reviews?: number;
+  type?: string;
+  phone?: string;
+  website?: string;
+  latitude?: number;
+  longitude?: number;
+  thumbnail?: string;
+  hours?: string;
+  maps_link?: string;
+}
+
+export type SpotSourceType = 'craft_village' | 'curated_spot' | 'google_maps_serpapi';
+
+export interface UnifiedMapSpot {
+  id: string;
+  sourceType: SpotSourceType;
+  title: string;
+  subtitle?: string;
+  address?: string;
+  category: string;
+  lat: number;
+  lng: number;
+  rating?: number;
+  reviewsCount?: number;
+  wifiSpeed?: string;
+  quietLevel?: string;
+  image?: string;
+  website?: string;
+  phone?: string;
+  hours?: string;
+  maps_link?: string;
+}
+
 export interface CulturalPhrase {
   id: string;
   english: string;

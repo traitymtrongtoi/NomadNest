@@ -23,6 +23,9 @@ import { LocalGuideScreen } from './components/screens/LocalGuideScreen';
 import { ChatListScreen } from './components/screens/ChatListScreen';
 import { HostChatScreen } from './components/screens/HostChatScreen';
 import { HostDashboardScreen } from './components/screens/HostDashboardScreen';
+import { HostListingsScreen } from './components/screens/HostListingsScreen';
+import { HostReservationsScreen } from './components/screens/HostReservationsScreen';
+import { HostRevenueScreen } from './components/screens/HostRevenueScreen';
 import { AccountScreen } from './components/screens/AccountScreen';
 import { MyBookingsScreen } from './components/screens/MyBookingsScreen';
 
@@ -297,6 +300,8 @@ export default function App() {
       case 'translator':
         return (
           <TranslatorScreen
+            role={currentRole}
+            userMode={currentRole === 'local_host' ? 'host' : 'guest'}
             onBack={() => {
               const home = getRoleHome(currentRole);
               setCurrentScreen(home);
@@ -310,7 +315,14 @@ export default function App() {
         return <MapScreen onBack={() => setCurrentScreen(getRoleHome(currentRole))} />;
 
       case 'grab':
-        return <GrabServicesScreen onBack={() => setCurrentScreen(getRoleHome(currentRole))} />;
+        return (
+          <GrabServicesScreen
+            onBack={() => {
+              setCurrentScreen('home');
+              setActiveBottomTab('home');
+            }}
+          />
+        );
 
       case 'local_services':
         return (
@@ -349,6 +361,10 @@ export default function App() {
               setCurrentScreen('home');
               setActiveBottomTab('home');
             }}
+            onNavigateHome={() => {
+              setCurrentScreen('home');
+              setActiveBottomTab('home');
+            }}
           />
         );
 
@@ -379,6 +395,38 @@ export default function App() {
           />
         );
 
+      case 'host_listings':
+        return (
+          <HostListingsScreen
+            currentUser={currentUser}
+            onBack={() => setCurrentScreen('account')}
+            onNavigateAddRoom={() => {
+              setCurrentScreen('add_room');
+              setActiveBottomTab('add_room');
+            }}
+          />
+        );
+
+      case 'host_reservations':
+        return (
+          <HostReservationsScreen
+            currentUser={currentUser}
+            onBack={() => setCurrentScreen('account')}
+            onNavigateChat={(guestName) => {
+              setCurrentScreen('chat');
+              setActiveBottomTab('chat');
+            }}
+          />
+        );
+
+      case 'host_revenue':
+        return (
+          <HostRevenueScreen
+            currentUser={currentUser}
+            onBack={() => setCurrentScreen('account')}
+          />
+        );
+
       case 'account':
         return (
           <AccountScreen
@@ -401,17 +449,21 @@ export default function App() {
               setCurrentScreen('host_dashboard');
               setActiveBottomTab('dashboard');
             }}
+            onNavigateHostListings={() => {
+              setCurrentScreen('host_listings');
+            }}
             onNavigateAddRoom={() => {
               setCurrentScreen('add_room');
               setActiveBottomTab('add_room');
             }}
             onNavigateHostReservations={() => {
-              setCurrentScreen('host_dashboard');
-              setActiveBottomTab('dashboard');
+              setCurrentScreen('host_reservations');
+            }}
+            onNavigateHostRevenue={() => {
+              setCurrentScreen('host_revenue');
             }}
             onNavigateHostEarnings={() => {
-              setCurrentScreen('host_dashboard');
-              setActiveBottomTab('dashboard');
+              setCurrentScreen('host_revenue');
             }}
           />
         );

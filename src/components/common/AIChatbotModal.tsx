@@ -17,7 +17,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
     {
       id: '1',
       sender: 'bot',
-      text: 'Xin chào! Tôi là Trợ Lý AI Cừu NomadNest 🐑! Tôi có thể giúp bạn tìm làng nghề, tư vấn chỗ ở co-living, WiFi, cách di chuyển Grab hay văn hóa địa phương tại Đà Nẵng. Bạn cần hỗ trợ gì hôm nay?',
+      text: 'Hello! I am your NomadNest Sheep AI Assistant 🐑! I can help you find craft villages, advise on co-living stays, Wi-Fi, Grab transport, or local Da Nang culture. How can I help you today?',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -34,10 +34,10 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
   if (!isOpen) return null;
 
   const quickQuestions = [
-    'Làng Nam Ô có WiFi mạnh không?',
-    'Cách đặt xe Grab về làng nghề?',
-    'Trải nghiệm làm gốm bao nhiêu tiền?',
-    'Địa điểm làm việc yên tĩnh gần biển?'
+    'Is there strong Wi-Fi in Nam O Village?',
+    'How to book a Grab ride to craft villages?',
+    'How much is pottery making experience?',
+    'Quiet co-working spots near the beach?'
   ];
 
   const handleSend = (textToSend?: string) => {
@@ -57,17 +57,17 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
 
     // Simulate AI response logic
     setTimeout(() => {
-      let botReply = 'Cảm ơn bạn đã đặt câu hỏi! NomadNest có hệ thống hơn 15 xưởng làng nghề tại Đà Nẵng sẵn sàng đón tiếp du khách & remote worker với WiFi tốc độ cao 100+ Mbps.';
+      let botReply = 'Thank you for your question! NomadNest connects you with over 15 craft village workshops across Da Nang, ready to welcome travelers and remote workers with 100+ Mbps high-speed Wi-Fi.';
 
       const lower = text.toLowerCase();
-      if (lower.includes('wifi') || lower.includes('nam ô')) {
-        botReply = 'Làng nước mắm Nam Ô có các homestay trang bị WiFi cáp quang 150Mbps, bàn làm việc công nghiệp tiêu chuẩn cho Digital Nomad và có góc nhìn ra biển tuyệt đẹp! 🌊💻';
-      } else if (lower.includes('grab') || lower.includes('xe') || lower.includes('đi')) {
-        botReply = 'Bạn có thể dùng ngay nút "Grab" 3D trên màn hình chính để đặt xe từ Sân bay Đà Nẵng đến Làng đá Non Nước hoặc Nam Ô. Giá cước dao động 80.000 - 150.000 VNĐ. 🚕';
-      } else if (lower.includes('tiền') || lower.includes('giá') || lower.includes('gốm')) {
-        botReply = 'Vé trải nghiệm xưởng nghề thủ công (như làm gốm, dệt chiếu, làm nước mắm) trung bình từ 120.000 - 250.000 VNĐ/buổi, bao gồm nghệ nhân hướng dẫn và thành phẩm đem về! 🏺';
-      } else if (lower.includes('yên tĩnh') || lower.includes('biển')) {
-        botReply = 'Gợi ý tuyệt vời cho bạn: Homestay Làng Chài Mẫn Thái hoặc Villa Làng Bánh Tráng Túy Loan với không gian xanh thoáng đãng, vô cùng yên tĩnh cho công việc trực tuyến. 🌿';
+      if (lower.includes('wifi') || lower.includes('nam o') || lower.includes('nam ô')) {
+        botReply = 'Nam O Fish Sauce Village homestays feature 150 Mbps fiber-optic Wi-Fi, standard ergonomic workspaces for Digital Nomads, and stunning ocean views! 🌊💻';
+      } else if (lower.includes('grab') || lower.includes('ride') || lower.includes('transport') || lower.includes('xe')) {
+        botReply = 'You can tap the 3D "Grab" icon on the Home screen to book rides from Da Nang Airport to Non Nuoc Stone Village or Nam O. Fares range from 80,000 to 150,000 VND. 🚕';
+      } else if (lower.includes('price') || lower.includes('pottery') || lower.includes('cost') || lower.includes('gốm') || lower.includes('tiền')) {
+        botReply = 'Craft workshop passes (pottery, mat weaving, fish sauce brewing) average 120,000 - 250,000 VND per session, including artisan guidance and finished products to take home! 🏺';
+      } else if (lower.includes('quiet') || lower.includes('beach') || lower.includes('co-working') || lower.includes('yên tĩnh')) {
+        botReply = 'Great recommendations for you: Man Thai Fishery Homestay or Tuy Loan Rice Paper Village Villa featuring quiet green spaces, perfect for focused online work. 🌿';
       }
 
       const botMsg: ChatMessage = {
@@ -94,10 +94,10 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h2 className="font-extrabold text-base text-white">Trợ Lý AI NomadNest</h2>
+                <h2 className="font-extrabold text-base text-white">NomadNest AI Assistant</h2>
                 <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
               </div>
-              <p className="text-[11px] text-emerald-300">Tư vấn văn hóa & lưu trú làng nghề</p>
+              <p className="text-[11px] text-emerald-300">Cultural & village stay advisor</p>
             </div>
           </div>
 
@@ -138,7 +138,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
           {isTyping && (
             <div className="flex items-center gap-2 text-xs text-emerald-300">
               <span className="w-6 h-6 rounded-full bg-emerald-600 text-white text-[10px] flex items-center justify-center">🐑</span>
-              <span className="animate-pulse">Trợ lý AI đang phản hồi...</span>
+              <span className="animate-pulse">AI Assistant is responding...</span>
             </div>
           )}
 
@@ -170,7 +170,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            placeholder="Hỏi trợ lý AI Cừu về làng nghề, WiFi, Grab..."
+            placeholder="Ask Sheep AI about craft villages, Wi-Fi, Grab..."
             className="flex-1 h-10 px-4 bg-black/30 border border-white/20 rounded-xl text-xs text-white placeholder:text-white/40 focus:border-emerald-400 outline-none"
           />
           <button
@@ -178,7 +178,7 @@ export const AIChatbotModal: React.FC<AIChatbotModalProps> = ({ isOpen, onClose 
             disabled={!inputText.trim()}
             className="h-10 px-4 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center justify-center gap-1 cursor-pointer"
           >
-            <span>Gửi</span>
+            <span>Send</span>
             <span className="material-symbols-outlined text-sm">send</span>
           </button>
         </form>

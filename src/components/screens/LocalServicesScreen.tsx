@@ -21,128 +21,128 @@ export const MOCK_SERVICES: ServiceItem[] = [
   {
     id: 'service-1',
     category: 'rental',
-    badge: 'Phổ biến',
-    tag: 'Thuê xe di chuyển',
-    title: 'Thuê Xe Máy Tay Ga Honda AirBlade / Vision',
+    badge: 'POPULAR',
+    tag: 'Scooter Rental',
+    title: 'Honda AirBlade / Vision Automatic Scooter Rental',
     provider: 'Da Nang Nomad Wheels',
-    description: 'Giao nhận xe tận nơi tại homestay / làng nghề. Xe đời mới êm ái, đầy đủ 2 mũ bảo hiểm đạt chuẩn, 2 áo mưa & thay dầu định kỳ.',
-    price: '150.000 VNĐ',
+    description: 'Free delivery to your homestay or craft village. Smooth latest-gen scooters, 2 standard helmets, 2 raincoats, and regular maintenance.',
+    price: '150,000 VND',
     priceValue: 150000,
-    unit: 'ngày',
+    unit: 'day',
     rating: '4.9',
     reviewsCount: 128,
     image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Giao xe tận nơi miễn phí', 'Đầy đủ 2 nón bảo hiểm & áo mưa', 'Không cần thế chân tiền mặt']
+    highlights: ['Free doorstep delivery', '2 quality helmets & raincoats included', 'No cash deposit required']
   },
   {
     id: 'service-2',
     category: 'rental',
-    tag: 'Thuê xe di chuyển',
-    title: 'Thuê Xe Đạp Địa Hình & Touring Sơn Trà',
+    tag: 'Scooter Rental',
+    title: 'Mountain Bike & Son Tra Touring Bike Rental',
     provider: 'Green Bike Da Nang',
-    description: 'Xe đạp thể thao cao cấp phù hợp đạp xe khám phá bán đảo Sơn Trà & Ngũ Hành Sơn. Bao gồm khóa an toàn & bộ dụng cụ sửa xe khẩn cấp.',
-    price: '100.000 VNĐ',
+    description: 'Premium sport touring bicycles perfect for exploring Son Tra Peninsula and Marble Mountains. Includes safety lock and emergency repair kit.',
+    price: '100,000 VND',
     priceValue: 100000,
-    unit: 'ngày',
+    unit: 'day',
     rating: '4.8',
     reviewsCount: 84,
     image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Khung nhôm siêu nhẹ', 'Tặng kèm bản đồ cung đường đạp đẹp', 'Hỗ trợ đổi xe khẩn cấp']
+    highlights: ['Ultra-light aluminum frame', 'Free scenic route map', 'Fast roadside replacement support']
   },
   {
     id: 'service-3',
     category: 'sup',
     badge: 'HOT 🔥',
-    tag: 'Chèo SUP',
-    title: 'Tour Chèo SUP Bình Minh Bãi Bụt Sơn Trà',
+    tag: 'SUP Paddling',
+    title: 'Son Tra Bai But Sunrise SUP Paddling Tour',
     provider: 'Da Nang Ocean SUP Club',
-    description: 'Trải nghiệm ngắm bình minh rực rỡ trên biển Bãi Bụt Sơn Trà. Bao gồm ván SUP chất lượng cao, áo phao, hướng dẫn viên chuyên nghiệp & chụp ảnh GoPro miễn phí.',
-    price: '250.000 VNĐ',
+    description: 'Experience a breathtaking sunrise on the ocean at Bai But, Son Tra. Includes high-quality SUP boards, life vests, professional instructor, and free GoPro photos.',
+    price: '250,000 VND',
     priceValue: 250000,
-    unit: 'người',
+    unit: 'person',
     rating: '5.0',
     reviewsCount: 210,
     image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Chụp ảnh GoPro chèo SUP miễn phí', 'Tặng 1 dừa tươi ngọt mát sau tour', 'HDV hướng dẫn chèo chi tiết']
+    highlights: ['Free GoPro paddling photos & videos', 'Complimentary fresh coconut', 'Beginner-friendly guidance']
   },
   {
     id: 'service-4',
     category: 'sup',
-    badge: 'Khuyên dùng',
-    tag: 'Chèo SUP',
-    title: 'Chèo SUP Hoàng Hôn Ngắm Cầu Rồng Sông Hàn',
+    badge: 'RECOMMENDED',
+    tag: 'SUP Paddling',
+    title: 'Sunset Han River SUP with Dragon Bridge View',
     provider: 'Han River SUP Experience',
-    description: 'Thưởng ngoạn cảnh sông Hàn êm đềm khi hoàng hôn buông xuống, ngắm các cây cầu biểu tượng từ mặt nước lung linh.',
-    price: '200.000 VNĐ',
+    description: 'Enjoy the tranquil evening on Han River as the sun sets, admiring iconic Da Nang bridges right from the shimmering water.',
+    price: '200,000 VND',
     priceValue: 200000,
-    unit: 'người',
+    unit: 'person',
     rating: '4.9',
     reviewsCount: 95,
     image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Khung giờ đẹp 16h30 - 18h30', 'An toàn với áo phao chuẩn ISO', 'Phù hợp người mới chèo lần đầu']
+    highlights: ['Prime sunset slot (4:30 PM - 6:30 PM)', 'ISO-certified safety life jackets', 'Perfect for first-time paddlers']
   },
   {
     id: 'service-5',
     category: 'spa',
     badge: 'Nomad Choice 💆',
-    tag: 'Thư giãn & Spa',
-    title: 'Massage Trị Liệu Cổ Vai Gáy Nomad Care (60 Phút)',
+    tag: 'Spa & Wellness',
+    title: 'Nomad Neck & Shoulder Herbal Therapy Massage (60 Mins)',
     provider: 'Lotus Herbal Spa Da Nang',
-    description: 'Liệu trình massage bấm huyệt thảo dược chuyên sâu dành riêng cho Digital Nomads làm việc máy tính nhiều. Giảm căng cứng cổ vai gáy & phục hồi năng lượng.',
-    price: '280.000 VNĐ',
+    description: 'Targeted herbal acupressure massage tailored for digital nomads working long screen hours. Relieves stiffness and restores focus.',
+    price: '280,000 VND',
     priceValue: 280000,
-    unit: 'buổi (60 phút)',
+    unit: 'session (60m)',
     rating: '4.9',
     reviewsCount: 162,
     image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Chuyên viên tay nghề cao', 'Chườm gối thảo dược ấm', 'Tặng trà gừng & mứt gừng ấm áp']
+    highlights: ['Certified acupressure therapists', 'Warm herbal neck compresses', 'Complimentary ginger tea & snacks']
   },
   {
     id: 'service-6',
     category: 'spa',
-    tag: 'Thư giãn & Spa',
-    title: 'Tắm Thảo Dược Người Dao Đỏ & Xông Hơi Đá Muối',
-    provider: 'An Nhiên Wellness Center',
-    description: 'Giải độc cơ thể với nước tắm thảo dược Dao Đỏ nấu tươi trong bồn pơ-mu thơm nức, kết hợp xông hơi đá muối Himalaya thư thái.',
-    price: '320.000 VNĐ',
+    tag: 'Spa & Wellness',
+    title: 'Red Dao Herbal Bath & Himalayan Salt Sauna',
+    provider: 'An Nhien Wellness Center',
+    description: 'Detoxify in authentic freshly brewed Red Dao herbal bath in natural cedar tubs, paired with relaxing Himalayan salt stone sauna.',
+    price: '320,000 VND',
     priceValue: 320000,
-    unit: 'lượt',
+    unit: 'session',
     rating: '4.8',
     reviewsCount: 76,
     image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Bồn tắm gỗ Pơ-mu tự nhiên', 'Thảo dược chuẩn vùng cao', 'Thư giãn cơ bắp sau ngày dài']
+    highlights: ['Natural cedar wooden tubs', 'Authentic high-mountain herbs', 'Deep muscle relaxation']
   },
   {
     id: 'service-7',
     category: 'laundry',
-    badge: 'Giao tận nơi 🚚',
-    tag: 'Giặt ủi',
-    title: 'Giặt Sấy Thơm Lấy Ngay & Giao Nhận Tận Phòng',
+    badge: 'Doorstep Delivery 🚚',
+    tag: 'Laundry',
+    title: 'Express Wash, Dry & Fold with Room Delivery',
     provider: 'Nomad Clean Express Laundry',
-    description: 'Dịch vụ giặt riêng theo từng phòng, nước giặt cao cấp không hại vải, sấy khô gấp gọn thơm nức. Nhận và giao lại tận phòng trong 4 giờ.',
-    price: '25.000 VNĐ',
+    description: 'Dedicated room-by-room wash cycles with premium gentle detergent, tumble-dried, and neatly folded. Delivered back to your room in 4 hours.',
+    price: '25,000 VND',
     priceValue: 25000,
     unit: 'kg',
     rating: '4.9',
     reviewsCount: 310,
     image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Giặt riêng từng máy', 'Nước giặt Comfort dịu nhẹ', 'Giao nhận miễn phí tận phòng']
+    highlights: ['Individual washer per customer', 'Gentle fabric softener', 'Free pickup & room delivery']
   },
   {
     id: 'service-8',
     category: 'coworking',
-    badge: 'Tốc độ cao 🚀',
+    badge: 'High Speed 🚀',
     tag: 'Co-working & SIM',
-    title: 'Day Pass Co-Working Space Wi-Fi 200Mbps & Cold Brew',
+    title: 'Day Pass Co-Working Space 200Mbps Wi-Fi & Cold Brew',
     provider: 'NomadNest WorkHub Da Nang',
-    description: 'Chỗ ngồi làm việc máy lạnh 24/7, ghế ergonomic êm ái, Internet cáp quang 200Mbps cực khỏe cho Video Call. Tặng kèm 1 ly Cold Brew thơm ngon.',
-    price: '90.000 VNĐ',
+    description: '24/7 air-conditioned ergonomic workspace with dual 200Mbps optical fiber lines for video calls. Includes a complimentary Cold Brew coffee.',
+    price: '90,000 VND',
     priceValue: 90000,
-    unit: 'ngày',
+    unit: 'day',
     rating: '5.0',
     reviewsCount: 145,
     image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Wi-Fi 200Mbps ổn định', 'Tặng 1 đồ uống tùy chọn', 'Ổ cắm điện riêng tại mỗi bàn']
+    highlights: ['Stable 200Mbps Wi-Fi with backup', '1 free drink of choice', 'Dedicated power outlets & USB-C']
   }
 ];
 
@@ -174,11 +174,11 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
   });
 
   const categories = [
-    { id: 'all', label: 'Tất cả dịch vụ', icon: 'grid_view' },
-    { id: 'rental', label: 'Thuê xe di chuyển', icon: 'two_wheeler' },
-    { id: 'sup', label: 'Chèo SUP', icon: 'surfing' },
-    { id: 'spa', label: 'Thư giãn & Spa', icon: 'spa' },
-    { id: 'laundry', label: 'Giặt ủi tận nơi', icon: 'local_laundry_service' },
+    { id: 'all', label: 'All Services', icon: 'grid_view' },
+    { id: 'rental', label: 'Scooter Rental', icon: 'two_wheeler' },
+    { id: 'sup', label: 'SUP Paddling', icon: 'surfing' },
+    { id: 'spa', label: 'Spa & Wellness', icon: 'spa' },
+    { id: 'laundry', label: 'Laundry', icon: 'local_laundry_service' },
     { id: 'coworking', label: 'Co-working & SIM', icon: 'laptop_mac' }
   ];
 
@@ -190,14 +190,14 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
           onClick={onBack}
           type="button"
           className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shrink-0"
-          title="Quay lại"
+          title="Go back"
         >
           <span className="material-symbols-outlined text-xl">arrow_back</span>
         </button>
 
         <div className="text-center">
           <h1 className="font-extrabold text-base text-white tracking-wide">
-            Trải Nghiệm & Dịch Vụ Địa Phương
+            Local Services & Experiences
           </h1>
           <p className="text-[10px] text-[#8bd6b6] font-semibold">Explore Local Services & Essentials</p>
         </div>
@@ -215,13 +215,13 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               </div>
               <div>
                 <span className="text-[10px] uppercase font-black text-[#00b14f] tracking-widest bg-[#00b14f]/20 px-2 py-0.5 rounded-full border border-[#00b14f]/30">
-                  Đối Tác Di Chuyển & Đồ Ăn
+                  MOBILITY & FOOD PARTNER
                 </span>
                 <h2 className="text-base sm:text-lg font-extrabold text-white mt-0.5">
-                  Cần gọi GrabCar, GrabBike hoặc Đồ ăn GrabFood?
+                  Need a GrabCar, GrabBike or GrabFood?
                 </h2>
                 <p className="text-xs text-white/70">
-                  Đặt xe máy, ô tô di chuyển nhanh & giao đồ ăn tận phòng làng nghề.
+                  Book fast rides and get food delivered straight to your craft village stay.
                 </p>
               </div>
             </div>
@@ -232,7 +232,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               className="w-full sm:w-auto px-5 py-2.5 rounded-xl bg-[#00b14f] hover:bg-[#009241] text-white font-extrabold text-xs transition-all active:scale-95 cursor-pointer flex items-center justify-center gap-2 shadow-lg shrink-0"
             >
               <span className="material-symbols-outlined text-lg">local_taxi</span>
-              <span>Mở Grab Mini-App</span>
+              <span>Open Grab Mini-App</span>
             </button>
           </div>
         )}
@@ -248,7 +248,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm dịch vụ thuê xe máy, chèo SUP, giặt ủi, spa..."
+              placeholder="Search scooter rental, SUP paddling, laundry"
               className="w-full bg-white/10 border border-white/20 focus:border-[#8bd6b6] rounded-2xl py-3 pl-11 pr-10 text-sm text-white placeholder:text-white/40 outline-none transition-all focus:ring-2 focus:ring-[#8bd6b6]/30"
             />
             {searchQuery && (
@@ -298,6 +298,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                     alt={service.title}
                     className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
                   />
+
                   {/* Category Tag Badge */}
                   <div className="absolute top-3 left-3 bg-[#002116]/85 backdrop-blur-md text-[#8bd6b6] text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-white/20 shadow">
                     {service.tag}
@@ -321,7 +322,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                 <div className="p-4 flex flex-col justify-between flex-1 gap-3">
                   <div>
                     <span className="text-[10px] font-bold text-emerald-800 uppercase tracking-wider">
-                      Cung cấp bởi: {service.provider}
+                      Provided by: {service.provider}
                     </span>
                     <h3 className="font-extrabold text-base text-gray-900 group-hover:text-emerald-700 transition-colors leading-snug mt-0.5">
                       {service.title}
@@ -334,7 +335,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                   {/* Pricing & Booking Action */}
                   <div className="pt-3 border-t border-gray-100 flex items-center justify-between gap-2">
                     <div>
-                      <span className="block text-[9px] uppercase font-bold text-gray-400">Giá tham khảo</span>
+                      <span className="block text-[9px] uppercase font-bold text-gray-400">Price</span>
                       <div className="flex items-baseline gap-1">
                         <span className="font-black text-emerald-800 text-base">{service.price}</span>
                         <span className="text-[11px] font-semibold text-gray-500">/ {service.unit}</span>
@@ -349,7 +350,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                       }}
                       className="px-4 py-2 rounded-xl bg-[#002116] hover:bg-emerald-800 text-[#8bd6b6] hover:text-white font-extrabold text-xs transition-all active:scale-95 cursor-pointer shadow flex items-center gap-1"
                     >
-                      <span>Đặt ngay</span>
+                      <span>Book Now</span>
                       <span className="material-symbols-outlined text-sm">chevron_right</span>
                     </button>
                   </div>
@@ -360,8 +361,8 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
         ) : (
           <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center space-y-3 my-6">
             <span className="material-symbols-outlined text-4xl text-white/40">search_off</span>
-            <p className="text-sm font-bold text-white">Không tìm thấy dịch vụ phù hợp</p>
-            <p className="text-xs text-white/60">Vui lòng thử lại với từ khóa khác hoặc chuyển danh mục dịch vụ.</p>
+            <p className="text-sm font-bold text-white">No matching services found</p>
+            <p className="text-xs text-white/60">Please try searching with another keyword or select a different category.</p>
             <button
               onClick={() => {
                 setSearchQuery('');
@@ -369,7 +370,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               }}
               className="px-4 py-2 bg-[#8bd6b6] text-[#002116] rounded-xl text-xs font-bold hover:bg-[#72c2a0] transition-colors"
             >
-              Xóa bộ lọc
+              Clear Filters
             </button>
           </div>
         )}
@@ -415,7 +416,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               {/* Highlights List */}
               <div className="bg-white/10 rounded-2xl p-4 border border-white/10 space-y-2">
                 <span className="text-[10px] uppercase font-extrabold text-[#8bd6b6] tracking-wider block">
-                  ✨ Điểm nổi bật dịch vụ:
+                  ✨ Service Highlights:
                 </span>
                 <ul className="space-y-1.5 text-xs text-white/90">
                   {selectedService.highlights.map((item, idx) => (
@@ -430,12 +431,12 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               {/* Price Banner */}
               <div className="bg-emerald-950/60 border border-emerald-500/30 rounded-2xl p-4 flex items-center justify-between">
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-emerald-300 block">Đơn giá niêm yết</span>
+                  <span className="text-[10px] uppercase font-bold text-emerald-300 block">Listed Price</span>
                   <span className="text-xl font-extrabold text-white">{selectedService.price}</span>
                   <span className="text-xs text-emerald-300"> / {selectedService.unit}</span>
                 </div>
                 <div className="text-right">
-                  <span className="text-[10px] text-white/60 block">Đánh giá khách hàng</span>
+                  <span className="text-[10px] text-white/60 block">Guest Rating</span>
                   <span className="text-sm font-bold text-amber-300">★ {selectedService.rating} / 5.0</span>
                 </div>
               </div>
@@ -452,7 +453,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                   className="w-full py-3.5 px-4 rounded-2xl bg-[#8bd6b6] hover:bg-[#72c2a0] text-[#002116] font-extrabold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer shadow-lg"
                 >
                   <span className="material-symbols-outlined text-lg">event_available</span>
-                  <span>Xác Nhận Đặt Dịch Vụ Ngay</span>
+                  <span>Confirm & Book Service</span>
                 </button>
               </div>
             </div>
@@ -468,22 +469,22 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               <span className="material-symbols-outlined text-3xl">task_alt</span>
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-white">Yêu Cầu Đặt Dịch Vụ Thành Công!</h3>
+              <h3 className="text-xl font-extrabold text-white">Service Request Submitted!</h3>
               <p className="text-xs text-emerald-200/90 mt-1">
-                Yêu cầu cho dịch vụ <strong className="text-white">"{bookingSuccessService}"</strong> đã được chuyển tới đơn vị cung cấp bản địa.
+                Your request for <strong className="text-white">"{bookingSuccessService}"</strong> has been sent to our verified local provider.
               </p>
             </div>
 
             <div className="p-3.5 bg-white/10 rounded-2xl text-xs text-white/80 border border-white/10 text-left space-y-1">
-              <p className="font-bold text-[#8bd6b6]">📞 Hỗ trợ nhanh từ NomadNest:</p>
-              <p>Đội ngũ sẽ liên hệ xác nhận khung giờ giao nhận / phục vụ trực tiếp qua Zalo / SĐT trong vòng 15 phút.</p>
+              <p className="font-bold text-[#8bd6b6]">📞 NomadNest Fast Support:</p>
+              <p>Our team will contact you to confirm delivery time directly via WhatsApp / Phone within 15 minutes.</p>
             </div>
 
             <button
               onClick={() => setBookingSuccessService(null)}
               className="w-full py-3 bg-[#8bd6b6] hover:bg-[#72c2a0] text-[#002116] font-extrabold text-xs rounded-xl transition-all cursor-pointer shadow-lg"
             >
-              Đóng & Hoàn Tất
+              Close & Done
             </button>
           </div>
         </div>

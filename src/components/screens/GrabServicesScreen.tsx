@@ -20,37 +20,37 @@ const VEHICLE_OPTIONS: VehicleOption[] = [
     id: 'grabbike',
     name: 'GrabBike',
     icon: 'two_wheeler',
-    eta: '3 phút',
+    eta: '3 mins',
     price: 15000,
-    formattedPrice: '15.000đ',
-    description: 'Xe máy nhanh chóng, tiết kiệm',
-    badge: 'Phổ biến'
+    formattedPrice: '15,000 VND',
+    description: 'Fast & affordable motorbike ride',
+    badge: 'Popular'
   },
   {
     id: 'grabcar4',
-    name: 'GrabCar 4 chỗ',
+    name: 'GrabCar (4 Seats)',
     icon: 'local_taxi',
-    eta: '5 phút',
+    eta: '5 mins',
     price: 45000,
-    formattedPrice: '45.000đ',
-    description: 'Xe 4 chỗ thoải mái, máy lạnh'
+    formattedPrice: '45,000 VND',
+    description: 'Comfortable 4-seat A/C car'
   },
   {
     id: 'grabcar7',
-    name: 'GrabCar 7 chỗ',
+    name: 'GrabCar (7 Seats)',
     icon: 'directions_car',
-    eta: '6 phút',
+    eta: '6 mins',
     price: 68000,
-    formattedPrice: '68.000đ',
-    description: 'Xe 7 chỗ rộng rãi cho nhóm & hành lý'
+    formattedPrice: '68,000 VND',
+    description: 'Spacious 7-seater for groups & luggage'
   }
 ];
 
 const SUGGESTED_DESTINATIONS = [
-  { name: 'Làng đá Mỹ nghệ Non Nước', price: '15.000đ' },
-  { name: 'Làng Nước Mắm Nam Ô', price: '45.000đ' },
-  { name: 'Bãi biển Mỹ Khê', price: '25.000đ' },
-  { name: 'Cầu Rồng Đà Nẵng', price: '30.000đ' }
+  { name: 'Non Nuoc Stone Village', price: '15,000 VND' },
+  { name: 'Nam O Fish Sauce Village', price: '45,000 VND' },
+  { name: 'My Khe Beach', price: '25,000 VND' },
+  { name: 'Dragon Bridge Da Nang', price: '30,000 VND' }
 ];
 
 export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }) => {
@@ -61,7 +61,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
   const [activeBottomNav, setActiveBottomNav] = useState<'home' | 'payment' | 'activity' | 'messages'>('home');
 
   // Ride booking state
-  const [pickup, setPickup] = useState('Vị trí hiện tại - Đà Nẵng');
+  const [pickup, setPickup] = useState('Current Location - Da Nang');
   const [dropoff, setDropoff] = useState('');
   const [selectedVehicle, setSelectedVehicle] = useState<string>('grabbike');
   const [isBooking, setIsBooking] = useState(false);
@@ -86,12 +86,12 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
       setIsBooking(false);
       setBookingSuccess(true);
       setDriverInfo({
-        name: 'Nguyễn Văn A',
+        name: 'Nguyen Van A',
         licensePlate: '43A-123.45',
         rating: '4.9 ★',
-        eta: '3 phút',
+        eta: '3 mins',
         vehicleName: activeVehicleObj.name,
-        phone: '0905 123 456'
+        phone: '+84 905 123 456'
       });
     }, 2000);
   };
@@ -113,23 +113,23 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
       {/* VIEW MODE 1: GRAB HOME DASHBOARD */}
       {viewMode === 'home' && (
         <div className="flex flex-col min-h-screen pb-20 animate-fadeIn">
-          {/* 1. Header (Thanh tìm kiếm trên cùng) */}
+          {/* 1. Header (Search Bar on top) */}
           <header className="w-full bg-[#00A550] flex items-center justify-between px-4 py-3 sticky top-0 z-50 shadow-md">
-            {/* Back button to main NomadNest app */}
+            {/* Back button to Explore in NomadNest */}
             <button
               onClick={onBack}
               type="button"
-              className="mr-1 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
-              title="Quay lại NomadNest"
+              className="mr-1 w-9 h-9 rounded-full bg-white/20 hover:bg-white/30 active:scale-95 text-white flex items-center justify-center transition-all cursor-pointer shrink-0"
+              title="Back to Explore"
             >
               <span className="material-symbols-outlined text-xl">arrow_back</span>
             </button>
 
             {/* QR Code Scanner */}
             <div
-              onClick={() => alert('Mở máy quét mã QR Grab...')}
+              onClick={() => alert('Opening Grab QR scanner...')}
               className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20 text-white cursor-pointer hover:bg-white/30 transition-colors shrink-0"
-              title="Quét mã QR"
+              title="Scan QR Code"
             >
               <span className="material-symbols-outlined">qr_code_scanner</span>
             </div>
@@ -144,7 +144,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                 type="text"
                 readOnly
                 className="bg-transparent w-full text-sm font-medium outline-none text-gray-800 placeholder:text-gray-400 cursor-pointer"
-                placeholder="Tìm địa điểm"
+                placeholder="Where to?"
               />
             </div>
 
@@ -165,22 +165,22 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
 
           {/* Main Content Area */}
           <main className="flex-1 pt-4 pb-12 bg-gradient-to-b from-gray-100 to-white">
-            {/* 2. Grid Dịch vụ chính (Main Services - 2 hàng x 5 cột) */}
+            {/* 2. Main Services Grid (2 rows x 5 columns) */}
             <div className="grid grid-cols-5 gap-y-5 gap-x-2 px-3 mb-6">
               {/* Row 1 */}
-              {/* 1. Đồ ăn */}
+              {/* 1. Food */}
               <button
-                onClick={() => alert('Dịch vụ GrabFood: Đang kết nối nhà hàng gần bạn!')}
+                onClick={() => alert('GrabFood Service: Connecting restaurants near you!')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   🍜
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Đồ ăn</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Food</span>
               </button>
 
-              {/* 2. Ô tô -> Chuyển sang màn hình Đặt xe */}
+              {/* 2. Rides */}
               <button
                 onClick={() => openRideBooking('grabcar4')}
                 type="button"
@@ -190,12 +190,12 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   🚗
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-extrabold px-1 rounded-full">HOT</span>
                 </div>
-                <span className="text-[11px] font-bold text-center text-[#00A550] leading-tight">Ô tô</span>
+                <span className="text-[11px] font-bold text-center text-[#00A550] leading-tight">Rides</span>
               </button>
 
-              {/* 3. Đi Ăn Nhà Hàng */}
+              {/* 3. Dine-in */}
               <button
-                onClick={() => alert('Đi Ăn Nhà Hàng: Ưu đãi tới 50% tại Đà Nẵng!')}
+                onClick={() => alert('Dine-in: Up to 50% discount in Da Nang!')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
@@ -203,11 +203,11 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   🍽️
                 </div>
                 <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">
-                  Đi Ăn<br />Nhà Hàng
+                  Dine-in
                 </span>
               </button>
 
-              {/* 4. Đặt xe trước */}
+              {/* 4. Advance */}
               <button
                 onClick={() => openRideBooking('grabcar4')}
                 type="button"
@@ -218,24 +218,24 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[8px] font-extrabold px-1.5 py-0.2 rounded-sm">NEW</span>
                 </div>
                 <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">
-                  Đặt xe<br />trước
+                  Advance
                 </span>
               </button>
 
-              {/* 5. Quà tặng */}
+              {/* 5. Gifts */}
               <button
-                onClick={() => alert('Quà tặng GrabRewards')}
+                onClick={() => alert('GrabRewards & Gifts')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   🎁
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Quà tặng</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Gifts</span>
               </button>
 
               {/* Row 2 */}
-              {/* 6. Xe máy -> Chuyển sang màn hình Đặt xe */}
+              {/* 6. Bike */}
               <button
                 onClick={() => openRideBooking('grabbike')}
                 type="button"
@@ -244,46 +244,46 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   🛵
                 </div>
-                <span className="text-[11px] font-bold text-center text-[#00A550] leading-tight">Xe máy</span>
+                <span className="text-[11px] font-bold text-center text-[#00A550] leading-tight">Bike</span>
               </button>
 
-              {/* 7. Giao hàng */}
+              {/* 7. Delivery */}
               <button
-                onClick={() => alert('GrabExpress: Giao hàng siêu tốc trong 30 phút')}
+                onClick={() => alert('GrabExpress: Express parcel delivery in 30 minutes')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   📦
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Giao hàng</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Delivery</span>
               </button>
 
-              {/* 8. Đi chợ */}
+              {/* 8. Mart */}
               <button
-                onClick={() => alert('GrabMart: Đi chợ siêu thị online')}
+                onClick={() => alert('GrabMart: Supermarket & grocery delivery')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   🛒
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Đi chợ</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Mart</span>
               </button>
 
-              {/* 9. Vay */}
+              {/* 9. Loans */}
               <button
-                onClick={() => alert('GrabFin: Dịch vụ tài chính & Tiêu dùng')}
+                onClick={() => alert('GrabFin: Financial & payment solutions')}
                 type="button"
                 className="flex flex-col items-center justify-start gap-1 group cursor-pointer"
               >
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   💳
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Vay</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Loans</span>
               </button>
 
-              {/* 10. Bản đồ */}
+              {/* 10. Map */}
               <button
                 onClick={() => openRideBooking('grabbike')}
                 type="button"
@@ -292,7 +292,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                 <div className="w-13 h-13 sm:w-14 sm:h-14 bg-white rounded-2xl flex items-center justify-center group-hover:scale-105 transition-transform shadow-sm border border-gray-100 text-2xl">
                   🗺️
                 </div>
-                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Bản đồ</span>
+                <span className="text-[11px] font-semibold text-center text-gray-700 leading-tight">Map</span>
               </button>
             </div>
 
@@ -302,56 +302,56 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               <div className="w-1.5 h-1 bg-gray-300 rounded-full" />
             </div>
 
-            {/* 3. Khu vực Tiện ích (Widgets - Cuộn ngang) */}
+            {/* 3. Quick Access Widgets */}
             <div className="mb-6">
               <div className="px-4 mb-2 flex items-center justify-between">
-                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">Tiện ích nhanh</span>
-                <span className="text-xs text-[#00A550] font-semibold cursor-pointer">Xem thêm</span>
+                <span className="text-xs font-bold uppercase tracking-wider text-gray-500">QUICK ACCESS</span>
+                <span className="text-xs text-[#00A550] font-semibold cursor-pointer hover:underline">View all</span>
               </div>
 
               <div className="flex overflow-x-auto gap-3 px-4 pb-2 no-scrollbar scroll-smooth">
-                {/* Thẻ 1: Thông tin ví */}
+                {/* Card 1: Wallet */}
                 <div className="min-w-[170px] bg-white border border-gray-200/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-sm cursor-pointer hover:border-[#00A550]/50 transition-all shrink-0">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Ví thanh toán</span>
+                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">WALLET</span>
                     <div className="w-6 h-6 bg-red-100 text-red-600 rounded-full flex items-center justify-center">
                       <span className="material-symbols-outlined text-xs">smartphone</span>
                     </div>
                   </div>
                   <div className="font-bold text-sm text-gray-900">Viettel Money 8677</div>
-                  <span className="text-[10px] text-emerald-600 font-semibold mt-1">Đã liên kết • Đủ số dư</span>
+                  <span className="text-[10px] text-emerald-600 font-semibold mt-1">Linked • Sufficient balance</span>
                 </div>
 
-                {/* Thẻ 2: Lối tắt đặt xe */}
+                {/* Card 2: Ride Shortcut */}
                 <div
-                  onClick={() => openRideBooking('grabbike', 'Nhà riêng')}
+                  onClick={() => openRideBooking('grabbike', 'Home')}
                   className="min-w-[170px] bg-white border border-gray-200/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-sm cursor-pointer hover:border-[#00A550]/50 transition-all shrink-0"
                 >
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Lối tắt đặt xe</span>
+                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">RIDE SHORTCUT</span>
                     <span className="text-lg">🛵</span>
                   </div>
-                  <div className="font-bold text-sm text-gray-900">ĐẶT XE ĐẾN: Nhà</div>
-                  <span className="text-[10px] text-gray-500 mt-1">Chỉ 1-chạm gọi xe</span>
+                  <div className="font-bold text-sm text-gray-900">RIDE TO: Home</div>
+                  <span className="text-[10px] text-gray-500 mt-1">1-tap booking</span>
                 </div>
 
-                {/* Thẻ 3: Đánh giá & Gói cước */}
+                {/* Card 3: Offers */}
                 <div className="min-w-[170px] bg-white border border-gray-200/80 rounded-2xl p-3.5 flex flex-col justify-between shadow-sm cursor-pointer hover:border-[#00A550]/50 transition-all shrink-0">
                   <div className="flex justify-between items-start mb-2">
-                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">Ưu đãi chuyến</span>
+                    <span className="text-[10px] text-gray-500 uppercase tracking-wider font-bold">OFFERS</span>
                     <span className="text-lg">🏷️</span>
                   </div>
-                  <div className="font-bold text-sm text-gray-900">Gói Cước Tiết Kiệm</div>
-                  <span className="text-[10px] text-amber-600 font-semibold mt-1">Giảm 30% chuyến tiếp</span>
+                  <div className="font-bold text-sm text-gray-900">Saver Pass</div>
+                  <span className="text-[10px] text-amber-600 font-semibold mt-1">30% off next ride</span>
                 </div>
               </div>
             </div>
 
-            {/* 4. Banner Quảng cáo */}
+            {/* 4. Promotional Banner */}
             <div className="px-4 mb-6">
               <div className="flex items-center gap-1 mb-2.5 cursor-pointer group">
                 <h3 className="font-bold text-base text-gray-900 group-hover:text-[#00A550] transition-colors">
-                  Bật Ride Cover Ngay
+                  Activate Ride Cover Now
                 </h3>
                 <span className="material-symbols-outlined text-gray-400 group-hover:text-[#00A550] text-sm transition-colors">
                   chevron_right
@@ -359,32 +359,34 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               </div>
 
               <div
-                onClick={() => alert('GrabInsure: Đăng ký bảo vệ hành trình thành công!')}
-                className="relative w-full h-44 rounded-2xl overflow-hidden shadow-lg cursor-pointer group border border-gray-100"
+                onClick={() => alert('GrabInsure: Ride-Cover protection activated successfully!')}
+                className="relative w-full h-44 rounded-2xl overflow-hidden shadow-lg cursor-pointer group border border-gray-100 bg-gradient-to-br from-emerald-800 via-teal-900 to-slate-900"
               >
-                <div
-                  className="absolute inset-0 bg-cover bg-center group-hover:scale-105 transition-transform duration-700"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?auto=format&fit=crop&w=800&q=80')"
+                <img
+                  src="https://images.unsplash.com/photo-1449965408869-eaa3f722e40d?auto=format&fit=crop&w=1200&q=80"
+                  alt="Grab Ride Cover Travel"
+                  className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-70"
+                  onError={(e) => {
+                    // Fallback to stylized gradient if network image fails
+                    (e.target as HTMLElement).style.display = 'none';
                   }}
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-transparent" />
-                <div className="absolute bottom-4 left-4 right-4 text-white">
-                  <span className="bg-[#00A550] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase mb-1.5 inline-block">
-                    Mới ra mắt
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+                <div className="absolute bottom-4 left-4 right-4 text-white z-10">
+                  <span className="bg-[#00A550] text-white text-[9px] font-extrabold px-2 py-0.5 rounded-md uppercase mb-1.5 inline-block tracking-wider">
+                    NEWLY LAUNCHED
                   </span>
                   <h4 className="font-bold text-lg leading-tight mb-1">
-                    Đi Xa Bật Ride-Cover<br />Cả Nhà Thêm An Tâm
+                    Travel Far with Ride-Cover<br />Peace of Mind for All
                   </h4>
-                  <p className="text-xs text-gray-200 font-normal">Bảo vệ bạn trong và sau chuyến đi</p>
-                  <p className="text-[10px] text-gray-400 mt-1">QC · GrabInsure</p>
+                  <p className="text-xs text-gray-200 font-normal">Comprehensive protection during & after your ride</p>
+                  <p className="text-[10px] text-gray-400 mt-1">Ad · GrabInsure</p>
                 </div>
               </div>
             </div>
           </main>
 
-          {/* 5. Thanh điều hướng dưới cùng (Bottom Navigation) */}
+          {/* 5. Bottom Navigation */}
           <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-200 shadow-[0_-4px_20px_rgba(0,0,0,0.05)] flex justify-around items-center px-2 py-2">
             {/* Active: Home */}
             <button
@@ -395,14 +397,14 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               }`}
             >
               <span className="material-symbols-outlined text-2xl mb-0.5">home</span>
-              <span className="text-[10px] font-bold leading-tight">Trang chủ</span>
+              <span className="text-[10px] font-bold leading-tight">Home</span>
             </button>
 
             {/* Payment */}
             <button
               onClick={() => {
                 setActiveBottomNav('payment');
-                alert('Màn hình Ví & Thanh toán Grab');
+                alert('Grab Wallet & Payment Screen');
               }}
               type="button"
               className={`flex flex-col items-center justify-center p-1.5 min-w-[64px] relative cursor-pointer ${
@@ -410,7 +412,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               }`}
             >
               <span className="material-symbols-outlined text-2xl mb-0.5">account_balance_wallet</span>
-              <span className="text-[10px] font-medium leading-tight">Thanh toán</span>
+              <span className="text-[10px] font-medium leading-tight">Payment</span>
               <div className="absolute top-1.5 right-4 w-2 h-2 bg-red-500 rounded-full border border-white" />
             </button>
 
@@ -418,7 +420,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
             <button
               onClick={() => {
                 setActiveBottomNav('activity');
-                alert('Màn hình Lịch sử Hoạt động Grab');
+                alert('Grab Activity & Trip History');
               }}
               type="button"
               className={`flex flex-col items-center justify-center p-1.5 min-w-[64px] relative cursor-pointer ${
@@ -426,7 +428,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               }`}
             >
               <span className="material-symbols-outlined text-2xl mb-0.5">receipt_long</span>
-              <span className="text-[10px] font-medium leading-tight">Hoạt động</span>
+              <span className="text-[10px] font-medium leading-tight">Activity</span>
               <div className="absolute top-1.5 right-4 w-2 h-2 bg-red-500 rounded-full border border-white" />
             </button>
 
@@ -434,7 +436,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
             <button
               onClick={() => {
                 setActiveBottomNav('messages');
-                alert('Màn hình Tin nhắn Grab');
+                alert('Grab Messages & Notifications');
               }}
               type="button"
               className={`flex flex-col items-center justify-center p-1.5 min-w-[64px] relative cursor-pointer ${
@@ -442,7 +444,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               }`}
             >
               <span className="material-symbols-outlined text-2xl mb-0.5">chat</span>
-              <span className="text-[10px] font-medium leading-tight">Tin nhắn</span>
+              <span className="text-[10px] font-medium leading-tight">Messages</span>
               <div className="absolute top-1 right-3 bg-red-500 text-white text-[9px] font-bold w-4 h-4 flex items-center justify-center rounded-full border border-white">
                 6
               </div>
@@ -468,7 +470,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               <div className="bg-white text-[#00B14F] px-2 py-0.5 rounded-lg font-black tracking-tight text-base shadow-sm">
                 Grab
               </div>
-              <span className="font-bold text-sm tracking-wide text-white">Gọi Xe - NomadNest</span>
+              <span className="font-bold text-sm tracking-wide text-white">Book Ride - NomadNest</span>
             </div>
 
             <div className="w-10" />
@@ -482,11 +484,11 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                 className="w-full h-full bg-cover bg-center brightness-105 contrast-95 opacity-90"
                 style={{
                   backgroundImage:
-                    "url('https://lh3.googleusercontent.com/aida-public/AB6AXuAlbsswNH2PDEeIAJDKDiQhX1AG8mqrtuCfYxmUdnrevz3bVd3riZ9mcWcnd94AwrdOlU3z9k5eykXWW9te5YpRgu7WjuQaC8oWZP9epsnleCm4S06mW6wmuOBMXSpTOA5ZX-9bQO05i7-LIg4noSWIIVRVoWPHogGWL-t5mxQTRYSshZIA6XFn-masSU95WzL4RcbgwjPtXJ4SgtHd8FPGctJjLCEs7BqbgbqV3Fxn-GajloQrrgHbMA')"
+                    "url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1200&q=80')"
                 }}
               />
 
-              <div className="absolute inset-0 bg-blue-900/5 pointer-events-none" />
+              <div className="absolute inset-0 bg-blue-900/10 pointer-events-none" />
 
               <svg className="absolute inset-0 w-full h-full pointer-events-none z-10">
                 <path
@@ -503,7 +505,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               <div className="absolute top-[22%] left-[18%] sm:left-[25%] z-20 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center group">
                 <div className="bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-xl shadow-lg border border-blue-200 text-[11px] font-bold text-slate-800 mb-1 flex items-center gap-1.5 whitespace-nowrap">
                   <span className="w-2 h-2 rounded-full bg-blue-500 animate-ping" />
-                  <span>Điểm đón: {pickup}</span>
+                  <span>Pickup: {pickup}</span>
                 </div>
                 <div className="w-9 h-9 rounded-full bg-blue-600 border-2 border-white shadow-xl flex items-center justify-center text-white ring-4 ring-blue-500/30">
                   <span className="material-symbols-outlined text-lg">my_location</span>
@@ -515,7 +517,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
               <div className="absolute top-[52%] right-[15%] sm:right-[22%] z-20 transform translate-x-1/2 -translate-y-1/2 flex flex-col items-center group">
                 <div className="bg-white/95 backdrop-blur-md px-2.5 py-1 rounded-xl shadow-lg border border-red-200 text-[11px] font-bold text-slate-800 mb-1 flex items-center gap-1.5 whitespace-nowrap max-w-[200px] truncate">
                   <span className="material-symbols-outlined text-xs text-red-500">location_on</span>
-                  <span>{dropoff ? dropoff : 'Bạn muốn đi đâu?'}</span>
+                  <span>{dropoff ? dropoff : 'Where to?'}</span>
                 </div>
                 <div className="w-9 h-9 rounded-full bg-red-600 border-2 border-white shadow-xl flex items-center justify-center text-white ring-4 ring-red-500/30 animate-bounce">
                   <span className="material-symbols-outlined text-lg">flag</span>
@@ -545,14 +547,14 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       </div>
                       <div className="flex-1">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block leading-none mb-0.5">
-                          Điểm đón
+                          Pickup Location
                         </label>
                         <input
                           type="text"
                           value={pickup}
                           onChange={e => setPickup(e.target.value)}
                           className="w-full bg-transparent text-sm font-semibold text-gray-800 outline-none placeholder:text-gray-400"
-                          placeholder="Nhập vị trí đón..."
+                          placeholder="Enter pickup address..."
                         />
                       </div>
                     </div>
@@ -565,14 +567,14 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       </div>
                       <div className="flex-1">
                         <label className="text-[10px] font-bold uppercase tracking-wider text-gray-400 block leading-none mb-0.5">
-                          Điểm đến
+                          Drop-off Location
                         </label>
                         <input
                           type="text"
                           value={dropoff}
                           onChange={e => setDropoff(e.target.value)}
                           className="w-full bg-transparent text-sm font-bold text-[#00B14F] outline-none placeholder:text-gray-400 placeholder:font-normal"
-                          placeholder="Bạn muốn đi đâu?"
+                          placeholder="Where to?"
                         />
                       </div>
                     </div>
@@ -581,7 +583,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   {/* Suggested Quick Destinations */}
                   <div>
                     <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block mb-2">
-                      Gợi ý điểm đến phổ biến tại Đà Nẵng:
+                      Popular destinations in Da Nang:
                     </span>
                     <div className="flex gap-2 overflow-x-auto no-scrollbar pb-1">
                       {SUGGESTED_DESTINATIONS.map((dest, idx) => (
@@ -604,7 +606,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   {/* Vehicle Options List */}
                   <div className="space-y-2.5 pt-1">
                     <span className="text-xs font-bold text-gray-500 uppercase tracking-wider block">
-                      Chọn loại xe Grab:
+                      Select Grab ride:
                     </span>
 
                     <div className="space-y-2">
@@ -643,7 +645,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                                 <p className="text-xs text-gray-500 mt-0.5">{v.description}</p>
                                 <div className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-600 mt-1">
                                   <span className="material-symbols-outlined text-xs text-[#00B14F]">schedule</span>
-                                  <span>Tài xế đến sau {v.eta}</span>
+                                  <span>Driver arrives in {v.eta}</span>
                                 </div>
                               </div>
                             </div>
@@ -652,7 +654,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                               <span className="text-base font-extrabold text-[#00B14F] block">
                                 {v.formattedPrice}
                               </span>
-                              <span className="text-[10px] text-gray-400 font-medium">Giá cố định</span>
+                              <span className="text-[10px] text-gray-400 font-medium">Fixed fare</span>
                             </div>
                           </div>
                         );
@@ -675,13 +677,13 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       {isBooking ? (
                         <>
                           <span className="material-symbols-outlined animate-spin text-xl">autorenew</span>
-                          <span>Đang tìm tài xế...</span>
+                          <span>Finding your driver...</span>
                         </>
                       ) : (
                         <>
                           <span className="material-symbols-outlined text-xl">local_taxi</span>
                           <span>
-                            Đặt {activeVehicleObj.name} • {activeVehicleObj.formattedPrice}
+                            Book {activeVehicleObj.name} • {activeVehicleObj.formattedPrice}
                           </span>
                         </>
                       )}
@@ -696,9 +698,9 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       <span className="material-symbols-outlined text-2xl">check_circle</span>
                     </div>
                     <div>
-                      <h3 className="font-bold text-sm text-emerald-950">Đã tìm thấy tài xế!</h3>
+                      <h3 className="font-bold text-sm text-emerald-950">Driver Found!</h3>
                       <p className="text-xs text-emerald-800 leading-snug mt-0.5">
-                        Tài xế <b>{driverInfo?.name}</b> (Biển số: <b>{driverInfo?.licensePlate}</b>) đang đến đón bạn trong <b>3 phút</b>.
+                        Driver <b>{driverInfo?.name}</b> (Plate: <b>{driverInfo?.licensePlate}</b>) is arriving in <b>3 mins</b>.
                       </p>
                     </div>
                   </div>
@@ -718,7 +720,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                           <p className="text-xs text-gray-500">{driverInfo?.vehicleName} • Honda Wave Alpha</p>
                           <div className="flex items-center gap-1 text-xs font-bold text-amber-500 mt-0.5">
                             <span className="material-symbols-outlined text-xs">star</span>
-                            <span>{driverInfo?.rating} (500+ chuyến)</span>
+                            <span>{driverInfo?.rating} (500+ trips)</span>
                           </div>
                         </div>
                       </div>
@@ -727,27 +729,27 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                         <span className="px-2.5 py-1 rounded-lg bg-gray-900 text-white font-mono font-bold text-xs tracking-wider block">
                           {driverInfo?.licensePlate}
                         </span>
-                        <span className="text-[10px] text-gray-500 mt-1 block">Đang di chuyển</span>
+                        <span className="text-[10px] text-gray-500 mt-1 block">On the way</span>
                       </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-2 pt-2 border-t border-gray-200">
                       <button
-                        onClick={() => alert(`Đang gọi tài xế ${driverInfo?.name} qua số ${driverInfo?.phone}...`)}
+                        onClick={() => alert(`Calling driver ${driverInfo?.name} at ${driverInfo?.phone}...`)}
                         type="button"
                         className="py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-800 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer active:scale-95"
                       >
                         <span className="material-symbols-outlined text-base text-[#00B14F]">call</span>
-                        <span>Gọi điện</span>
+                        <span>Call</span>
                       </button>
 
                       <button
-                        onClick={() => alert(`Mở khung chat với tài xế ${driverInfo?.name}...`)}
+                        onClick={() => alert(`Opening chat with driver ${driverInfo?.name}...`)}
                         type="button"
                         className="py-2.5 bg-white border border-gray-300 rounded-xl text-xs font-bold text-gray-800 flex items-center justify-center gap-1.5 hover:bg-gray-100 cursor-pointer active:scale-95"
                       >
                         <span className="material-symbols-outlined text-base text-[#00B14F]">chat</span>
-                        <span>Nhắn tin</span>
+                        <span>Message</span>
                       </button>
                     </div>
                   </div>
@@ -755,11 +757,11 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                   <div className="bg-gray-50 rounded-xl p-3 border border-gray-200 text-xs space-y-1.5">
                     <div className="flex items-center gap-2 text-gray-700">
                       <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
-                      <span className="font-semibold truncate">Đón: {pickup}</span>
+                      <span className="font-semibold truncate">Pickup: {pickup}</span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-700">
                       <span className="w-2 h-2 rounded-full bg-red-500 shrink-0" />
-                      <span className="font-semibold truncate">Đến: {dropoff || 'Điểm đến đã chọn'}</span>
+                      <span className="font-semibold truncate">Drop-off: {dropoff || 'Selected Destination'}</span>
                     </div>
                   </div>
 
@@ -769,7 +771,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       type="button"
                       className="w-full py-3.5 bg-[#00B14F] hover:bg-[#009643] text-white font-bold text-sm rounded-xl shadow-lg cursor-pointer active:scale-95 transition-all"
                     >
-                      Quay lại Grab Home
+                      Back to Grab Home
                     </button>
 
                     <button
@@ -777,7 +779,7 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
                       type="button"
                       className="w-full py-2.5 text-xs text-gray-500 font-semibold hover:text-gray-800 cursor-pointer"
                     >
-                      Đặt chuyến khác
+                      Book another ride
                     </button>
                   </div>
                 </div>
@@ -789,3 +791,4 @@ export const GrabServicesScreen: React.FC<GrabServicesScreenProps> = ({ onBack }
     </div>
   );
 };
+

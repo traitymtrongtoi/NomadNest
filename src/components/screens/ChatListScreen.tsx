@@ -1,236 +1,67 @@
-import React, { useState, useEffect, useRef } from 'react';
-import {
-  StoredChatMessage,
-  CHAT_STORAGE_KEY,
-  getStoredChatMessages,
-  saveStoredChatMessage
-} from '../../utils/chatStorage';
-import { getCurrentUserFromStorage, CurrentUserProfile } from '../../utils/userStorage';
+import React, { useState } from 'react';
 
-interface ChatListScreenProps {
-  onBack?: () => void;
-}
-
-export const ChatListScreen: React.FC<ChatListScreenProps> = ({ onBack }) => {
-  const [activeChat, setActiveChat] = useState<boolean>(true); // Default to active thread with Host
-  const [currentUser, setCurrentUser] = useState<CurrentUserProfile>(() => getCurrentUserFromStorage('nomad_user'));
-  const [messages, setMessages] = useState<StoredChatMessage[]>(getStoredChatMessages);
-  const [newMessageText, setNewMessageText] = useState('');
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
-  // Load and sync real-time localStorage & user profile
-  useEffect(() => {
-    const syncData = () => {
-      setMessages(getStoredChatMessages());
-      setCurrentUser(getCurrentUserFromStorage('nomad_user'));
-    };
-
-    syncData();
-
-    const handleStorageChange = (e: StorageEvent | Event) => {
-      if ('key' in e && e.key && e.key !== CHAT_STORAGE_KEY && e.key !== 'currentUser') return;
-      syncData();
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-    window.addEventListener('nomad_chat_updated', handleStorageChange);
-    window.addEventListener('nomad_user_updated', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-      window.removeEventListener('nomad_chat_updated', handleStorageChange);
-      window.removeEventListener('nomad_user_updated', handleStorageChange);
-    };
-  }, []);
-
-  // Auto-scroll to bottom on message updates
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, activeChat]);
+export default function ChatScreen() {
+  // Khởi tạo mảng tin nhắn trống tuyệt đối, không có bất kỳ dữ liệu mẫu nào
+  const [messages, setMessages] = useState<any[]>([]);
+  const [input, setInput] = useState('');
 
   const handleSendMessage = () => {
-    if (!newMessageText.trim()) return;
-    const updated = saveStoredChatMessage('guest', currentUser.name, newMessageText);
-    setMessages(updated);
-    setNewMessageText('');
+    if (!input.trim()) return;
+    const newMessage = {
+      id: Date.now(),
+      text: input,
+      sender: 'user',
+      time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+    };
+    setMessages(prev => [...prev, newMessage]);
+    setInput('');
   };
 
-  const lastMessage = messages.length > 0 ? messages[messages.length - 1] : null;
-
   return (
-    <div className="bg-[#002116] text-white min-h-screen pb-28 font-sans">
-      {/* Top Header */}
-      <header className="fixed top-0 w-full z-50 bg-[#002116]/95 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 h-16 border-b border-white/10 shadow-lg">
-        {onBack ? (
-          <button
-            onClick={onBack}
-            type="button"
-            className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer active:scale-95 shrink-0"
-            title="Back"
-          >
-            <span className="material-symbols-outlined text-xl">arrow_back</span>
-          </button>
-        ) : (
-          <div className="flex items-center gap-2">
-            <span className="material-symbols-outlined text-[#8bd6b6]">chat</span>
-            <span className="font-extrabold text-base text-white">Guest Messages</span>
-          </div>
-        )}
-
-        <div className="text-center">
-          <h1 className="font-extrabold text-base text-white tracking-wide">
-            {activeChat ? 'Chat with Host' : 'Conversations'}
-          </h1>
-          <p className="text-[10px] text-[#8bd6b6] font-semibold">
-            Guest: <span className="underline font-bold">{currentUser.name}</span>
+    <div style={{ display: 'flex', flexDirection: 'column', height: '100%', backgroundColor: '#0B291A', padding: '16px', color: '#FFF' }}>
+      {/* Khu vực hiển thị tin nhắn */}
+      <div style={{ flex: 1, overflowY: 'auto', display: 'flex', flexDirection: 'column', justifyContent: messages.length === 0 ? 'center' : 'flex-start', alignItems: messages.length === 0 ? 'center' : 'stretch' }}>
+        {messages.length === 0 ? (
+          <p style={{ color: '#888', fontStyle: 'italic', textAlign: 'center' }}>
+            Chưa có tin nhắn nào. Cuộc trò chuyện sẽ xuất hiện khi có tương tác thực tế!
           </p>
-        </div>
-
-        <div className="w-10" />
-      </header>
-
-      <main className="pt-20 px-4 sm:px-6 max-w-2xl mx-auto space-y-4">
-        {/* Current Active Guest Identity Pill */}
-        <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-3 flex items-center justify-between">
-          <div className="flex items-center gap-2.5">
-            <img
-              src={currentUser.avatar || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80'}
-              alt={currentUser.name}
-              className="w-8 h-8 rounded-full object-cover border border-[#8bd6b6]"
-            />
-            <div className="text-xs">
-              <span className="text-white/60 block text-[10px]">Active Guest Account:</span>
-              <span className="font-extrabold text-white text-xs">{currentUser.name}</span>
-            </div>
-          </div>
-          <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-[#8bd6b6] border border-emerald-500/30">
-            {currentUser.role === 'nomad_user' ? 'Digital Nomad' : currentUser.role}
-          </span>
-        </div>
-
-        {!activeChat ? (
-          /* Conversations List View */
-          <div className="space-y-3">
-            <div className="bg-emerald-950/40 border border-emerald-500/20 rounded-2xl p-3.5 flex items-center gap-3">
-              <span className="material-symbols-outlined text-[#8bd6b6] text-2xl">sync_alt</span>
-              <div className="text-xs">
-                <span className="font-bold text-white block">Real-time Two-way Messaging</span>
-                <span className="text-white/70">Open guest & host tabs to experience instant synced replies.</span>
-              </div>
-            </div>
-
-            <div
-              onClick={() => setActiveChat(true)}
-              className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-2xl p-4 flex items-center justify-between hover:bg-white/10 transition-all cursor-pointer shadow-lg active:scale-[0.99]"
-            >
-              <div className="flex items-center gap-3 min-w-0 pr-2">
-                <div className="relative shrink-0">
-                  <img
-                    src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
-                    alt="Mrs. Mai"
-                    className="w-12 h-12 rounded-full object-cover border border-white/20"
-                  />
-                  <span className="w-3.5 h-3.5 bg-emerald-400 rounded-full border-2 border-[#002116] absolute bottom-0 right-0 shadow" />
-                </div>
-
-                <div className="min-w-0">
-                  <div className="flex items-center gap-2">
-                    <h2 className="font-extrabold text-sm sm:text-base text-white truncate">Mrs. Mai (Homestay Host)</h2>
-                    <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-500/20 text-[#8bd6b6] border border-emerald-500/30">
-                      Tra Que Village
-                    </span>
-                  </div>
-                  <p className="text-xs text-white/70 truncate mt-1">
-                    {lastMessage ? `${lastMessage.senderName}: ${lastMessage.text}` : 'No messages yet'}
-                  </p>
-                </div>
-              </div>
-
-              <div className="text-right flex flex-col items-end gap-1 shrink-0">
-                <span className="text-[10px] text-white/50">{lastMessage?.timestamp || 'New'}</span>
-                <span className="w-2.5 h-2.5 bg-[#8bd6b6] rounded-full animate-pulse" />
-              </div>
-            </div>
-          </div>
         ) : (
-          /* Active Chat Thread Window (Real-time Storage Sync) */
-          <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-4 sm:p-5 shadow-2xl flex flex-col h-[75vh]">
-            {/* Thread Header */}
-            <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
-              <div className="flex items-center gap-3">
-                <img
-                  src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80"
-                  alt="Mrs. Mai"
-                  className="w-10 h-10 rounded-full object-cover border border-white/20"
-                />
-                <div>
-                  <h3 className="font-extrabold text-sm sm:text-base text-white">Mrs. Mai (Homestay Host)</h3>
-                  <span className="text-[10px] font-semibold text-emerald-400 flex items-center gap-1">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                    <span>Online ● Real-time Sync Active</span>
-                  </span>
-                </div>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => setActiveChat(false)}
-                className="text-xs text-[#8bd6b6] hover:text-white px-3 py-1.5 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 transition-colors"
-              >
-                Back to list
-              </button>
+          messages.map((msg) => (
+            <div key={msg.id} style={{ 
+              alignSelf: msg.sender === 'user' ? 'flex-end' : 'flex-start',
+              backgroundColor: msg.sender === 'user' ? '#6EE7B7' : '#1F422E',
+              color: msg.sender === 'user' ? '#000' : '#FFF',
+              padding: '10px 14px',
+              borderRadius: '12px',
+              margin: '4px 0',
+              maxWidth: '75%'
+            }}>
+              <div>{msg.text}</div>
+              <div style={{ fontSize: '10px', opacity: 0.7, textAlign: 'right', marginTop: '2px' }}>{msg.time}</div>
             </div>
-
-            {/* Messages Scroll Area */}
-            <div className="flex-1 overflow-y-auto space-y-3.5 pr-1 py-1">
-              {messages.map((m) => {
-                const isMine = m.senderRole === 'guest';
-                return (
-                  <div
-                    key={m.id}
-                    className={`flex flex-col ${isMine ? 'items-end' : 'items-start'}`}
-                  >
-                    <span className="text-[10px] text-white/50 mb-1 px-1 font-semibold">
-                      {isMine ? currentUser.name : m.senderName}
-                    </span>
-                    <div
-                      className={`max-w-[85%] sm:max-w-[78%] rounded-2xl p-3.5 text-xs sm:text-sm leading-relaxed ${
-                        isMine
-                          ? 'bg-[#8bd6b6] text-[#002116] rounded-br-none font-bold shadow-md'
-                          : 'bg-white/15 text-white rounded-bl-none border border-white/15 shadow'
-                      }`}
-                    >
-                      {m.text}
-                    </div>
-                    <span className="text-[9px] text-white/40 mt-1 px-1">{m.timestamp}</span>
-                  </div>
-                );
-              })}
-              <div ref={messagesEndRef} />
-            </div>
-
-            {/* Message Input Bar */}
-            <div className="border-t border-white/10 pt-3 flex items-center gap-2 mt-2">
-              <input
-                type="text"
-                value={newMessageText}
-                onChange={(e) => setNewMessageText(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSendMessage()}
-                placeholder={`Type a message as ${currentUser.name}...`}
-                className="flex-1 bg-white/10 border border-white/20 rounded-full px-4 py-2.5 text-xs sm:text-sm text-white placeholder:text-white/40 outline-none focus:border-[#8bd6b6] transition-colors"
-              />
-              <button
-                type="button"
-                onClick={handleSendMessage}
-                className="w-10 h-10 rounded-full bg-[#8bd6b6] text-[#002116] flex items-center justify-center hover:bg-[#72c2a0] transition-all shadow cursor-pointer active:scale-95 shrink-0"
-                title="Send Message"
-              >
-                <span className="material-symbols-outlined text-lg font-bold">send</span>
-              </button>
-            </div>
-          </div>
+          ))
         )}
-      </main>
+      </div>
+
+      {/* Ô nhập tin nhắn */}
+      <div style={{ display: 'flex', gap: '8px', marginTop: '12px' }}>
+            <input 
+              type="text" 
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              placeholder="Nhập tin nhắn..." 
+              style={{ flex: 1, padding: '12px', borderRadius: '24px', border: 'none', backgroundColor: '#1F422E', color: '#FFF', outline: 'none' }}
+            />
+            <button 
+              onClick={handleSendMessage}
+              style={{ padding: '12px 20px', borderRadius: '24px', backgroundColor: '#6EE7B7', border: 'none', fontWeight: 'bold', cursor: 'pointer' }}
+            >
+              Gửi
+            </button>
+      </div>
     </div>
   );
-};
+}
+
+export const ChatListScreen = ChatScreen;
+export const HostChatScreen = ChatScreen;

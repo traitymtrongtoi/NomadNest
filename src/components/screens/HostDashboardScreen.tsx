@@ -83,47 +83,7 @@ export const HostDashboardScreen: React.FC<HostDashboardScreenProps> = ({
 
   return (
     <div className="bg-[#002116] text-white min-h-screen pb-28 font-sans">
-      {/* Top Header */}
-      <header className="fixed top-0 w-full z-50 bg-[#002116]/90 backdrop-blur-xl flex items-center justify-between px-4 sm:px-6 h-16 border-b border-white/10 shadow-md">
-        <div className="flex items-center gap-2">
-          <span className="material-symbols-outlined text-[#8bd6b6]">real_estate_agent</span>
-          <span className="font-extrabold text-base sm:text-lg text-white">Kênh Chủ Nhà</span>
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <span className="hidden sm:flex px-3 py-1 bg-emerald-700/80 text-white rounded-full text-xs font-bold items-center gap-1 border border-emerald-500/40">
-            <span className="material-symbols-outlined text-xs">verified</span> Superhost
-          </span>
-
-          {/* Emergency Phone Icon */}
-          <button
-            onClick={() => setIsEmergencyOpen(true)}
-            className="w-10 h-10 rounded-xl bg-gradient-to-tr from-[#003829] to-emerald-600 text-white shadow-md flex items-center justify-center active:scale-95 border border-white/30 hover:border-emerald-300 transition-all cursor-pointer group relative shrink-0"
-            title="Hỗ trợ khẩn cấp 24/7"
-          >
-            <span className="material-symbols-outlined text-xl drop-shadow group-hover:scale-110 transition-transform">
-              phone_in_talk
-            </span>
-            <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 border border-white animate-pulse" />
-          </button>
-
-          {/* AI Chatbot Sheep Icon */}
-          <button
-            onClick={() => setIsChatbotOpen(true)}
-            className="w-10 h-10 rounded-xl bg-gradient-to-tr from-emerald-600 to-teal-500 text-white shadow-md flex items-center justify-center active:scale-95 border border-white/30 hover:border-emerald-200 transition-all cursor-pointer group relative text-lg shrink-0"
-            title="Trợ lý ảo AI Cừu NomadNest (Sheep 🐑)"
-          >
-            <span className="group-hover:scale-110 transition-transform drop-shadow">
-              🐑
-            </span>
-            <span className="absolute -top-1 -right-1 px-1 py-0.2 rounded-full bg-emerald-400 text-emerald-950 font-extrabold text-[8px] border border-white shadow">
-              AI
-            </span>
-          </button>
-        </div>
-      </header>
-
-      <main className="pt-20 px-4 sm:px-6 max-w-3xl mx-auto space-y-6">
+      <main className="pt-6 px-4 sm:px-6 max-w-3xl mx-auto space-y-6">
         {/* Host Welcome Card */}
         <div className="bg-white/5 border border-white/10 backdrop-blur-xl rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row items-center gap-4">
           <img

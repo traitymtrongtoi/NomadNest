@@ -10,48 +10,34 @@ export interface StoredChatMessage {
 
 export const CHAT_STORAGE_KEY = 'nomad_chat_history';
 
-export const INITIAL_CHAT_MESSAGES: StoredChatMessage[] = [
-  {
-    id: 1,
-    senderRole: 'guest',
-    senderName: 'Sarah Johnson',
-    text: 'Hello Mrs. Mai! Could you confirm if the Wi-Fi speed at Nam O Villa is fast enough for my remote video calls?',
-    timestamp: '10:15 AM'
-  },
-  {
-    id: 2,
-    senderRole: 'host',
-    senderName: 'Mrs. Mai (Host)',
-    text: 'Hello Sarah! Our fiber-optic Wi-Fi reaches 150 Mbps, complete with ergonomic desk setups and power outlets. Zoom/Meet calls run smoothly!',
-    timestamp: '10:18 AM'
-  },
-  {
-    id: 3,
-    senderRole: 'guest',
-    senderName: 'Sarah Johnson',
-    text: 'That sounds wonderful! Could you also share details about scooter rentals and sunrise SUP paddling near Son Tra Beach?',
-    timestamp: '10:25 AM'
-  },
-  {
-    id: 4,
-    senderRole: 'host',
-    senderName: 'Mrs. Mai (Host)',
-    text: 'We have Vision scooters available for 150k/day delivered to your door. Our sunrise SUP tour at Son Tra is 250k and includes free GoPro photos!',
-    timestamp: '10:30 AM'
-  }
-];
+export const INITIAL_CHAT_MESSAGES: StoredChatMessage[] = [];
 
 export const getStoredChatMessages = (): StoredChatMessage[] => {
   try {
     const raw = localStorage.getItem(CHAT_STORAGE_KEY);
     if (!raw) {
-      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(INITIAL_CHAT_MESSAGES));
-      return INITIAL_CHAT_MESSAGES;
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify([]));
+      return [];
     }
-    return JSON.parse(raw);
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    
+    // Purge any legacy hardcoded mock messages if found
+    const hasLegacyMock = parsed.some(
+      (m: StoredChatMessage) =>
+        m.text?.includes('Hello Mrs. Mai!') ||
+        m.text?.includes('Wi-Fi speed at Nam O Villa') ||
+        m.text?.includes('Son Tra Beach')
+    );
+    if (hasLegacyMock) {
+      localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify([]));
+      return [];
+    }
+
+    return parsed;
   } catch (err) {
     console.error('Error reading chat from localStorage:', err);
-    return INITIAL_CHAT_MESSAGES;
+    return [];
   }
 };
 
@@ -61,11 +47,11 @@ export const saveStoredChatMessage = (
   text: string
 ): StoredChatMessage[] => {
   const currentMessages = getStoredChatMessages();
-  const timeStr = new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' });
+  const timeStr = new Date().toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
   const newMsg: StoredChatMessage = {
-    id: Date.now(),
+    id: `${Date.now()}-${Math.random().toString(36).substring(2, 7)}`,
     senderRole,
-    senderName,
+    senderName: senderName || (senderRole === 'guest' ? 'Guest' : 'Host'),
     text: text.trim(),
     timestamp: timeStr
   };
@@ -78,7 +64,7 @@ export const saveStoredChatMessage = (
     // Sync asynchronously to Supabase
     supabase.from('chat_messages').insert({
       sender_role: senderRole,
-      sender_name: senderName,
+      sender_name: senderName || (senderRole === 'guest' ? 'Guest' : 'Host'),
       text: text.trim(),
       timestamp: timeStr
     }).then(({ error }) => {
@@ -89,4 +75,5 @@ export const saveStoredChatMessage = (
   }
   return updated;
 };
+
 

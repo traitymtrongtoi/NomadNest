@@ -400,48 +400,7 @@ export const MOCK_EVENTS: EventItem[] = [
   }
 ];
 
-export const MOCK_CONVERSATIONS: ChatConversation[] = [
-  {
-    id: 'chat_mrs_mai',
-    partnerName: 'Mrs. Mai',
-    partnerAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
-    partnerLocation: 'Nam O Village',
-    lastMessage: 'Yes, the bicycle is ready for your ride to the beach!',
-    timestamp: '09:42 AM',
-    unreadCount: 1,
-    isOnline: true,
-    messages: [
-      { id: 'm1', sender: 'me', text: 'Hello Mrs. Mai! Can I rent a bicycle today?', timestamp: '09:30 AM' },
-      { id: 'm2', sender: 'other', text: 'Yes, the bicycle is ready for your ride to the beach!', timestamp: '09:42 AM' }
-    ]
-  },
-  {
-    id: 'chat_mr_binh',
-    partnerName: 'Mr. Binh',
-    partnerAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
-    partnerLocation: 'Non Nuoc',
-    lastMessage: 'Thank you for staying with us. Have a safe flight back!',
-    timestamp: 'Yesterday',
-    unreadCount: 0,
-    isOnline: false,
-    messages: [
-      { id: 'm10', sender: 'other', text: 'Thank you for staying with us. Have a safe flight back!', timestamp: 'Yesterday' }
-    ]
-  },
-  {
-    id: 'chat_concierge',
-    partnerName: 'NomadNest Concierge',
-    partnerAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
-    partnerLocation: 'Support',
-    lastMessage: 'Your Wi-Fi upgrade request for next month has been approved.',
-    timestamp: 'Mon',
-    unreadCount: 0,
-    isOnline: true,
-    messages: [
-      { id: 'm20', sender: 'other', text: 'Your Wi-Fi upgrade request for next month has been approved.', timestamp: 'Mon' }
-    ]
-  }
-];
+export const MOCK_CONVERSATIONS: ChatConversation[] = [];
 
 export const MOCK_MAP_SPOTS: MapSpot[] = [
   {

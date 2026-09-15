@@ -65,7 +65,7 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
   }, []);
 
   const handleCancelBooking = (bookingId: string) => {
-    if (window.confirm('Bạn có chắc chắn muốn hủy đơn đặt phòng này không?')) {
+    if (window.confirm('Are you sure you want to cancel this booking?')) {
       const updated = bookings.filter((b) => b.id !== bookingId);
       setBookings(updated);
       localStorage.setItem('myBookings', JSON.stringify(updated));
@@ -93,7 +93,7 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
         </button>
         <div className="flex items-center gap-2">
           <span className="material-symbols-outlined text-primary-fixed">receipt_long</span>
-          <h1 className="font-extrabold text-base text-white tracking-tight">Chuyến Đi Của Tôi (My Bookings)</h1>
+          <h1 className="font-extrabold text-base text-white tracking-tight">My Bookings</h1>
         </div>
         <div className="w-10 flex justify-end">
           <span className="text-xs bg-emerald-500/20 text-emerald-300 font-bold px-2 py-1 rounded-full border border-emerald-500/30">
@@ -116,7 +116,7 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
                   : 'text-white/70 hover:text-white'
               }`}
             >
-              Tất cả ({bookings.length})
+              All ({bookings.length})
             </button>
             <button
               onClick={() => setFilter('upcoming')}
@@ -126,7 +126,7 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
                   : 'text-white/70 hover:text-white'
               }`}
             >
-              Sắp tới
+              Upcoming
             </button>
             <button
               onClick={() => setFilter('completed')}
@@ -136,7 +136,7 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
                   : 'text-white/70 hover:text-white'
               }`}
             >
-              Hoàn thành
+              Completed
             </button>
           </div>
         )}
@@ -149,9 +149,9 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
             </div>
             
             <div className="space-y-2">
-              <h2 className="text-xl font-black text-white">Bạn chưa có chuyến đi nào</h2>
+              <h2 className="text-xl font-black text-white">You have no bookings yet</h2>
               <p className="text-xs text-white/60 max-w-sm mx-auto leading-relaxed">
-                Khám phá ngay các homestay làng nghề thủ công độc đáo tại Đà Nẵng và đặt phòng trải nghiệm cùng nghệ nhân bản địa.
+                Explore authentic craft village homestays in Da Nang and reserve your immersive stay with local artisans.
               </p>
             </div>
 
@@ -162,102 +162,107 @@ export const MyBookingsScreen: React.FC<MyBookingsScreenProps> = ({
               className="inline-flex items-center justify-center gap-2 px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-400 hover:to-teal-400 active:scale-95 text-[#002116] font-extrabold text-sm rounded-2xl shadow-xl transition-all cursor-pointer"
             >
               <span className="material-symbols-outlined text-lg">travel_explore</span>
-              <span>Khám phá ngay</span>
+              <span>Explore Now</span>
             </button>
           </div>
         ) : (
           /* BOOKING CARDS LIST */
           <div className="space-y-4">
-            {filteredBookings.map((item) => (
-              <div
-                key={item.id}
-                className="bg-white/10 border border-white/15 backdrop-blur-xl rounded-3xl p-5 shadow-2xl space-y-4 hover:border-emerald-400/40 transition-all group"
-              >
-                {/* Header of Card: Status & ID */}
-                <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
-                  <div className="flex items-center gap-2">
-                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                    <span className="font-extrabold text-emerald-300 uppercase tracking-wider text-[11px]">
-                      {item.status === 'confirmed' ? 'Đã xác nhận' : item.status}
-                    </span>
-                  </div>
-                  <span className="text-[11px] font-mono text-white/50">Mã: #{item.id.slice(-6)}</span>
-                </div>
+            {filteredBookings.map((item) => {
+              const displayVillage = item.villageName === 'Làng nước mắm Nam Ô' ? 'Nam O Fish Sauce Village' : (item.villageName || '');
+              const statusText = item.status === 'confirmed' ? 'CONFIRMED' : item.status.toUpperCase();
 
-                {/* Property Details */}
-                <div className="flex gap-4 items-start">
-                  <img
-                    src={
-                      item.propertyImage ||
-                      'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80'
-                    }
-                    alt={item.propertyTitle}
-                    className="w-24 h-24 rounded-2xl object-cover shrink-0 border border-white/20 shadow-md group-hover:scale-105 transition-transform"
-                  />
-                  <div className="flex-1 min-w-0 space-y-1">
-                    {item.villageName && (
-                      <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider block">
-                        {item.villageName}
+              return (
+                <div
+                  key={item.id}
+                  className="bg-white/10 border border-white/15 backdrop-blur-xl rounded-3xl p-5 shadow-2xl space-y-4 hover:border-emerald-400/40 transition-all group"
+                >
+                  {/* Header of Card: Status & ID */}
+                  <div className="flex items-center justify-between pb-3 border-b border-white/10 text-xs">
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      <span className="font-extrabold text-emerald-300 uppercase tracking-wider text-[11px]">
+                        {statusText}
                       </span>
-                    )}
-                    <h3 className="text-base font-extrabold text-white leading-snug truncate">
-                      {item.propertyTitle}
-                    </h3>
-                    {item.location && (
-                      <p className="text-xs text-white/70 flex items-center gap-1">
-                        <span className="material-symbols-outlined text-xs text-emerald-400">location_on</span>
-                        <span className="truncate">{item.location}</span>
+                    </div>
+                    <span className="text-[11px] font-mono text-white/50">ID: #{item.id.slice(-6)}</span>
+                  </div>
+
+                  {/* Property Details */}
+                  <div className="flex gap-4 items-start">
+                    <img
+                      src={
+                        item.propertyImage ||
+                        'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=400&q=80'
+                      }
+                      alt={item.propertyTitle}
+                      className="w-24 h-24 rounded-2xl object-cover shrink-0 border border-white/20 shadow-md group-hover:scale-105 transition-transform"
+                    />
+                    <div className="flex-1 min-w-0 space-y-1">
+                      {displayVillage && (
+                        <span className="text-[10px] font-bold text-emerald-300 uppercase tracking-wider block">
+                          {displayVillage}
+                        </span>
+                      )}
+                      <h3 className="text-base font-extrabold text-white leading-snug truncate">
+                        {item.propertyTitle}
+                      </h3>
+                      {item.location && (
+                        <p className="text-xs text-white/70 flex items-center gap-1">
+                          <span className="material-symbols-outlined text-xs text-emerald-400">location_on</span>
+                          <span className="truncate">{item.location}</span>
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Date & Guest Info Grid */}
+                  <div className="bg-black/30 border border-white/10 rounded-2xl p-3 grid grid-cols-2 gap-2 text-xs">
+                    <div className="space-y-0.5">
+                      <span className="text-[10px] uppercase font-bold text-emerald-300/80">SCHEDULE</span>
+                      <p className="font-extrabold text-white flex items-center gap-1 text-[11px]">
+                        <span className="material-symbols-outlined text-xs text-emerald-400">calendar_today</span>
+                        <span>{item.checkIn} - {item.checkOut}</span>
                       </p>
-                    )}
-                  </div>
-                </div>
-
-                {/* Date & Guest Info Grid */}
-                <div className="bg-black/30 border border-white/10 rounded-2xl p-3 grid grid-cols-2 gap-2 text-xs">
-                  <div className="space-y-0.5">
-                    <span className="text-[10px] uppercase font-bold text-emerald-300/80">Lịch Trình</span>
-                    <p className="font-extrabold text-white flex items-center gap-1 text-[11px]">
-                      <span className="material-symbols-outlined text-xs text-emerald-400">calendar_today</span>
-                      <span>{item.checkIn} - {item.checkOut}</span>
-                    </p>
-                  </div>
-                  <div className="space-y-0.5 text-right">
-                    <span className="text-[10px] uppercase font-bold text-emerald-300/80">Thời Gian & Khách</span>
-                    <p className="font-extrabold text-white flex items-center justify-end gap-1 text-[11px]">
-                      <span className="material-symbols-outlined text-xs text-emerald-400">group</span>
-                      <span>{item.nightsCount || 1} Đêm • {item.guestsCount || 1} Khách</span>
-                    </p>
-                  </div>
-                </div>
-
-                {/* Footer: Price & Actions */}
-                <div className="pt-2 flex items-center justify-between border-t border-white/10">
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-white/50 block">Tổng thanh toán</span>
-                    <span className="text-base font-extrabold text-emerald-300">
-                      {typeof item.totalPrice === 'number'
-                        ? `${item.totalPrice.toLocaleString('vi-VN')} VNĐ`
-                        : item.totalPrice}
-                    </span>
+                    </div>
+                    <div className="space-y-0.5 text-right">
+                      <span className="text-[10px] uppercase font-bold text-emerald-300/80">DURATION & GUESTS</span>
+                      <p className="font-extrabold text-white flex items-center justify-end gap-1 text-[11px]">
+                        <span className="material-symbols-outlined text-xs text-emerald-400">group</span>
+                        <span>{item.nightsCount || 1} {(item.nightsCount || 1) === 1 ? 'Night' : 'Nights'} • {item.guestsCount || 1} {(item.guestsCount || 1) === 1 ? 'Guest' : 'Guests'}</span>
+                      </p>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => alert(`Chi tiết đặt phòng #${item.id}\nHomestay: ${item.propertyTitle}\nLịch trình: ${item.checkIn} - ${item.checkOut}`)}
-                      className="px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-bold rounded-xl transition-all text-white border border-white/15"
-                    >
-                      Chi tiết
-                    </button>
-                    <button
-                      onClick={() => handleCancelBooking(item.id)}
-                      className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 active:scale-95 text-xs font-bold rounded-xl transition-all text-red-300 border border-red-500/20"
-                    >
-                      Hủy
-                    </button>
+                  {/* Footer: Price & Actions */}
+                  <div className="pt-2 flex items-center justify-between border-t border-white/10">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-white/50 block">TOTAL PAID</span>
+                      <span className="text-base font-extrabold text-emerald-300">
+                        {typeof item.totalPrice === 'number'
+                          ? `${item.totalPrice.toLocaleString('en-US')} VND`
+                          : item.totalPrice}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <button
+                        onClick={() => alert(`Booking Details #${item.id}\nHomestay: ${item.propertyTitle}\nSchedule: ${item.checkIn} - ${item.checkOut}`)}
+                        className="px-3 py-1.5 bg-white/10 hover:bg-white/20 active:scale-95 text-xs font-bold rounded-xl transition-all text-white border border-white/15"
+                      >
+                        Details
+                      </button>
+                      <button
+                        onClick={() => handleCancelBooking(item.id)}
+                        className="px-3 py-1.5 bg-red-500/10 hover:bg-red-500/20 active:scale-95 text-xs font-bold rounded-xl transition-all text-red-300 border border-red-500/20"
+                      >
+                        Cancel
+                      </button>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         )}
 

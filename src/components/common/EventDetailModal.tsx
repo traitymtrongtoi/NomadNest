@@ -35,7 +35,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
             onClick={onClose}
             type="button"
             className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/30 transition-all active:scale-95 cursor-pointer z-10"
-            title="Đóng"
+            title="Close"
           >
             <span className="material-symbols-outlined text-lg">close</span>
           </button>
@@ -43,7 +43,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           {/* Event Badge */}
           <div className="absolute bottom-4 left-6 right-6">
             <span className="bg-[#8bd6b6] text-[#002116] text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full inline-block mb-2 shadow">
-              Sự Kiện Nổi Bật Đà Nẵng
+              FEATURED DA NANG EVENT
             </span>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white leading-tight">
               {event.title}
@@ -60,7 +60,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
                 <span className="material-symbols-outlined text-xl">calendar_month</span>
               </div>
               <div>
-                <span className="text-[10px] text-white/60 font-semibold block uppercase">Thời gian</span>
+                <span className="text-[10px] text-white/60 font-semibold block uppercase">DATE</span>
                 <span className="text-xs font-bold text-white">{event.date}</span>
               </div>
             </div>
@@ -70,7 +70,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
                 <span className="material-symbols-outlined text-xl">location_on</span>
               </div>
               <div>
-                <span className="text-[10px] text-white/60 font-semibold block uppercase">Địa điểm</span>
+                <span className="text-[10px] text-white/60 font-semibold block uppercase">LOCATION</span>
                 <span className="text-xs font-bold text-white truncate block">{event.location}</span>
               </div>
             </div>
@@ -78,7 +78,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
           {/* Description */}
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-wider text-[#8bd6b6] mb-1.5">Mô tả sự kiện</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-[#8bd6b6] mb-1.5">EVENT DESCRIPTION</h4>
             <p className="text-white/80 leading-relaxed text-sm">
               {event.description}
             </p>
@@ -86,19 +86,19 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
           {/* Highlights */}
           <div className="bg-white/5 rounded-2xl p-4 border border-white/10 space-y-2">
-            <h4 className="text-xs font-bold uppercase tracking-wider text-white">Điểm đặc sắc:</h4>
+            <h4 className="text-xs font-bold uppercase tracking-wider text-white">HIGHLIGHTS:</h4>
             <ul className="text-xs text-white/80 space-y-1.5">
               <li className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm text-[#8bd6b6]">check_circle</span>
-                <span>Miễn phí vé vào cửa cho NomadNest members</span>
+                <span>Free entry for NomadNest members</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm text-[#8bd6b6]">check_circle</span>
-                <span>Giao lưu nghệ nhân & trải nghiệm văn hóa bản địa</span>
+                <span>Artisan networking & experiences with local culture</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="material-symbols-outlined text-sm text-[#8bd6b6]">check_circle</span>
-                <span>Có khu vực Wi-Fi tốc độ cao & góc làm việc ngoài trời</span>
+                <span>High-speed Wi-Fi zone & outdoor co-working space</span>
               </li>
             </ul>
           </div>
@@ -109,7 +109,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               onClick={() => {
                 setIsRegistered(!isRegistered);
                 if (!isRegistered) {
-                  alert(`Đăng ký thành công tham gia sự kiện: ${event.title}!`);
+                  alert(`Successfully registered for event: ${event.title}!`);
                 }
               }}
               type="button"
@@ -122,7 +122,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
               <span className="material-symbols-outlined text-lg">
                 {isRegistered ? 'task_alt' : 'event_available'}
               </span>
-              <span>{isRegistered ? 'Đã đăng ký tham gia' : 'Đăng ký tham gia ngay'}</span>
+              <span>{isRegistered ? 'Registered' : 'Register Now'}</span>
             </button>
 
             {onOpenMap && (
@@ -135,7 +135,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
                 className="py-3.5 px-4 rounded-2xl bg-white/10 hover:bg-white/20 border border-white/20 text-white font-bold text-sm flex items-center justify-center gap-2 transition-all active:scale-95 cursor-pointer"
               >
                 <span className="material-symbols-outlined text-lg text-[#8bd6b6]">map</span>
-                <span>Xem trên bản đồ</span>
+                <span>View on Map</span>
               </button>
             )}
           </div>
