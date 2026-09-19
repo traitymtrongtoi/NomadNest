@@ -5,12 +5,14 @@ interface PropertyDetailScreenProps {
   property: Property;
   onBack: () => void;
   onBookNow: (property: Property) => void;
+  onMessageHost?: (property: Property) => void;
 }
 
 export const PropertyDetailScreen: React.FC<PropertyDetailScreenProps> = ({
   property,
   onBack,
-  onBookNow
+  onBookNow,
+  onMessageHost
 }) => {
   const [selectedPhoto, setSelectedPhoto] = useState(0);
 
@@ -21,7 +23,7 @@ export const PropertyDetailScreen: React.FC<PropertyDetailScreenProps> = ({
         <button onClick={onBack} className="text-emerald-900 hover:opacity-80">
           <span className="material-symbols-outlined text-2xl">arrow_back</span>
         </button>
-        <h1 className="font-bold text-lg text-emerald-900">Chi Tiết Chỗ Ở</h1>
+        <h1 className="font-bold text-lg text-emerald-900">Property Details</h1>
         <div className="flex gap-3">
           <button className="text-gray-600 hover:text-emerald-900">
             <span className="material-symbols-outlined text-2xl">share</span>
@@ -120,7 +122,10 @@ export const PropertyDetailScreen: React.FC<PropertyDetailScreenProps> = ({
                   <h3 className="text-lg font-bold text-gray-900 mb-0.5">Meet your host, {property.hostName}</h3>
                   <p className="text-xs text-emerald-800 font-semibold mb-3">{property.hostExperience}</p>
                   <p className="text-xs text-gray-600 leading-relaxed mb-4">{property.hostBio}</p>
-                  <button className="border border-emerald-800 text-emerald-800 px-5 py-2 rounded-full text-xs font-semibold hover:bg-emerald-50">
+                  <button
+                    onClick={() => onMessageHost?.(property)}
+                    className="border border-emerald-800 text-emerald-800 px-5 py-2 rounded-full text-xs font-semibold hover:bg-emerald-50 active:scale-95 transition-all cursor-pointer"
+                  >
                     Message Host
                   </button>
                 </div>

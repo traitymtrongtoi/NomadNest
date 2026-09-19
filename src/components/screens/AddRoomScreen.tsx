@@ -10,23 +10,23 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
   onBack,
   onPublishSuccess
 }) => {
-  // Form States
-  const [roomTitle, setRoomTitle] = useState('Studio View Vườn & Bàn Làm Việc Công Thái Học');
-  const [villageName, setVillageName] = useState('Làng nước mắm Nam Ô');
-  const [description, setDescription] = useState('Phòng yên tĩnh khép kín với bàn làm việc rộng, ghế công thái học Herman Miller, WiFi 150Mbps, ban công hướng ra vườn xanh ngát. Thích hợp cho Digital Nomad lưu trú dài hạn.');
+  // Form States - Vietnamese localized for local hosts and artisans
+  const [roomTitle, setRoomTitle] = useState('Phòng Studio hướng vườn với góc làm việc công thái học');
+  const [villageName, setVillageName] = useState('Làng Nam Ô');
+  const [description, setDescription] = useState('Căn studio khép kín yên tĩnh với bàn làm việc rộng rãi, ghế công thái học Herman Miller, Wi-Fi tốc độ cao 150Mbps và ban công riêng nhìn ra mảng xanh. Lý tưởng cho các kỳ lưu trú dài hạn của digital nomad.');
   
   // Pricing States
-  const [nightlyPrice, setNightlyPrice] = useState('450.000');
-  const [weeklyPrice, setWeeklyPrice] = useState('2.700.000');
-  const [monthlyPrice, setMonthlyPrice] = useState('9.500.000');
+  const [nightlyPrice, setNightlyPrice] = useState('450,000');
+  const [weeklyPrice, setWeeklyPrice] = useState('2,700,000');
+  const [monthlyPrice, setMonthlyPrice] = useState('9,500,000');
   
   // Capacity & Amenities States
   const [maxGuests, setMaxGuests] = useState<number>(2);
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>([
-    'Bàn làm việc công thái học',
+    'Bàn ghế công thái học',
     'Wi-Fi tốc độ cao (100+ Mbps)',
     'Không gian yên tĩnh',
-    'Gần xưởng thủ công'
+    'Gần xưởng nghề thủ công'
   ]);
 
   // Image Upload States
@@ -46,14 +46,14 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
   ];
 
   const availableAmenities = [
-    { id: 'ergonomic', label: 'Bàn làm việc công thái học', icon: 'desk' },
+    { id: 'ergonomic', label: 'Bàn ghế công thái học', icon: 'desk' },
     { id: 'wifi', label: 'Wi-Fi tốc độ cao (100+ Mbps)', icon: 'wifi' },
     { id: 'quiet', label: 'Không gian yên tĩnh', icon: 'volume_off' },
-    { id: 'craft', label: 'Gần xưởng thủ công', icon: 'handyman' },
-    { id: 'monitor', label: 'Màn hình phụ & Ổ cắm điện đa năng', icon: 'monitor' },
-    { id: 'coffee', label: 'Trà & Cà phê miễn phí', icon: 'coffee' },
-    { id: 'ac', label: 'Điều hòa 2 chiều', icon: 'ac_unit' },
-    { id: 'balcony', label: 'Ban công view thoáng mát', icon: 'balcony' }
+    { id: 'craft', label: 'Gần xưởng nghề thủ công', icon: 'handyman' },
+    { id: 'monitor', label: 'Màn hình phụ & Ổ cắm đa năng', icon: 'monitor' },
+    { id: 'coffee', label: 'Trà & Cà phê địa phương miễn phí', icon: 'coffee' },
+    { id: 'ac', label: 'Điều hòa không khí 2 chiều', icon: 'ac_unit' },
+    { id: 'balcony', label: 'Ban công thoáng gió tự nhiên', icon: 'balcony' }
   ];
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -91,7 +91,7 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
     e.preventDefault();
 
     if (!roomTitle.trim()) {
-      alert('Vui lòng nhập tên phòng/dịch vụ.');
+      alert('Vui lòng nhập tên phòng / căn hộ.');
       return;
     }
 
@@ -100,7 +100,7 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
       title: roomTitle,
       villageName: villageName,
       description: description,
-      price: `${nightlyPrice} VNĐ / đêm`,
+      price: `${nightlyPrice} VNĐ/đêm`,
       nightlyPrice: nightlyPrice,
       weeklyPrice: weeklyPrice,
       monthlyPrice: monthlyPrice,
@@ -137,15 +137,6 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
 
   const handleCloseSuccessModal = () => {
     setIsSuccessModalOpen(false);
-    // Reset form after successful submission
-    setRoomTitle('');
-    setDescription('');
-    setNightlyPrice('450.000');
-    setWeeklyPrice('2.700.000');
-    setMonthlyPrice('9.500.000');
-    setMaxGuests(2);
-    setSelectedAmenities([]);
-    setPreviewImages([]);
     onBack();
   };
 
@@ -155,13 +146,16 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
       <header className="fixed top-0 w-full z-50 bg-[#00281D]/95 backdrop-blur-xl flex items-center justify-between px-5 h-16 border-b border-white/10 shadow-lg">
         <button
           onClick={onBack}
+          type="button"
           className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+          title="Quay lại"
+          aria-label="Quay lại"
         >
           <span className="material-symbols-outlined text-xl">arrow_back</span>
         </button>
         <div className="text-center">
-          <h1 className="font-extrabold text-base text-white">Đăng Tải Phòng Mới</h1>
-          <p className="text-[11px] text-emerald-300 font-medium">Local Host Hub • NomadNest</p>
+          <h1 className="font-extrabold text-base text-white">Đăng phòng mới</h1>
+          <p className="text-[11px] text-emerald-300 font-medium">Cổng thông tin Chủ nhà • NomadNest</p>
         </div>
         <div className="w-10" />
       </header>
@@ -170,15 +164,15 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
       <main className="pt-20 px-4 max-w-2xl mx-auto space-y-6">
         <form onSubmit={handlePublish} className="space-y-6">
 
-          {/* SECTION 1: KHU VỰC TẢI ẢNH (IMAGE UPLOAD) */}
+          {/* SECTION 1: IMAGE UPLOAD */}
           <div className="bg-white/5 border border-white/15 rounded-3xl p-5 backdrop-blur-xl space-y-4 shadow-xl">
             <div className="flex items-center gap-2 border-b border-white/10 pb-3">
               <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                 <span className="material-symbols-outlined text-lg">add_a_photo</span>
               </div>
               <div>
-                <h2 className="font-extrabold text-sm text-white">1. Hình Ảnh Phòng & Chỗ Ở</h2>
-                <p className="text-[11px] text-emerald-200/70">Hình ảnh chất lượng cao giúp tăng 80% lượt đặt từ Digital Nomad</p>
+                <h2 className="font-extrabold text-sm text-white">1. Hình ảnh không gian & Phòng ở</h2>
+                <p className="text-[11px] text-emerald-200/70">Hình ảnh góc làm việc rõ nét giúp tăng 80% lượt đặt phòng từ khách Nomad</p>
               </div>
             </div>
 
@@ -204,10 +198,10 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
               ) : (
                 <>
                   <p className="text-xs font-bold text-white mb-1">
-                    Kéo thả hoặc <span className="text-emerald-400 underline">bấm vào đây để chọn ảnh</span>
+                    Kéo thả hoặc <span className="text-emerald-400 underline">chọn ảnh từ thiết bị</span>
                   </p>
                   <p className="text-[11px] text-emerald-100/60">
-                    Tự động lưu trữ trên Supabase Storage bucket <code className="text-emerald-300 bg-black/40 px-1 rounded">room-images</code>
+                    Hỗ trợ định dạng JPG, PNG, WEBP
                   </p>
                 </>
               )}
@@ -221,7 +215,7 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
                 className="text-[11px] text-emerald-300 hover:text-white bg-white/10 px-3 py-1.5 rounded-lg border border-white/15 transition-colors cursor-pointer flex items-center gap-1"
               >
                 <span className="material-symbols-outlined text-sm">add</span>
-                Thêm ảnh mẫu minh họa
+                Thêm ảnh phòng mẫu
               </button>
             </div>
 
@@ -232,10 +226,10 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-3">
                   {previewImages.map((imgUrl, idx) => (
                     <div key={idx} className="relative aspect-video rounded-xl overflow-hidden border border-white/20 group shadow-md">
-                      <img src={imgUrl} alt={`Preview ${idx}`} className="w-full h-full object-cover" />
+                      <img src={imgUrl} alt={`Xem trước ${idx}`} className="w-full h-full object-cover" />
                       {idx === 0 && (
                         <span className="absolute top-1 left-1 bg-emerald-600 text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded shadow">
-                          Ảnh chính
+                          Ảnh bìa
                         </span>
                       )}
                       <button
@@ -253,29 +247,29 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
             )}
           </div>
 
-          {/* SECTION 2: NHẬP THÔNG TIN PHÒNG (ROOM DETAILS) */}
+          {/* SECTION 2: ROOM DETAILS */}
           <div className="bg-white/5 border border-white/15 rounded-3xl p-5 backdrop-blur-xl space-y-4 shadow-xl">
             <div className="flex items-center gap-2 border-b border-white/10 pb-3">
               <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                 <span className="material-symbols-outlined text-lg">edit_note</span>
               </div>
               <div>
-                <h2 className="font-extrabold text-sm text-white">2. Thông Tin Phòng & Làng Nghề</h2>
-                <p className="text-[11px] text-emerald-200/70">Mô tả rõ không gian sinh hoạt và không gian làm việc</p>
+                <h2 className="font-extrabold text-sm text-white">2. Thông tin phòng & Làng nghề</h2>
+                <p className="text-[11px] text-emerald-200/70">Mô tả chi tiết không gian sống và góc làm việc</p>
               </div>
             </div>
 
             {/* Room Title Input */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-white">
-                Tên Phòng / Dịch Vụ <span className="text-red-400">*</span>
+                Tên phòng / Căn hộ <span className="text-red-400">*</span>
               </label>
               <input
                 type="text"
                 required
                 value={roomTitle}
                 onChange={(e) => setRoomTitle(e.target.value)}
-                placeholder="VD: Phòng riêng view vườn & Bàn làm việc công thái học"
+                placeholder="VD: Phòng Studio hướng vườn với góc làm việc công thái học"
                 className="w-full h-11 px-4 bg-black/30 border border-white/20 rounded-2xl text-xs text-white placeholder:text-white/40 focus:border-emerald-400 outline-none transition-all"
               />
             </div>
@@ -283,120 +277,120 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
             {/* Village Selection */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-white">
-                Thuộc Làng Nghề Địa Phương
+                Làng nghề truyền thống lân cận
               </label>
               <select
                 value={villageName}
                 onChange={(e) => setVillageName(e.target.value)}
                 className="w-full h-11 px-4 bg-black/30 border border-white/20 rounded-2xl text-xs text-white focus:border-emerald-400 outline-none cursor-pointer"
               >
-                <option value="Làng nước mắm Nam Ô" className="bg-[#00281D] text-white">Làng nước mắm Nam Ô (Đà Nẵng)</option>
-                <option value="Làng đá mỹ nghệ Non Nước" className="bg-[#00281D] text-white">Làng đá mỹ nghệ Non Nước</option>
-                <option value="Làng bánh tráng Túy Loan" className="bg-[#00281D] text-white">Làng bánh tráng Túy Loan</option>
-                <option value="Làng chiếu Cẩm Nẻ" className="bg-[#00281D] text-white">Làng chiếu Cẩm Nẻ</option>
-                <option value="Làng chài Mẫn Thái" className="bg-[#00281D] text-white">Làng chài Mẫn Thái</option>
+                <option value="Làng Nam Ô" className="bg-[#00281D] text-white">Làng Nước Mắm Nam Ô (Đà Nẵng)</option>
+                <option value="Làng Non Nước" className="bg-[#00281D] text-white">Làng Đá Non Nước</option>
+                <option value="Làng Túy Loan" className="bg-[#00281D] text-white">Làng Bánh Tráng Túy Loan</option>
+                <option value="Làng Cẩm Nê" className="bg-[#00281D] text-white">Làng Chiếu Cẩm Nê</option>
+                <option value="Làng Mân Thái" className="bg-[#00281D] text-white">Làng Chài Mân Thái</option>
               </select>
             </div>
 
             {/* Description Textarea */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-white">
-                Mô Tả Chi Tiết Không Gian
+                Mô tả chi tiết không gian
               </label>
               <textarea
                 rows={3}
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
-                placeholder="Mô tả về ánh sáng, độ yên tĩnh, khoảng cách tới biển hay xưởng làng nghề..."
+                placeholder="Mô tả ánh sáng, độ thoáng khí tự nhiên, độ yên tĩnh và khoảng cách đến các xưởng thủ công..."
                 className="w-full p-3 bg-black/30 border border-white/20 rounded-2xl text-xs text-white placeholder:text-white/40 focus:border-emerald-400 outline-none transition-all resize-none"
               />
             </div>
 
-            {/* Sức Chứa (Max Guests Dropdown) */}
+            {/* Max Guests Dropdown */}
             <div className="space-y-1.5">
               <label className="block text-xs font-bold text-white">
-                Sức Chứa Tối Đa
+                Số lượng khách tối đa
               </label>
               <select
                 value={maxGuests}
                 onChange={(e) => setMaxGuests(Number(e.target.value))}
                 className="w-full h-11 px-4 bg-black/30 border border-white/20 rounded-2xl text-xs text-white focus:border-emerald-400 outline-none cursor-pointer"
               >
-                <option value={1} className="bg-[#00281D] text-white">1 Người (Single Nomad)</option>
-                <option value={2} className="bg-[#00281D] text-white">2 Người (Nomad Couple)</option>
-                <option value={3} className="bg-[#00281D] text-white">3 Người (Small Team)</option>
-                <option value={4} className="bg-[#00281D] text-white">4+ Người (Family / Co-working Team)</option>
+                <option value={1} className="bg-[#00281D] text-white">1 Khách (Nomad đơn)</option>
+                <option value={2} className="bg-[#00281D] text-white">Tối đa 2 khách (Cặp đôi Nomad)</option>
+                <option value={3} className="bg-[#00281D] text-white">Tối đa 3 khách (Nhóm nhỏ)</option>
+                <option value={4} className="bg-[#00281D] text-white">4+ khách (Nhóm Coliving)</option>
               </select>
             </div>
           </div>
 
-          {/* SECTION 3: MỨC GIÁ LINH HOẠT CHO DIGITAL NOMAD */}
+          {/* SECTION 3: PRICING */}
           <div className="bg-white/5 border border-white/15 rounded-3xl p-5 backdrop-blur-xl space-y-4 shadow-xl">
             <div className="flex items-center gap-2 border-b border-white/10 pb-3">
               <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                 <span className="material-symbols-outlined text-lg">payments</span>
               </div>
               <div>
-                <h2 className="font-extrabold text-sm text-white">3. Bảng Giá Cho Digital Nomad</h2>
-                <p className="text-[11px] text-emerald-200/70">Mức giá linh hoạt theo Đêm, Tuần và Tháng</p>
+                <h2 className="font-extrabold text-sm text-white">3. Bảng giá linh hoạt cho Nomad</h2>
+                <p className="text-[11px] text-emerald-200/70">Chính sách giá theo ngày, tuần và tháng</p>
               </div>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-              {/* Giá Theo Đêm */}
+              {/* Nightly Price */}
               <div className="bg-black/20 p-3 rounded-2xl border border-white/15">
                 <label className="block text-[10px] font-bold text-emerald-300 uppercase tracking-wider mb-1">
-                  Giá Theo Đêm (VND/Night) <span className="text-red-400">*</span>
+                  GIÁ THEO ĐÊM (VNĐ/ĐÊM) <span className="text-red-400">*</span>
                 </label>
                 <input
                   type="text"
                   required
                   value={nightlyPrice}
                   onChange={(e) => setNightlyPrice(e.target.value)}
-                  placeholder="450.000"
+                  placeholder="450,000"
                   className="w-full h-10 px-3 bg-black/40 border border-white/20 rounded-xl text-xs font-bold text-white outline-none focus:border-emerald-400"
                 />
               </div>
 
-              {/* Giá Theo Tuần */}
+              {/* Weekly Price */}
               <div className="bg-black/20 p-3 rounded-2xl border border-white/15">
                 <label className="block text-[10px] font-bold text-emerald-300 uppercase tracking-wider mb-1">
-                  Giá Ưu Đãi Tuần (VND/Week)
+                  GIÁ THEO TUẦN (VNĐ/TUẦN)
                 </label>
                 <input
                   type="text"
                   value={weeklyPrice}
                   onChange={(e) => setWeeklyPrice(e.target.value)}
-                  placeholder="2.700.000"
+                  placeholder="2,700,000"
                   className="w-full h-10 px-3 bg-black/40 border border-white/20 rounded-xl text-xs font-bold text-white outline-none focus:border-emerald-400"
                 />
               </div>
 
-              {/* Giá Theo Tháng */}
+              {/* Monthly Price */}
               <div className="bg-black/20 p-3 rounded-2xl border border-white/15">
                 <label className="block text-[10px] font-bold text-emerald-300 uppercase tracking-wider mb-1">
-                  Giá Theo Tháng (VND/Month)
+                  GIÁ THEO THÁNG (VNĐ/THÁNG)
                 </label>
                 <input
                   type="text"
                   value={monthlyPrice}
                   onChange={(e) => setMonthlyPrice(e.target.value)}
-                  placeholder="9.500.000"
+                  placeholder="9,500,000"
                   className="w-full h-10 px-3 bg-black/40 border border-white/20 rounded-xl text-xs font-bold text-white outline-none focus:border-emerald-400"
                 />
               </div>
             </div>
           </div>
 
-          {/* SECTION 4: TIỆN ÍCH LÀM VIỆC (WORK AMENITIES) */}
+          {/* SECTION 4: WORK AMENITIES */}
           <div className="bg-white/5 border border-white/15 rounded-3xl p-5 backdrop-blur-xl space-y-4 shadow-xl">
             <div className="flex items-center gap-2 border-b border-white/10 pb-3">
               <div className="w-8 h-8 rounded-xl bg-emerald-500/20 text-emerald-300 flex items-center justify-center">
                 <span className="material-symbols-outlined text-lg">chair</span>
               </div>
               <div>
-                <h2 className="font-extrabold text-sm text-white">4. Tiện Ích Chuẩn Co-working</h2>
-                <p className="text-[11px] text-emerald-200/70">Chọn các trang thiết bị hỗ trợ công việc từ xa</p>
+                <h2 className="font-extrabold text-sm text-white">4. Tiện ích làm việc & Không gian Co-working</h2>
+                <p className="text-[11px] text-emerald-200/70">Chọn các tiện ích hỗ trợ Digital Nomad</p>
               </div>
             </div>
 
@@ -429,20 +423,20 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
             </div>
           </div>
 
-          {/* SECTION 5: CALL TO ACTION BUTTON (ĐĂNG TẢI PHÒNG) */}
+          {/* SECTION 5: CALL TO ACTION BUTTON */}
           <div className="pt-2">
             <button
               type="submit"
               className="w-full py-4 bg-gradient-to-r from-emerald-500 via-teal-500 to-emerald-600 hover:from-emerald-400 hover:to-teal-400 text-white font-extrabold text-base rounded-2xl shadow-2xl flex items-center justify-center gap-2 active:scale-98 transition-all cursor-pointer border border-white/30"
             >
               <span className="material-symbols-outlined text-xl">publish</span>
-              <span>Đăng Tải Phòng (Publish Listing)</span>
+              <span>Đăng phòng ngay</span>
             </button>
           </div>
         </form>
       </main>
 
-      {/* PUBLISH SUCCESS SIMULATION MODAL */}
+      {/* PUBLISH SUCCESS MODAL */}
       {isSuccessModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/70 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#00281D] border border-white/20 rounded-3xl p-6 w-full max-w-lg text-white shadow-2xl relative">
@@ -450,15 +444,14 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
               <span className="material-symbols-outlined text-3xl">check_circle</span>
             </div>
 
-            <h3 className="text-xl font-extrabold text-center text-white mb-1">Đăng Tải Thành Công!</h3>
+            <h3 className="text-xl font-extrabold text-center text-white mb-1">Đăng phòng thành công!</h3>
             <p className="text-xs text-center text-emerald-200 mb-4">
-              Phòng của bạn đã được xuất bản trên hệ thống NomadNest Đà Nẵng và sẵn sàng nhận booking.
+              Phòng của bạn đã được đăng lên NomadNest và sẵn sàng để khách Nomad xem và đặt phòng.
             </p>
 
-            {/* Generated JSON Data Display */}
             <div className="space-y-1 mb-5">
               <label className="text-[10px] uppercase font-bold text-emerald-300 tracking-wider">
-                Dữ liệu JSON giả lập (Mẫu truyền sang API Room Options):
+                Thông tin chi tiết:
               </label>
               <pre className="p-3 bg-black/50 border border-white/10 rounded-xl text-[11px] text-emerald-300 font-mono overflow-x-auto max-h-48 no-scrollbar">
                 {publishedDataJson}
@@ -469,7 +462,7 @@ export const AddRoomScreen: React.FC<AddRoomScreenProps> = ({
               onClick={handleCloseSuccessModal}
               className="w-full py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs rounded-xl transition-all cursor-pointer shadow-lg"
             >
-              Quay Lại Host Dashboard
+              Quay lại Trung tâm Chủ nhà
             </button>
           </div>
         </div>

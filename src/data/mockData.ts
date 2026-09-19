@@ -44,8 +44,8 @@ export const MOCK_VILLAGES: Village[] = [
     tags: ['Traditional Craft Village', 'Wooden Fermentation Vats', 'Anchovy Fermentation'],
     slogan: 'Where the ocean turns into 400-year heritage flavors.',
     description: 'Experience rustic living alongside 400-year-old wooden fermentation vats producing pure traditional anchovy fish sauce. Tucked away along the Lien Chieu coast, local artisans preserve time-honored secrets under golden sunlight.',
-    image: 'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
-    imageUrl: 'https://danangbest.com/uploads/news/news-editor-20260626-115438-48ec3abb.jpg',
+    image: 'https://vietnamland.vn/wp-content/uploads/2024/06/du-an-nam-o-heritage-da-nang.jpg',
+    imageUrl: 'https://vietnamland.vn/wp-content/uploads/2024/06/du-an-nam-o-heritage-da-nang.jpg',
     location: 'Lien Chieu District, Da Nang',
     distanceFromCenter: '15km from city center',
     highlights: ['400-year-old Heritage', 'Wooden Vat Fish Sauce Craft', 'Famous Nam O Raw Fish Salad'],
@@ -118,8 +118,8 @@ export const MOCK_VILLAGES: Village[] = [
     tags: ['Marble Sculptures', 'Marble Mountains Foot', 'Exquisite Stone Statues'],
     slogan: 'Where raw marble blocks speak the language of fine art.',
     description: 'Reside in an artistic haven at the foot of the Marble Mountains. Skilled Non Nuoc stone carvers meticulously sculpt exquisite marble artworks with centuries-old craftsmanship.',
-    image: 'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
-    imageUrl: 'https://statics.vinpearl.com/lang-da-my-nghe-non-nuoc-01_1636966781.jpg',
+    image: 'https://namthientravel.com.vn/wp-content/uploads/2025/08/Lang-Nghe-Da-My-Nghe-Non-Nuoc-O-Dau.webp',
+    imageUrl: 'https://namthientravel.com.vn/wp-content/uploads/2025/08/Lang-Nghe-Da-My-Nghe-Non-Nuoc-O-Dau.webp',
     location: 'Ngu Hanh Son District, Da Nang',
     distanceFromCenter: '10km from city center',
     highlights: ['Marble Mountains Scenic Area', 'Handcrafted Marble Sculptures', 'Quiet & Creative Atmosphere'],
@@ -375,28 +375,20 @@ export const MOCK_PROPERTIES: Property[] = [
 
 export const MOCK_EVENTS: EventItem[] = [
   {
-    id: 'evt_1',
-    title: 'Da Nang Soundscape 2026',
-    description: 'A modern music festival by the Han River featuring international DJs and vibrant stage lights.',
-    date: 'July 15-20',
+    id: 'diff-fireworks',
+    title: 'Da Nang International Fireworks Festival (DIFF)',
+    description: 'A spectacular world-class fireworks celebration illuminating the Han River with international teams and riverside stages.',
+    date: 'Summer Seasonal',
     location: 'Han River Port',
-    image: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=800&q=80'
+    image: 'https://diff.vn/wp-content/uploads/2023/07/Header-Web-DIFF_vuong-02-512x512.png'
   },
   {
-    id: 'evt_2',
-    title: 'Cu De River Boat Race',
-    description: 'Traditional dragon boat racing on the scenic Cu De river with local crowds and festive atmosphere.',
-    date: 'August 5',
-    location: 'Cu De River, Hoa Vang',
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80'
-  },
-  {
-    id: 'evt_3',
-    title: 'Ancient Village Lantern Night',
-    description: 'Experience the magic of traditional silk lanterns lighting up the historic Tuy Loan village.',
-    date: 'Every full moon',
-    location: 'Tuy Loan Village',
-    image: 'https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=800&q=80'
+    id: 'han-river-boat-race',
+    title: 'Han River Boat Race Festival',
+    description: 'Traditional dragon boat racing championship showcasing coastal seafaring heritage and festive riverbank atmosphere.',
+    date: 'Annual Cultural Festival',
+    location: 'Han River, Bach Dang St.',
+    image: 'https://amazingo.vn/upload/le%20hoi%20dua%20thuyen%20cau%20mong%20cho%20mot%20nam%20moi%20no%20du.jpg'
   }
 ];
 

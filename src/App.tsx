@@ -43,6 +43,17 @@ export default function App() {
   const [selectedVillage, setSelectedVillage] = useState<Village>(MOCK_VILLAGES[0]);
   const [selectedProperty, setSelectedProperty] = useState<Property>(MOCK_PROPERTIES[0]);
   const [activeBottomTab, setActiveBottomTab] = useState<string>('home');
+  const [activeChatHost, setActiveChatHost] = useState<{
+    id?: string;
+    hostId?: string;
+    name: string;
+    role?: string;
+    avatar?: string;
+    village?: string;
+    propertyTitle?: string;
+    status?: string;
+  } | null>(null);
+  const [activeConversationId, setActiveConversationId] = useState<string | null>(null);
 
   const [selectedBookingCheckoutData, setSelectedBookingCheckoutData] = useState<BookingCheckoutData>({
     title: 'Phòng Homestay Làng Nam Ô',
@@ -130,7 +141,11 @@ export default function App() {
     setActiveBottomTab(tab);
     if (tab === 'home') setCurrentScreen('home');
     else if (tab === 'services') setCurrentScreen('local_services');
-    else if (tab === 'chat') setCurrentScreen('chat');
+    else if (tab === 'chat') {
+      setActiveChatHost(null);
+      setActiveConversationId(null);
+      setCurrentScreen('chat');
+    }
     else if (tab === 'account') setCurrentScreen('account');
   };
 
@@ -140,7 +155,11 @@ export default function App() {
     if (tab === 'dashboard') setCurrentScreen('host_dashboard');
     else if (tab === 'add_room') setCurrentScreen('add_room');
     else if (tab === 'translator') setCurrentScreen('translator');
-    else if (tab === 'chat') setCurrentScreen('chat');
+    else if (tab === 'chat') {
+      setActiveChatHost(null);
+      setActiveConversationId(null);
+      setCurrentScreen('chat');
+    }
     else if (tab === 'account') setCurrentScreen('account');
   };
 
@@ -193,6 +212,7 @@ export default function App() {
             onNavigateMap={() => setCurrentScreen('map')}
             onNavigateGrab={() => setCurrentScreen('grab')}
             onNavigateLocalGuide={() => setCurrentScreen('local_guide')}
+            onNavigateServices={() => setCurrentScreen('local_services')}
           />
         );
 
@@ -232,8 +252,8 @@ export default function App() {
                 propertyId: data.room.id,
                 title: data.room.title,
                 image: data.room.image || data.room.images?.[0] || 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&w=800&q=80',
-                location: data.room.villageName || selectedVillage.name || 'Làng Nghề Đà Nẵng',
-                villageName: data.room.villageName || selectedVillage.name,
+                location: data.room.villageName || selectedVillage.name || 'Nam O Fish Sauce Village, Da Nang',
+                villageName: data.room.villageName || selectedVillage.name || 'Nam O Fish Sauce Village',
                 checkIn: data.checkIn,
                 checkOut: data.checkOut,
                 nightsCount: data.nights,
@@ -250,6 +270,19 @@ export default function App() {
           <PropertyDetailScreen
             property={selectedProperty}
             onBack={() => setCurrentScreen('village_detail')}
+            onMessageHost={(p) => {
+              setActiveChatHost({
+                id: p.id,
+                hostId: 'host_' + p.id,
+                name: p.hostName,
+                role: 'Chủ nhà làng nghề',
+                avatar: p.hostAvatar,
+                village: p.villageName || p.location,
+                propertyTitle: p.title
+              });
+              setCurrentScreen('chat');
+              setActiveBottomTab('chat');
+            }}
             onBookNow={(p) => {
               setSelectedProperty(p);
               setSelectedBookingCheckoutData({
@@ -348,22 +381,66 @@ export default function App() {
         if (currentRole === 'local_host') {
           return (
             <HostChatScreen
+              currentUser={currentUser}
+              userRole="host"
+              activeHost={activeChatHost}
+              conversationId={activeConversationId}
+              onNavigateListings={() => {
+                setActiveChatHost(null);
+                setActiveConversationId(null);
+                setCurrentScreen('host_listings');
+              }}
               onBack={() => {
+                setActiveChatHost(null);
+                setActiveConversationId(null);
                 setCurrentScreen('host_dashboard');
                 setActiveBottomTab('dashboard');
+              }}
+              onNavigateHome={() => {
+                setActiveChatHost(null);
+                setActiveConversationId(null);
+                setCurrentScreen('host_dashboard');
+                setActiveBottomTab('dashboard');
+              }}
+              onNavigateExplore={() => {
+                setActiveChatHost(null);
+                setActiveConversationId(null);
+                setCurrentScreen('host_dashboard');
+                setActiveBottomTab('dashboard');
+              }}
+              onCloseChat={() => {
+                setActiveChatHost(null);
+                setActiveConversationId(null);
               }}
             />
           );
         }
         return (
           <ChatListScreen
+            currentUser={currentUser}
+            activeHost={activeChatHost}
+            conversationId={activeConversationId}
             onBack={() => {
+              setActiveChatHost(null);
+              setActiveConversationId(null);
               setCurrentScreen('home');
               setActiveBottomTab('home');
             }}
             onNavigateHome={() => {
+              setActiveChatHost(null);
+              setActiveConversationId(null);
               setCurrentScreen('home');
               setActiveBottomTab('home');
+            }}
+            onNavigateExplore={() => {
+              setActiveChatHost(null);
+              setActiveConversationId(null);
+              setCurrentScreen('home');
+              setActiveBottomTab('home');
+            }}
+            onCloseChat={() => {
+              setActiveChatHost(null);
+              setActiveConversationId(null);
             }}
           />
         );
@@ -413,6 +490,13 @@ export default function App() {
             currentUser={currentUser}
             onBack={() => setCurrentScreen('account')}
             onNavigateChat={(guestName) => {
+              setActiveChatHost({
+                hostId: 'guest_' + guestName,
+                name: guestName,
+                role: 'Khách Nomad',
+                avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+                village: 'Phòng Homestay Làng Nam Ô'
+              });
               setCurrentScreen('chat');
               setActiveBottomTab('chat');
             }}
@@ -481,6 +565,7 @@ export default function App() {
             onNavigateMap={() => setCurrentScreen('map')}
             onNavigateGrab={() => setCurrentScreen('grab')}
             onNavigateLocalGuide={() => setCurrentScreen('local_guide')}
+            onNavigateServices={() => setCurrentScreen('local_services')}
           />
         );
     }
@@ -498,7 +583,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-[#001710] font-sans relative selection:bg-primary-fixed selection:text-on-primary-fixed">
       {/* Main Screen Header */}
-      {showHeaderAndBottomNav && (
+      {showHeaderAndBottomNav && currentScreen !== 'chat' && (
         <Header
           currentUser={currentUser}
           onNavigateHome={() => {

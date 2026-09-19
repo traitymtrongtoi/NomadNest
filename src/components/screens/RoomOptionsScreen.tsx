@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Village } from '../../types';
+import { RoomItem, DEFAULT_GUEST_ROOMS, sanitizeRoomForGuest } from '../../data/roomData';
 
 interface RoomOptionsScreenProps {
-  village: Village;
+  village?: Village;
   onBack: () => void;
   onBookRoom?: (data: {
     room: RoomItem;
@@ -13,35 +14,20 @@ interface RoomOptionsScreenProps {
   }) => void;
 }
 
-export interface RoomItem {
-  id: string;
-  title: string;
-  villageName?: string;
-  image: string;
-  images?: string[];
-  price: string;
-  pricing?: {
-    nightlyVND?: string;
-    weeklyVND?: string;
-    monthlyVND?: string;
-  };
-  description: string;
-  maxGuests: number;
-  amenities?: string[];
-  createdAt?: string;
-}
-
 export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
   village,
   onBack,
   onBookRoom
 }) => {
-  // Helper to format ISO YYYY-MM-DD to DD/MM/YYYY
+  // Helper to format ISO YYYY-MM-DD to display: MM/DD/YYYY or DD/MM/YYYY in English format
   const formatDateDisplay = (isoStr: string) => {
     if (!isoStr) return '--/--/----';
     const parts = isoStr.split('-');
     if (parts.length !== 3) return isoStr;
-    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    const mIndex = parseInt(parts[1], 10) - 1;
+    const monthName = months[mIndex] || parts[1];
+    return `${monthName} ${parseInt(parts[2], 10)}, ${parts[0]}`;
   };
 
   // Get today's ISO date string
@@ -74,19 +60,29 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
   const [viewYear, setViewYear] = useState<number>(2026);
   const [viewMonth, setViewMonth] = useState<number>(7); // 0-indexed: 7 = August
 
-  // Dynamic state populated from localStorage 'nomad_rooms'
-  const [availableRooms, setAvailableRooms] = useState<RoomItem[]>([]);
+  // Dynamic state populated from localStorage 'nomad_rooms', defaulting to sanitized English rooms
+  const [availableRooms, setAvailableRooms] = useState<RoomItem[]>(DEFAULT_GUEST_ROOMS);
   const [bookingSuccessModal, setBookingSuccessModal] = useState<string | null>(null);
 
   // Read saved rooms from localStorage on mount and sync state
   useEffect(() => {
     const loadSavedRooms = () => {
       try {
-        const savedRooms = JSON.parse(localStorage.getItem('nomad_rooms') || '[]');
-        setAvailableRooms(savedRooms);
+        const savedRoomsStr = localStorage.getItem('nomad_rooms');
+        if (savedRoomsStr) {
+          const savedRooms = JSON.parse(savedRoomsStr);
+          if (Array.isArray(savedRooms) && savedRooms.length > 0) {
+            // Sanitize all items to ensure strict 100% English display
+            const sanitizedList = savedRooms.map(r => sanitizeRoomForGuest(r));
+            setAvailableRooms(sanitizedList);
+            return;
+          }
+        }
+        // Fallback default rooms
+        setAvailableRooms(DEFAULT_GUEST_ROOMS);
       } catch (err) {
         console.error('Error reading saved rooms from localStorage:', err);
-        setAvailableRooms([]);
+        setAvailableRooms(DEFAULT_GUEST_ROOMS);
       }
     };
 
@@ -185,10 +181,24 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
   const firstDayIndex = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Monday = 0
 
-  const monthNamesVi = [
-    'Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6',
-    'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'
+  const monthNamesEn = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
   ];
+
+  // Resolve village name in English
+  const getEnglishVillageName = (v?: Village): string => {
+    if (!v?.name) return 'Nam O Fish Sauce Village';
+    const name = v.name;
+    if (name.includes('Nam Ô') || name.includes('Nam O')) return 'Nam O Fish Sauce Village';
+    if (name.includes('Tuy Loan') || name.includes('Tuý Loan')) return 'Tuy Loan Rice Paper Village';
+    if (name.includes('Non Nuoc') || name.includes('Non Nước')) return 'Non Nuoc Stone Carving Village';
+    if (name.includes('Cam Ne') || name.includes('Cẩm Nê')) return 'Cam Ne Sedge Mat Village';
+    if (name.includes('Man Thai') || name.includes('Mân Thái')) return 'Man Thai Fishing Village';
+    return name;
+  };
+
+  const currentVillageEnglish = getEnglishVillageName(village);
 
   return (
     <div className="bg-gradient-to-br from-[#00281D] via-[#001D15] to-[#00120D] text-white min-h-screen flex flex-col pb-28 font-sans">
@@ -198,12 +208,14 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
           onClick={onBack}
           type="button"
           className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+          title="Back"
+          aria-label="Back"
         >
           <span className="material-symbols-outlined text-xl">arrow_back</span>
         </button>
         <div className="text-center">
-          <h1 className="font-extrabold text-base text-white">Danh Sách Phòng Trống</h1>
-          <p className="text-[11px] text-emerald-300 font-medium">{village?.name || 'Làng Nghề Đà Nẵng'}</p>
+          <h1 className="font-extrabold text-base text-white tracking-tight">Available Rooms</h1>
+          <p className="text-[11px] text-emerald-300 font-medium">{currentVillageEnglish}</p>
         </div>
         <div className="w-10" />
       </header>
@@ -211,11 +223,11 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
       {/* Sticky Top Filter Bar (Interactive Date Picker & Guest Count) */}
       <div className="sticky top-16 z-40 bg-[#003829]/95 backdrop-blur-md border-b border-white/15 px-4 py-3 shadow-md">
         <div className="max-w-2xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-          {/* Filter 1: Interactive Date Picker Selector (Manual Input Disabled) */}
+          {/* Filter 1: Interactive Date Picker Selector */}
           <div
             onClick={() => handleOpenCalendar('checkIn')}
             className="bg-black/40 border border-white/20 hover:border-emerald-400/80 rounded-2xl p-2.5 flex items-center gap-3 cursor-pointer transition-all hover:bg-black/50 active:scale-[0.99] group shadow-inner"
-            title="Bấm để chọn ngày Check-in / Check-out"
+            title="Click to select Check-in / Check-out dates"
           >
             <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
               <span className="material-symbols-outlined text-xl">calendar_month</span>
@@ -230,7 +242,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 }}
                 className="flex-1 rounded-lg p-1 transition-colors hover:bg-white/10"
               >
-                <span className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">Check-in</span>
+                <span className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">CHECK-IN</span>
                 <span className="text-sm font-extrabold text-white tracking-wide block mt-0.5">
                   {formatDateDisplay(checkInDate)}
                 </span>
@@ -246,7 +258,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 }}
                 className="flex-1 rounded-lg p-1 transition-colors hover:bg-white/10 text-right"
               >
-                <span className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">Check-out</span>
+                <span className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">CHECK-OUT</span>
                 <span className="text-sm font-extrabold text-white tracking-wide block mt-0.5">
                   {formatDateDisplay(checkOutDate)}
                 </span>
@@ -254,15 +266,17 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
             </div>
           </div>
 
-          {/* Filter 2: Chọn Số Lượng Khách (Guest Count Selector) */}
+          {/* Filter 2: Guest Count Selector */}
           <div className="bg-black/40 border border-white/20 rounded-2xl p-2.5 flex items-center justify-between shadow-inner">
             <div className="flex items-center gap-2.5">
               <div className="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-300 border border-emerald-400/30 flex items-center justify-center shrink-0">
                 <span className="material-symbols-outlined text-xl">group</span>
               </div>
               <div>
-                <label className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">Số khách</label>
-                <span className="text-xs font-bold text-white">{guestCount} Nomad / Khách</span>
+                <label className="block text-[9px] uppercase tracking-wider text-emerald-300 font-bold">GUESTS</label>
+                <span className="text-xs font-bold text-white">
+                  {guestCount} {guestCount === 1 ? 'Nomad / Guest' : 'Nomads / Guests'}
+                </span>
               </div>
             </div>
             <div className="flex items-center gap-1 bg-white/10 rounded-xl p-1 border border-white/10">
@@ -270,6 +284,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 type="button"
                 onClick={() => setGuestCount(prev => Math.max(1, prev - 1))}
                 className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold text-sm transition-colors cursor-pointer active:scale-95"
+                aria-label="Decrease guest count"
               >
                 -
               </button>
@@ -278,6 +293,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 type="button"
                 onClick={() => setGuestCount(prev => prev + 1)}
                 className="w-8 h-8 rounded-lg bg-white/10 hover:bg-white/20 flex items-center justify-center text-white font-bold text-sm transition-colors cursor-pointer active:scale-95"
+                aria-label="Increase guest count"
               >
                 +
               </button>
@@ -292,10 +308,10 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
           <div className="space-y-5">
             <div className="flex items-center justify-between px-1">
               <span className="text-xs font-extrabold text-emerald-300 uppercase tracking-wider">
-                Phòng do Host vừa đăng tải ({availableRooms.length})
+                Active Listings ({availableRooms.length})
               </span>
               <span className="text-[11px] text-white/60">
-                Được cập nhật trực tiếp từ Local Host
+                Direct verified nomad listings
               </span>
             </div>
 
@@ -318,7 +334,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                   )}
                   <div className="absolute top-3 right-3 bg-black/60 backdrop-blur-md border border-white/20 text-white text-[11px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1">
                     <span className="material-symbols-outlined text-xs text-amber-400">group</span>
-                    <span>Tối đa {room.maxGuests || 2} khách</span>
+                    <span>Up to {room.maxGuests || 2} guests</span>
                   </div>
                 </div>
 
@@ -347,9 +363,9 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 {/* Price & Booking Button */}
                 <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
                   <div>
-                    <span className="block text-[10px] uppercase font-bold text-white/50">Mức giá niêm yết</span>
+                    <span className="block text-[10px] uppercase font-bold text-white/50">PRICE PER NIGHT</span>
                     <span className="text-base font-extrabold text-emerald-300">
-                      {room.price || (room.pricing?.nightlyVND ? `${room.pricing.nightlyVND} VNĐ / đêm` : 'Liên hệ Host')}
+                      {room.price || (room.pricing?.nightlyVND ? `${room.pricing.nightlyVND} VND / night` : '$35 / night')}
                     </span>
                   </div>
 
@@ -359,34 +375,32 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                     className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white font-extrabold text-xs rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer flex items-center gap-1.5"
                   >
                     <span className="material-symbols-outlined text-base">bookmark_add</span>
-                    <span>Đặt Phòng Ngay</span>
+                    <span>Book Now</span>
                   </button>
                 </div>
               </div>
             ))}
           </div>
         ) : (
-          /* Empty State when availableRooms.length === 0 */
+          /* Empty State */
           <div className="my-10 py-12 px-6 bg-white/5 border border-white/15 backdrop-blur-md rounded-3xl text-center flex flex-col items-center justify-center shadow-2xl">
-            {/* Illustrated Icon */}
             <div className="w-20 h-20 rounded-full bg-emerald-500/20 border border-emerald-400/30 flex items-center justify-center text-emerald-300 mb-4 shadow-inner">
               <span className="material-symbols-outlined text-4xl">bed_view</span>
             </div>
 
-            {/* Title & Exact Specified Message */}
-            <h3 className="text-lg font-extrabold text-white mb-2">Chưa Có Phòng Trống</h3>
+            <h3 className="text-lg font-extrabold text-white mb-2">No Rooms Available</h3>
             <p className="text-sm text-emerald-100/90 leading-relaxed max-w-md font-medium">
-              Hiện chưa có phòng nào được Host đăng tải cho thời gian này.
+              There are currently no rooms published for the selected dates in this village.
             </p>
 
             <p className="text-xs text-white/50 mt-4 italic">
-              Vui lòng thử chọn khoảng thời gian khác hoặc liên hệ Host địa phương qua tính năng Chat.
+              Please try selecting a different date range or message the local host via Chat.
             </p>
           </div>
         )}
       </main>
 
-      {/* INTERACTIVE CALENDAR POPUP MODAL (Manual Input Disabled) */}
+      {/* INTERACTIVE CALENDAR POPUP MODAL */}
       {isCalendarOpen && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#00281D] border border-white/20 rounded-3xl p-5 sm:p-6 w-full max-w-md text-white shadow-2xl relative space-y-4">
@@ -395,14 +409,15 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
               <div>
                 <h3 className="text-lg font-extrabold text-white flex items-center gap-2">
                   <span className="material-symbols-outlined text-emerald-400">calendar_month</span>
-                  <span>Chọn Ngày Lưu Trú</span>
+                  <span>Select Stay Dates</span>
                 </h3>
-                <p className="text-[11px] text-emerald-300">Không cho phép nhập tay bằng bàn phím</p>
+                <p className="text-[11px] text-emerald-300">Tap to pick your check-in and check-out</p>
               </div>
               <button
                 type="button"
                 onClick={() => setIsCalendarOpen(false)}
                 className="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close calendar"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
@@ -443,18 +458,20 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 type="button"
                 onClick={handlePrevMonth}
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer disabled:opacity-30 disabled:cursor-not-allowed"
+                aria-label="Previous month"
               >
                 <span className="material-symbols-outlined text-lg">chevron_left</span>
               </button>
 
               <span className="text-sm font-extrabold text-white tracking-wide">
-                {monthNamesVi[viewMonth]} {viewYear}
+                {monthNamesEn[viewMonth]} {viewYear}
               </span>
 
               <button
                 type="button"
                 onClick={handleNextMonth}
                 className="w-8 h-8 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors cursor-pointer"
+                aria-label="Next month"
               >
                 <span className="material-symbols-outlined text-lg">chevron_right</span>
               </button>
@@ -462,13 +479,13 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
 
             {/* Days of the Week */}
             <div className="grid grid-cols-7 text-center text-[11px] font-extrabold text-emerald-300 py-1">
-              <span>T2</span>
-              <span>T3</span>
-              <span>T4</span>
-              <span>T5</span>
-              <span>T6</span>
-              <span>T7</span>
-              <span>CN</span>
+              <span>Mon</span>
+              <span>Tue</span>
+              <span>Wed</span>
+              <span>Thu</span>
+              <span>Fri</span>
+              <span>Sat</span>
+              <span>Sun</span>
             </div>
 
             {/* Days Grid */}
@@ -525,9 +542,9 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
             {/* Modal Bottom Summary & Confirm */}
             <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-3">
               <div className="text-xs">
-                <span className="block text-[10px] text-white/50 uppercase font-bold">Tổng thời gian:</span>
+                <span className="block text-[10px] text-white/50 uppercase font-bold">Duration:</span>
                 <span className="font-extrabold text-emerald-300">
-                  {getNightsCount(checkInDate, checkOutDate)} Đêm Lưu Trú
+                  {getNightsCount(checkInDate, checkOutDate)} {getNightsCount(checkInDate, checkOutDate) === 1 ? 'Night' : 'Nights'} Stay
                 </span>
               </div>
 
@@ -536,7 +553,7 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
                 onClick={() => setIsCalendarOpen(false)}
                 className="px-6 py-2.5 bg-[#8bd6b6] hover:bg-[#72c2a0] text-[#002116] font-extrabold text-xs rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer"
               >
-                Xác Nhận Ngày
+                Confirm Dates
               </button>
             </div>
           </div>
@@ -551,22 +568,22 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
               <span className="material-symbols-outlined text-3xl">task_alt</span>
             </div>
             <div>
-              <h3 className="text-xl font-extrabold text-white">Yêu Cầu Đặt Phòng Đã Gửi!</h3>
+              <h3 className="text-xl font-extrabold text-white">Booking Request Sent!</h3>
               <p className="text-xs text-emerald-200/90 mt-1">
-                Yêu cầu giữ chỗ cho phòng <strong className="text-white">"{bookingSuccessModal}"</strong> đã được chuyển tới Host địa phương.
+                Your reservation request for <strong className="text-white">"{bookingSuccessModal}"</strong> has been forwarded to the local host.
               </p>
             </div>
 
             <div className="p-3 bg-white/10 rounded-2xl text-xs text-white/80 border border-white/10 space-y-1">
-              <p className="font-bold text-emerald-300">Thời gian nhận phòng dự kiến:</p>
-              <p>{checkInDate} đến {checkOutDate} ({guestCount} Khách)</p>
+              <p className="font-bold text-emerald-300">Estimated stay period:</p>
+              <p>{formatDateDisplay(checkInDate)} to {formatDateDisplay(checkOutDate)} ({guestCount} {guestCount === 1 ? 'Guest' : 'Guests'})</p>
             </div>
 
             <button
               onClick={() => setBookingSuccessModal(null)}
               className="w-full py-3 bg-emerald-500 hover:bg-emerald-400 text-[#002116] font-extrabold text-xs rounded-xl transition-all cursor-pointer shadow-lg"
             >
-              Đóng & Tiếp Tục
+              Close & Continue
             </button>
           </div>
         </div>
@@ -574,4 +591,3 @@ export const RoomOptionsScreen: React.FC<RoomOptionsScreenProps> = ({
     </div>
   );
 };
-

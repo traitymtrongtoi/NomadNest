@@ -26,7 +26,11 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
           <img
             src={event.image}
             alt={event.title}
+            referrerPolicy="no-referrer"
             className="w-full h-full object-cover"
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = 'https://images.unsplash.com/photo-1533174072545-7a4b6ad7a6c3?auto=format&fit=crop&w=1000&q=80';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/40 to-transparent" />
 

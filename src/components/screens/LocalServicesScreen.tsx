@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 export interface ServiceItem {
   id: string;
-  category: 'rental' | 'sup' | 'spa' | 'laundry' | 'coworking';
+  category: 'rental' | 'sup' | 'spa' | 'laundry';
   tag?: string;
   badge?: string;
   title: string;
@@ -31,13 +31,13 @@ export const MOCK_SERVICES: ServiceItem[] = [
     unit: 'day',
     rating: '4.9',
     reviewsCount: 128,
-    image: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?auto=format&fit=crop&w=800&q=80',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR4lAIdMxCYjobtwnht9td6cEhv1NqB-ihHbBU-qfBI_xtAyukXJEjBr-M&s=10',
     highlights: ['Free doorstep delivery', '2 quality helmets & raincoats included', 'No cash deposit required']
   },
   {
     id: 'service-2',
     category: 'rental',
-    tag: 'Scooter Rental',
+    tag: 'Bicycle Rental',
     title: 'Mountain Bike & Son Tra Touring Bike Rental',
     provider: 'Green Bike Da Nang',
     description: 'Premium sport touring bicycles perfect for exploring Son Tra Peninsula and Marble Mountains. Includes safety lock and emergency repair kit.',
@@ -46,7 +46,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     unit: 'day',
     rating: '4.8',
     reviewsCount: 84,
-    image: 'https://images.unsplash.com/photo-1485965120184-e220f721d03e?auto=format&fit=crop&w=800&q=80',
+    image: 'https://iv.vnecdn.net/dulich/images/web/2021/04/03/dap-xe-len-son-tra-ngam-binh-minh-1617446093.jpg',
     highlights: ['Ultra-light aluminum frame', 'Free scenic route map', 'Fast roadside replacement support']
   },
   {
@@ -62,24 +62,24 @@ export const MOCK_SERVICES: ServiceItem[] = [
     unit: 'person',
     rating: '5.0',
     reviewsCount: 210,
-    image: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=800&q=80',
+    image: 'https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/11/1215362/Cheo-Sup-3.jpg',
     highlights: ['Free GoPro paddling photos & videos', 'Complimentary fresh coconut', 'Beginner-friendly guidance']
   },
   {
     id: 'service-4',
     category: 'sup',
-    badge: 'RECOMMENDED',
-    tag: 'SUP Paddling',
-    title: 'Sunset Han River SUP with Dragon Bridge View',
-    provider: 'Han River SUP Experience',
-    description: 'Enjoy the tranquil evening on Han River as the sun sets, admiring iconic Da Nang bridges right from the shimmering water.',
-    price: '200,000 VND',
-    priceValue: 200000,
+    badge: 'River Cruise',
+    tag: 'River Cruise',
+    title: 'Han River Evening Boat Tour with Dragon Bridge View',
+    provider: 'HAN RIVER CRUISE DA NANG',
+    description: 'Enjoy a scenic cruise along the illuminated Han River, taking in panoramic night views of the iconic Dragon and Han River bridges.',
+    price: '150,000 VND',
+    priceValue: 150000,
     unit: 'person',
     rating: '4.9',
-    reviewsCount: 95,
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Prime sunset slot (4:30 PM - 6:30 PM)', 'ISO-certified safety life jackets', 'Perfect for first-time paddlers']
+    reviewsCount: 176,
+    image: 'https://danatravel.vn/data/tour/900/3-1759293625.png',
+    highlights: ['Panoramic illuminated Dragon Bridge view', 'Complimentary mineral water & fresh fruit', 'Live traditional Cham cultural dance onboard']
   },
   {
     id: 'service-5',
@@ -87,14 +87,14 @@ export const MOCK_SERVICES: ServiceItem[] = [
     badge: 'Nomad Choice 💆',
     tag: 'Spa & Wellness',
     title: 'Nomad Neck & Shoulder Herbal Therapy Massage (60 Mins)',
-    provider: 'Lotus Herbal Spa Da Nang',
-    description: 'Targeted herbal acupressure massage tailored for digital nomads working long screen hours. Relieves stiffness and restores focus.',
+    provider: 'Charm Spa Grand Da Nang',
+    description: 'Targeted herbal acupressure massage and nourishing shampoo tailored for digital nomads working long screen hours. Relieves stiffness and restores focus.',
     price: '280,000 VND',
     priceValue: 280000,
     unit: 'session (60m)',
     rating: '4.9',
     reviewsCount: 162,
-    image: 'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?auto=format&fit=crop&w=800&q=80',
+    image: 'https://charmspagrand.com/uploads/images/images/go%CC%A3%CC%82i%20%C4%91a%CC%82u%CC%80%20du%CC%9Bo%CC%9B%CC%83ng%20sinh%20nha%20trang.JPG',
     highlights: ['Certified acupressure therapists', 'Warm herbal neck compresses', 'Complimentary ginger tea & snacks']
   },
   {
@@ -109,7 +109,7 @@ export const MOCK_SERVICES: ServiceItem[] = [
     unit: 'session',
     rating: '4.8',
     reviewsCount: 76,
-    image: 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS4p3X1cjres3O4ix-WJ2B4l_YasE79kybNDDPDs3GqRjJIXE3F-seAAml9&s=10',
     highlights: ['Natural cedar wooden tubs', 'Authentic high-mountain herbs', 'Deep muscle relaxation']
   },
   {
@@ -125,24 +125,8 @@ export const MOCK_SERVICES: ServiceItem[] = [
     unit: 'kg',
     rating: '4.9',
     reviewsCount: 310,
-    image: 'https://images.unsplash.com/photo-1517677208171-0bc6725a3e60?auto=format&fit=crop&w=800&q=80',
+    image: 'https://viethomecare.vn/wp-content/uploads/2024/07/202407081602-giat-say-tai-da-nang-3.jpg',
     highlights: ['Individual washer per customer', 'Gentle fabric softener', 'Free pickup & room delivery']
-  },
-  {
-    id: 'service-8',
-    category: 'coworking',
-    badge: 'High Speed 🚀',
-    tag: 'Co-working & SIM',
-    title: 'Day Pass Co-Working Space 200Mbps Wi-Fi & Cold Brew',
-    provider: 'NomadNest WorkHub Da Nang',
-    description: '24/7 air-conditioned ergonomic workspace with dual 200Mbps optical fiber lines for video calls. Includes a complimentary Cold Brew coffee.',
-    price: '90,000 VND',
-    priceValue: 90000,
-    unit: 'day',
-    rating: '5.0',
-    reviewsCount: 145,
-    image: 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-    highlights: ['Stable 200Mbps Wi-Fi with backup', '1 free drink of choice', 'Dedicated power outlets & USB-C']
   }
 ];
 
@@ -166,7 +150,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
       const q = searchQuery.toLowerCase();
       const matchTitle = service.title.toLowerCase().includes(q);
       const matchDesc = service.description.toLowerCase().includes(q);
-      const matchTag = service.tag.toLowerCase().includes(q);
+      const matchTag = service.tag?.toLowerCase().includes(q) || false;
       const matchProvider = service.provider.toLowerCase().includes(q);
       if (!matchTitle && !matchDesc && !matchTag && !matchProvider) return false;
     }
@@ -175,11 +159,10 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
 
   const categories = [
     { id: 'all', label: 'All Services', icon: 'grid_view' },
-    { id: 'rental', label: 'Scooter Rental', icon: 'two_wheeler' },
-    { id: 'sup', label: 'SUP Paddling', icon: 'surfing' },
+    { id: 'rental', label: 'Scooter & Bike Rental', icon: 'two_wheeler' },
+    { id: 'sup', label: 'Cruises & Boat Tours', icon: 'directions_boat' },
     { id: 'spa', label: 'Spa & Wellness', icon: 'spa' },
-    { id: 'laundry', label: 'Laundry', icon: 'local_laundry_service' },
-    { id: 'coworking', label: 'Co-working & SIM', icon: 'laptop_mac' }
+    { id: 'laundry', label: 'Laundry', icon: 'local_laundry_service' }
   ];
 
   return (
@@ -248,7 +231,7 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Search scooter rental, SUP paddling, laundry"
+              placeholder="Search scooter rental, boat tour, spa, laundry..."
               className="w-full bg-white/10 border border-white/20 focus:border-[#8bd6b6] rounded-2xl py-3 pl-11 pr-10 text-sm text-white placeholder:text-white/40 outline-none transition-all focus:ring-2 focus:ring-[#8bd6b6]/30"
             />
             {searchQuery && (
@@ -292,11 +275,17 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
                 style={{ cursor: 'pointer' }}
               >
                 {/* Image Section (~60% height visual ratio) */}
-                <div className="relative h-48 w-full overflow-hidden shrink-0 bg-gray-100">
+                <div className="relative h-48 sm:h-52 w-full overflow-hidden shrink-0 bg-gray-100 aspect-[16/10]">
                   <img
                     src={service.image}
                     alt={service.title}
-                    className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                    referrerPolicy="no-referrer"
+                    loading="lazy"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                    onError={(e) => {
+                      (e.currentTarget as HTMLImageElement).src =
+                        'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80';
+                    }}
                   />
 
                   {/* Category Tag Badge */}
@@ -381,11 +370,16 @@ export const LocalServicesScreen: React.FC<LocalServicesScreenProps> = ({ onBack
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#002116] border border-white/20 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white relative flex flex-col max-h-[90vh]">
             {/* Header Image */}
-            <div className="relative h-56 w-full shrink-0">
+            <div className="relative h-56 sm:h-64 w-full shrink-0 aspect-[16/10] bg-[#001810] overflow-hidden">
               <img
                 src={selectedService.image}
                 alt={selectedService.title}
+                referrerPolicy="no-referrer"
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.currentTarget as HTMLImageElement).src =
+                    'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=800&q=80';
+                }}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/40 to-transparent" />
 

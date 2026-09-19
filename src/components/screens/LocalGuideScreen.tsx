@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 export interface GuideItem {
   id: string;
@@ -14,85 +14,167 @@ export interface GuideItem {
   nomadTip?: string;
 }
 
+// Reusable Image component with subtle skeleton placeholder and fallback
+interface ImageWithSkeletonProps {
+  src: string;
+  alt: string;
+  className?: string;
+  containerClassName?: string;
+  fallbackSrc?: string;
+  iconFallback?: string;
+}
+
+export const ImageWithSkeleton: React.FC<ImageWithSkeletonProps> = ({
+  src,
+  alt,
+  className = '',
+  containerClassName = '',
+  fallbackSrc = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80',
+  iconFallback = 'restaurant'
+}) => {
+  const [loading, setLoading] = useState<boolean>(true);
+  const [currentSrc, setCurrentSrc] = useState<string>(src);
+  const [hasError, setHasError] = useState<boolean>(false);
+
+  useEffect(() => {
+    setCurrentSrc(src);
+    setLoading(true);
+    setHasError(false);
+  }, [src]);
+
+  const handleLoad = () => {
+    setLoading(false);
+  };
+
+  const handleError = () => {
+    if (!hasError && fallbackSrc && currentSrc !== fallbackSrc) {
+      setCurrentSrc(fallbackSrc);
+      setHasError(true);
+    } else {
+      setLoading(false);
+      setHasError(true);
+    }
+  };
+
+  return (
+    <div className={`relative overflow-hidden bg-emerald-950/60 ${containerClassName}`}>
+      {/* Subtle animated skeleton placeholder */}
+      {loading && (
+        <div className="absolute inset-0 z-10 bg-gradient-to-r from-emerald-950/90 via-emerald-900/60 to-emerald-950/90 animate-pulse flex flex-col items-center justify-center gap-2">
+          <span className="material-symbols-outlined text-emerald-400/40 text-2xl animate-pulse">
+            {iconFallback}
+          </span>
+          <span className="text-[9px] font-bold text-emerald-300/40 uppercase tracking-widest">
+            Loading...
+          </span>
+        </div>
+      )}
+
+      {/* Real image with object-fit: cover and referrerPolicy */}
+      <img
+        src={currentSrc}
+        alt={alt}
+        loading="lazy"
+        referrerPolicy="no-referrer"
+        onLoad={handleLoad}
+        onError={handleError}
+        className={`w-full h-full object-cover transition-all duration-500 ${
+          loading ? 'opacity-0 scale-95' : 'opacity-100 scale-100'
+        } ${className}`}
+      />
+    </div>
+  );
+};
+
 export const MOCK_GUIDE_ITEMS: GuideItem[] = [
-  // FOOD GUIDE ITEMS
+  // 1. Mì Quảng Bà Mua (Quang-style Noodles)
   {
     id: 'food-1',
     category: 'food',
-    tag: 'Da Nang Signature',
-    title: 'Mi Quang Frog & Chicken - Ba Mua',
-    subtitle: 'Traditional Quang-style Noodle Brand',
-    description: 'A signature Da Nang turmeric-infused noodle bowl in a deeply savory slow-simmered broth with free-range chicken or tender frog, served alongside crisp Tra Que herbs, roasted peanuts, and crunchy toasted sesame rice crackers.',
-    image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80',
+    tag: 'Quang Noodles',
+    title: 'Mì Quảng Bà Mua (Quang-style Noodles)',
+    subtitle: 'Signature Central Vietnam Turmeric Noodle Dish',
+    description: 'A legendary Da Nang staple featuring chewy turmeric-infused noodles in a rich, slow-simmered savory broth with tender chicken, shrimp, and quail eggs. Served alongside crisp Tra Que fresh herbs, toasted peanuts, and crunchy toasted sesame rice crackers.',
+    image: 'https://www.taidanang.com/wp-content/uploads/2017/11/mi-quang-ba-mua-2.jpg',
     address: '19 Tran Binh Trong, Hai Chau Dist, Da Nang',
-    priceRange: '35,000 - 65,000 VND',
+    priceRange: '35,000 - 65,000 VND ($1.50 - $2.70 USD)',
     rating: '4.8',
-    nomadTip: 'Order an extra crispy sesame rice cracker and request refreshing iced green tea.'
+    nomadTip: 'Order an extra crispy sesame rice cracker (bánh tráng mè) and ask for iced green tea. Fast Wi-Fi available.'
   },
+
+  // 2. Bánh Tráng Cuốn Thịt Heo Đại Lộc (Pork Rice Paper Rolls)
   {
     id: 'food-2',
     category: 'food',
-    tag: 'Rice Paper Rolls',
-    title: 'Banh Trang Cuon Thit Heo Dai Loc',
-    subtitle: 'Pork Belly Rolls & Fermented Dipping Sauce',
-    description: 'Thinly sliced boiled pork with two layers of skin, rolled in sun-dewed Dai Loc rice paper with over 10 varieties of fresh wild herbs, paired with an aromatic, savory fermented dipping sauce (mam nem).',
-    image: 'https://images.unsplash.com/photo-1540420773420-3366772f4999?auto=format&fit=crop&w=800&q=80',
+    tag: 'Pork Rice Rolls',
+    title: 'Bánh Tráng Cuốn Thịt Heo Đại Lộc (Pork Rice Paper Rolls)',
+    subtitle: 'Two-Tone Pork Belly Rolls with Fermented Anchovy Dip',
+    description: 'Thinly sliced boiled pork belly with distinct double layers of tender fat and lean meat, wrapped in sun-dried Dai Loc rice paper with green bananas, crisp cucumbers, and over 10 wild herbs, dipped in aromatic fermented anchovy sauce (mắm nêm).',
+    image: 'https://mms.img.susercontent.com/vn-11134513-7r98o-lsu3omx8ah1gd1@resize_ss1242x600!@crop_w1242_h600_cT',
     address: '124 Huynh Thuc Khang, Hai Chau Dist, Da Nang',
-    priceRange: '50,000 - 90,000 VND',
+    priceRange: '50,000 - 90,000 VND ($2.00 - $3.70 USD)',
     rating: '4.9',
-    nomadTip: 'Air-conditioned seating with 80Mbps Wi-Fi—ideal for a relaxing lunch after focused work sessions.'
+    nomadTip: 'Spacious air-conditioned dining area with reliable 80Mbps Wi-Fi—ideal for a relaxing lunch after morning focus sessions.'
   },
+
+  // 3. Gỏi Cá Nam Ô (Nam O Raw Fish Salad)
   {
     id: 'food-3',
     category: 'food',
-    tag: 'Artisan Village Specialty',
-    title: 'Goi Ca Nam O Oc Sinh',
-    subtitle: 'Ancient Nam O Fishing Village Heritage',
-    description: 'Freshly caught coastal herring tossed in galangal, chili, and fragrant roasted rice powder, rolled with wild mung and polyscias leaves, dipped in a rich sesame-peanut dipping sauce.',
-    image: 'https://images.unsplash.com/photo-1534422298391-e4f8c172dddb?auto=format&fit=crop&w=800&q=80',
-    address: 'Nguyen Luong Bang St, Nam O Village, Lien Chieu Dist',
-    priceRange: '60,000 - 120,000 VND',
+    tag: 'Village Specialty',
+    title: 'Gỏi Cá Nam Ô (Nam O Raw Fish Salad)',
+    subtitle: '700-Year-Old Coastal Fisherman Heritage Specialty',
+    description: 'Freshly landed morning coastal herring filleted and cured with galangal, spicy chili, and golden roasted corn-rice meal, bundled with wild mountain herbs in tender rice paper, accompanied by a decadent roasted sesame-peanut dipping sauce.',
+    image: 'https://static.vinwonders.com/2023/01/goi-ca-nam-o-thump.jpg',
+    address: 'Nguyen Luong Bang St, Nam O Craft Village, Lien Chieu Dist, Da Nang',
+    priceRange: '60,000 - 120,000 VND ($2.50 - $5.00 USD)',
     rating: '4.9',
-    nomadTip: 'Try both styles: Dry salad (tossed in roasted rice powder) and Wet salad (marinated in savory broth).'
+    nomadTip: 'Try both styles: "Gỏi khô" (dry tossed with roasted rice meal) and "Gỏi ướt" (steeped in savory spiced broth).'
   },
+
+  // 4. Bún Chả Cá Hờn (Da Nang Fish Cake Noodle Soup)
   {
     id: 'food-4',
     category: 'food',
-    tag: 'Noodle Soup',
-    title: 'Bun Cha Ca Hon',
-    subtitle: 'Mackerel Fish Cake & Sweet Pumpkin Broth',
-    description: 'A naturally sweet, ocean-rich broth simmered with fresh marlin bone and cooling pumpkin, served with crispy fried and tender steamed mackerel fish patties.',
-    image: 'https://images.unsplash.com/photo-1547592180-85f173990554?auto=format&fit=crop&w=800&q=80',
+    tag: 'Fish Cake Noodles',
+    title: 'Bún Chả Cá Hờn (Da Nang Fish Cake Noodle Soup)',
+    subtitle: 'Steamed & Fried Fish Patties in Naturally Sweet Broth',
+    description: 'A naturally sweet, ocean-fragrant broth simmered with fresh marlin bone, sweet pineapple, tomato, and cooling pumpkin, served over fresh rice vermicelli with crisp fried and steamed mackerel patties, bamboo shoots, and shallot pickles.',
+    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRR4csYUKCGr4yzUx5lLxTfTWdWz2PSkfezm79XuxDzBK5fdynmgoQwAXkb&s=10',
     address: '113/3 Nguyen Chi Thanh, Hai Chau Dist, Da Nang',
-    priceRange: '30,000 - 55,000 VND',
+    priceRange: '30,000 - 55,000 VND ($1.20 - $2.30 USD)',
     rating: '4.7',
-    nomadTip: 'Opens at 6:00 AM—an energizing breakfast spot for early-rising Digital Nomads.'
+    nomadTip: 'Opens early at 6:00 AM—an energizing, healthy breakfast spot for early-rising digital nomads before morning deep-work.'
   },
+
+  // 5. Bánh Xèo Bà Dưỡng (Crispy Vietnamese Sizzling Crepe)
   {
     id: 'food-5',
     category: 'food',
-    tag: 'Street Food & Snacks',
-    title: 'Banh Xeo & Nem Lui Ba Duong',
-    subtitle: 'Most Famous Hidden Alleyway Eatery',
-    description: 'Crispy turmeric-yellow savory crepes stuffed with sweet shrimp and tender beef, paired with charcoal-grilled pork skewers (nem lui) and a special creamy liver dipping sauce.',
-    image: 'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?auto=format&fit=crop&w=800&q=80',
+    tag: 'Sizzling Crepes',
+    title: 'Bánh Xèo Bà Dưỡng (Crispy Vietnamese Sizzling Crepe)',
+    subtitle: 'Legendary Hidden Alleyway Sizzling Crepes & Pork Skewers',
+    description: 'Crispy golden-yellow rice-flour crepes packed with sea shrimp, pork belly, and tender bean sprouts, wrapped with mustard greens and rice paper, served with charcoal-grilled lemongrass pork skewers (nem lụi) and a warm creamy liver-peanut dip.',
+    image: 'https://prod-pics.guide.michelin.com/api/public/content/4a6360958af84e40a16e3c4b1c6fdc25.jpeg?w=300&h=300&format=webp&org_if_sml=1',
     address: 'K280/23 Hoang Dieu, Hai Chau Dist, Da Nang',
-    priceRange: '40,000 - 80,000 VND',
+    priceRange: '40,000 - 80,000 VND ($1.60 - $3.30 USD)',
     rating: '4.8',
-    nomadTip: 'Tucked inside an alley with spacious seating; peak hours are 5:00 PM – 7:00 PM.'
+    nomadTip: 'Michelin-selected alley eatery; visit between 2:00 PM – 4:30 PM to avoid dinner rush queues.'
   },
+
+  // 6. Cao Lầu Đà Nẵng (Cao Lau Noodles)
   {
     id: 'food-6',
     category: 'food',
     tag: 'Noodle Heritage',
-    title: 'Cao Lau Da Nang & Ancient Flavors',
-    subtitle: 'Historic Central Vietnam Dish',
-    description: 'Chewy ash-infused noodles topped with savory five-spice char siu pork slices, crispy fried pork cracklings, aromatic herbs, and a rich braising reduction sauce.',
-    image: 'https://images.unsplash.com/photo-1617093727343-374698b1b08d?auto=format&fit=crop&w=800&q=80',
+    title: 'Cao Lầu Đà Nẵng (Cao Lau Noodles)',
+    subtitle: 'Wood-Ash Infused Heritage Noodles with Char Siu Pork',
+    description: 'Thick, artisanal noodles kneaded with mineral water and local melaleuca wood ash, topped with fragrant five-spice char siu pork, crispy squared rice cracklings, baby mustard greens, and a concentrated pork braising glaze.',
+    image: 'https://static.vinwonders.com/2023/01/Cao-lau-da-nang-banner.jpg',
     address: '267 Thai Thi Buoi, Thanh Khe Dist, Da Nang',
-    priceRange: '35,000 - 60,000 VND',
+    priceRange: '35,000 - 60,000 VND ($1.40 - $2.50 USD)',
     rating: '4.7',
-    nomadTip: 'Noodles are traditionally prepared with lye water from regional melaleuca tree ash.'
+    nomadTip: 'A historic regional dish combining Cham, Vietnamese, and trade-era culinary influences with incredible texture.'
   },
 
   // HERITAGE GUIDE ITEMS
@@ -100,12 +182,12 @@ export const MOCK_GUIDE_ITEMS: GuideItem[] = [
     id: 'heritage-1',
     category: 'heritage',
     tag: 'National Heritage',
-    title: 'Marble Mountains (Ngu Hanh Son)',
-    subtitle: 'Sacred 5 Element Peaks',
-    description: 'A breathtaking cluster of five limestone and marble peaks named after the cosmic elements (Metal, Wood, Water, Fire, Earth). Houses mystical illuminated caverns like Huyen Khong Cave and ancient cliffside pagodas.',
-    image: 'https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=800&q=80',
+    title: 'Marble Mountains (Ngũ Hành Sơn)',
+    subtitle: 'Sacred 5 Element Peaks & Cave Temples',
+    description: 'A breathtaking cluster of five limestone and marble peaks named after cosmic elements (Metal, Wood, Water, Fire, Earth). Houses mystical illuminated caverns like Huyen Khong Cave and ancient cliffside pagodas.',
+    image: 'https://images.vietnamtourism.gov.vn/vn/images/2022/ngu_hanh_son_da_nang_369258062.jpg',
     address: '81 Huyen Tran Cong Chua, Ngu Hanh Son Dist, Da Nang',
-    priceRange: '40,000 VND / ticket',
+    priceRange: '40,000 VND / ticket (~$1.60 USD)',
     rating: '4.9',
     nomadTip: 'Take the panoramic glass elevator on Water Mountain for 360-degree ocean views.'
   },
@@ -113,66 +195,66 @@ export const MOCK_GUIDE_ITEMS: GuideItem[] = [
     id: 'heritage-2',
     category: 'heritage',
     tag: 'Living Craft Heritage',
-    title: 'Nam O Fish Sauce Village (700 Years)',
-    subtitle: 'National Intangible Cultural Heritage',
-    description: 'A timeless 700-year-old coastal fishing village sheltered beneath Hai Van Pass. Master artisans handcraft pure anchovy fish sauce in weathered wooden vats, preserving ancestral secrets across centuries.',
-    image: 'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=800&q=80',
+    title: 'Nam O Village (Nam Ô)',
+    subtitle: '700-Year Ancient Coastal Fish Sauce Heritage',
+    description: 'A timeless 700-year-old coastal fishing village sheltered beneath Hai Van Pass. Master artisans handcraft pure anchovy fish sauce in weathered wooden vats, preserving ancestral fermentation secrets across centuries.',
+    image: 'https://vietnamland.vn/wp-content/uploads/2024/06/du-an-nam-o-heritage-da-nang.jpg',
     address: 'Nam O Village, Hoa Hiep Nam, Lien Chieu Dist, Da Nang',
     priceRange: 'Free admission',
     rating: '5.0',
-    nomadTip: 'Join hands-on fermentation workshops with local NomadNest artisans.'
+    nomadTip: 'Join hands-on fermentation workshops with local NomadNest artisans and explore ancient reef trails.'
   },
   {
     id: 'heritage-3',
     category: 'heritage',
     tag: 'Historical Museum',
-    title: 'Museum of Cham Sculpture',
-    subtitle: 'World-Renowned Champa Art Collection',
-    description: 'Home to the world’s largest collection of Cham architectural sculptures and sacred relics. Built in 1915, this antique building uniquely blends French colonial elegance with ancient Cham motifs.',
-    image: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=800&q=80',
+    title: 'Museum of Cham Sculpture (Bảo tàng Điêu khắc Chăm)',
+    subtitle: 'World-Renowned Champa Art & Sculpture Collection',
+    description: 'Home to the world’s largest collection of Cham architectural sculptures and sacred sandstone relics. Built in 1915, this antique building uniquely blends French colonial elegance with ancient Cham motifs.',
+    image: 'https://hn.ss.bfcplatform.vn/tckt/2025/03/25A02018-2.jpg',
     address: '02 2nd of September St, Hai Chau Dist, Da Nang',
-    priceRange: '60,000 VND / ticket',
+    priceRange: '60,000 VND / ticket (~$2.40 USD)',
     rating: '4.8',
-    nomadTip: 'A peaceful, contemplative haven to explore centuries of ancient Champa art and history.'
+    nomadTip: 'A peaceful, contemplative haven to explore centuries of ancient Champa art, history, and sacred iconography.'
   },
   {
     id: 'heritage-4',
     category: 'heritage',
     tag: 'Ancient Craft Village',
-    title: 'Non Nuoc Stone Carving Village',
-    subtitle: '400-Year Stone Sculpture Legacy',
-    description: 'Nestled at the foot of Marble Mountains, hundreds of master stone sculptors craft exquisite statues, Buddhist relics, and decorative art exported across the globe.',
-    image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80',
-    address: 'Foot of Marble Mountains, Hoa Hai, Ngu Hanh Son Dist',
+    title: 'Non Nuoc Stone Carving Village (Làng đá Non Nước)',
+    subtitle: '400-Year Stone Sculpture Craft Legacy',
+    description: 'Nestled at the foot of Marble Mountains, hundreds of master stone sculptors craft exquisite statues, Buddhist relics, and fine artistic ornaments exported across the globe.',
+    image: 'https://namthientravel.com.vn/wp-content/uploads/2025/08/Lang-Nghe-Da-My-Nghe-Non-Nuoc-O-Dau.webp',
+    address: 'Foot of Marble Mountains, Hoa Hai, Ngu Hanh Son Dist, Da Nang',
     priceRange: 'Free admission',
     rating: '4.7',
-    nomadTip: 'Pick up finely crafted miniature marble souvenirs from local family workshops.'
+    nomadTip: 'Pick up finely crafted miniature marble souvenirs and observe live chisel sculpting in family workshops.'
   },
   {
     id: 'heritage-5',
     category: 'heritage',
     tag: 'Spiritual & Scenic',
-    title: 'Linh Ung Pagoda & Lady Buddha',
-    subtitle: '67m Majestic Guanyin Statue',
-    description: 'The grandest pagoda in Da Nang perched on the lush Son Tra Peninsula. The towering 67-meter Lady Buddha stands against the mountainside overlooking the boundless East Sea.',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80',
+    title: 'Linh Ung Pagoda (Chùa Linh Ứng)',
+    subtitle: '67m Majestic Guanyin Statue Overlooking the Bay',
+    description: 'The grandest spiritual sanctuary in Da Nang perched on the lush Son Tra Peninsula. The towering 67-meter Lady Buddha statue stands proudly against the mountainside overlooking the boundless East Sea.',
+    image: 'https://danangfantasticity.com/wp-content/uploads/2019/09/chua-linh-ung-chon-binh-yen-giua-long-da-nang-013-2.jpg',
     address: 'Son Tra Peninsula, Son Tra Dist, Da Nang',
     priceRange: 'Free admission',
     rating: '4.9',
-    nomadTip: 'Visit around 4:00 PM to catch the breathtaking golden sunset over Da Nang Bay.'
+    nomadTip: 'Visit around 4:00 PM to catch the breathtaking golden sunset and ocean panorama over Da Nang Bay.'
   },
   {
     id: 'heritage-6',
     category: 'heritage',
     tag: 'Urban Landmark',
-    title: 'Dragon Bridge & Love Lock Bridge',
-    subtitle: 'Modern Icon on the Han River',
-    description: 'The iconic golden Dragon Bridge breathes fire and water in a spectacular display at 9:00 PM every Saturday and Sunday. Stroll alongside the romantic Love Lock Bridge illuminated by glowing heart-shaped lantern trees.',
-    image: 'https://images.unsplash.com/photo-1528127269322-539801943592?auto=format&fit=crop&w=800&q=80',
-    address: 'East bank of Han River, Tran Hung Dao St, Son Tra Dist',
+    title: 'Love Lock Bridge (Cầu Tình Yêu)',
+    subtitle: 'Romantic Riverside Promenade on the Han River',
+    description: 'A scenic European-inspired pedestrian pier extending over the Han River, decorated with radiant heart-shaped lantern trees where couples and visitors leave engraved padlocks, steps away from the Dragon Bridge.',
+    image: 'https://ik.imagekit.io/tvlk/blog/2023/08/cau-tinh-yeu-da-nang-9.jpg?tr=q-70,c-at_max,w-1000,h-600',
+    address: 'East Bank of Han River, Tran Hung Dao St, Son Tra Dist, Da Nang',
     priceRange: 'Free',
     rating: '4.8',
-    nomadTip: 'Arrive before 8:30 PM to secure the best photo spots along the pedestrian promenade.'
+    nomadTip: 'Spectacular night view of illuminated city skylines, riverside coffee spots, and weekend Dragon Bridge shows.'
   }
 ];
 
@@ -271,27 +353,29 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
 
             {/* CATEGORY CARDS GRID (2 Large Cards) */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6">
-              {/* CARD 1: FOOD GUIDE */}
+              {/* CARD 1: FOOD GUIDE with real-life photo banner */}
               <div
                 onClick={() => handleSelectCategoryCard('food')}
                 className="relative h-72 sm:h-80 rounded-[24px] overflow-hidden shadow-2xl border border-white/20 group cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(139,214,182,0.25)] hover:border-[#8bd6b6] active:scale-[0.98]"
                 style={{ cursor: 'pointer' }}
               >
-                {/* Background Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80')"
-                  }}
+                {/* Background Image with skeleton loader and object-fit: cover */}
+                <ImageWithSkeleton
+                  src="https://diff.vn/wp-content/uploads/2025/03/trai-nghiem-dem-tai-da-nang-1-1.jpg"
+                  alt="Da Nang Food Guide & Night Life"
+                  containerClassName="absolute inset-0 w-full h-full"
+                  className="group-hover:scale-110 transition-transform duration-700 ease-out"
+                  fallbackSrc="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80"
+                  iconFallback="restaurant"
                 />
+
                 {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:via-black/30 transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20 group-hover:via-black/35 transition-all pointer-events-none" />
 
                 {/* Card Content */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10">
+                <div className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
-                    <span className="px-3.5 py-1.5 rounded-full bg-[#8bd6b6]/90 backdrop-blur-md text-[#002116] text-xs font-black uppercase tracking-wider shadow-lg">
+                    <span className="px-3.5 py-1.5 rounded-full bg-[#8bd6b6]/95 backdrop-blur-md text-[#002116] text-xs font-black uppercase tracking-wider shadow-lg">
                       Food Guide
                     </span>
                     <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors shadow">
@@ -304,13 +388,13 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                       Food Guide
                     </h3>
                     <p className="text-sm font-bold text-emerald-300">
-                      Explore Da Nang Cuisine
+                      Explore Authentic Da Nang Cuisine
                     </p>
-                    <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                      From savory Mi Quang and Dai Loc pork rice paper rolls to the renowned 700-year-old Nam O raw fish salad.
+                    <p className="text-xs text-white/85 line-clamp-2 leading-relaxed">
+                      From savory Mì Quảng Bà Mua and Đại Lộc pork rolls to legendary Bánh Xèo Bà Dưỡng and 700-year-old Nam Ô fish salad.
                     </p>
                     <div className="pt-2 flex items-center text-xs font-bold text-[#8bd6b6] group-hover:underline gap-1">
-                      <span>View all dishes</span>
+                      <span>View all 6 dishes</span>
                       <span className="material-symbols-outlined text-sm group-hover:translate-x-1 transition-transform">arrow_forward</span>
                     </div>
                   </div>
@@ -323,21 +407,23 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                 className="relative h-72 sm:h-80 rounded-[24px] overflow-hidden shadow-2xl border border-white/20 group cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-[0_20px_50px_rgba(139,214,182,0.25)] hover:border-[#8bd6b6] active:scale-[0.98]"
                 style={{ cursor: 'pointer' }}
               >
-                {/* Background Image */}
-                <div
-                  className="absolute inset-0 bg-cover bg-center transition-transform duration-700 ease-out group-hover:scale-110"
-                  style={{
-                    backgroundImage:
-                      "url('https://images.unsplash.com/photo-1559592413-7cec4d0cae2b?auto=format&fit=crop&w=1000&q=80')"
-                  }}
+                {/* Background Image with skeleton loader and object-fit: cover */}
+                <ImageWithSkeleton
+                  src="https://images.vietnamtourism.gov.vn/vn/images/2022/ngu_hanh_son_da_nang_369258062.jpg"
+                  alt="Da Nang Heritage & Craft Villages"
+                  containerClassName="absolute inset-0 w-full h-full"
+                  className="group-hover:scale-110 transition-transform duration-700 ease-out"
+                  fallbackSrc="https://images.vietnamtourism.gov.vn/vn/images/2022/ngu_hanh_son_da_nang_369258062.jpg"
+                  iconFallback="castle"
                 />
+
                 {/* Dark Gradient Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10 group-hover:via-black/30 transition-all" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/50 to-black/20 group-hover:via-black/35 transition-all pointer-events-none" />
 
                 {/* Card Content */}
-                <div className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10">
+                <div className="absolute inset-0 p-6 flex flex-col justify-between text-white z-10 pointer-events-none">
                   <div className="flex justify-between items-start">
-                    <span className="px-3.5 py-1.5 rounded-full bg-[#8bd6b6]/90 backdrop-blur-md text-[#002116] text-xs font-black uppercase tracking-wider shadow-lg">
+                    <span className="px-3.5 py-1.5 rounded-full bg-[#8bd6b6]/95 backdrop-blur-md text-[#002116] text-xs font-black uppercase tracking-wider shadow-lg">
                       Heritage Guide
                     </span>
                     <div className="w-10 h-10 rounded-full bg-white/20 backdrop-blur-md text-white flex items-center justify-center group-hover:bg-[#8bd6b6] group-hover:text-[#002116] transition-colors shadow">
@@ -352,8 +438,8 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                     <p className="text-sm font-bold text-emerald-300">
                       Heritages & Attractions
                     </p>
-                    <p className="text-xs text-white/80 line-clamp-2 leading-relaxed">
-                      Discover the Marble Mountains, Nam O Fish Sauce Village, Cham Museum, and other famous landmarks.
+                    <p className="text-xs text-white/85 line-clamp-2 leading-relaxed">
+                      Discover the Marble Mountains, 700-year Nam O Fish Sauce Village, Cham Museum, and sacred cultural shrines.
                     </p>
                     <div className="pt-2 flex items-center text-xs font-bold text-[#8bd6b6] group-hover:underline gap-1">
                       <span>View all destinations</span>
@@ -402,6 +488,90 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
               </button>
             </div>
 
+            {/* FOOD GUIDE COVER BANNER (Displayed prominently when viewing Food Guide) */}
+            {selectedCategory === 'food' && (
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 group">
+                <div className="h-48 sm:h-56 w-full relative overflow-hidden">
+                  <ImageWithSkeleton
+                    src="https://diff.vn/wp-content/uploads/2025/03/trai-nghiem-dem-tai-da-nang-1-1.jpg"
+                    alt="Food Guide Cover - Da Nang Culinary Nightlife"
+                    containerClassName="w-full h-full"
+                    className="group-hover:scale-105 transition-transform duration-700 ease-out"
+                    fallbackSrc="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1000&q=80"
+                    iconFallback="restaurant"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/50 to-transparent pointer-events-none" />
+                  
+                  <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 text-white z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="bg-[#8bd6b6] text-[#002116] text-[10px] font-extrabold uppercase tracking-wider px-3 py-0.5 rounded-full shadow">
+                          Food Guide Cover
+                        </span>
+                        <span className="text-xs text-emerald-200 font-bold flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm text-yellow-400">local_fire_department</span>
+                          Da Nang Culinary Classics
+                        </span>
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-black text-white drop-shadow">
+                        Da Nang Food & Gastronomy Guide
+                      </h2>
+                      <p className="text-xs text-white/85 max-w-xl line-clamp-2 mt-0.5 leading-relaxed">
+                        Curated real-life specialties: savory Mì Quảng, Đại Lộc pork rolls, Nam Ô raw fish salad, fresh fish cake noodle soup, and sizzling crepes.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/20 text-xs font-bold text-emerald-300 self-start sm:self-auto shrink-0 shadow">
+                      <span className="material-symbols-outlined text-sm text-emerald-400">verified</span>
+                      <span>100% Real-Life Photography</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* HERITAGE GUIDE COVER BANNER (Displayed prominently when viewing Heritage Guide) */}
+            {selectedCategory === 'heritage' && (
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-white/20 group">
+                <div className="h-48 sm:h-56 w-full relative overflow-hidden">
+                  <ImageWithSkeleton
+                    src="https://images.vietnamtourism.gov.vn/vn/images/2022/ngu_hanh_son_da_nang_369258062.jpg"
+                    alt="Heritage Guide Cover - Marble Mountains & Craft Villages"
+                    containerClassName="w-full h-full"
+                    className="group-hover:scale-105 transition-transform duration-700 ease-out"
+                    fallbackSrc="https://images.vietnamtourism.gov.vn/vn/images/2022/ngu_hanh_son_da_nang_369258062.jpg"
+                    iconFallback="castle"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/50 to-transparent pointer-events-none" />
+                  
+                  <div className="absolute bottom-4 left-4 right-4 sm:left-6 sm:right-6 text-white z-10 flex flex-col sm:flex-row sm:items-end justify-between gap-3">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1.5">
+                        <span className="bg-[#8bd6b6] text-[#002116] text-[10px] font-extrabold uppercase tracking-wider px-3 py-0.5 rounded-full shadow">
+                          Heritage Guide Cover
+                        </span>
+                        <span className="text-xs text-emerald-200 font-bold flex items-center gap-1">
+                          <span className="material-symbols-outlined text-sm text-yellow-400">temple_buddhist</span>
+                          6 Historic Landmarks & Craft Enclaves
+                        </span>
+                      </div>
+                      <h2 className="text-xl sm:text-2xl font-black text-white drop-shadow">
+                        Da Nang Heritage & Craft Village Guide
+                      </h2>
+                      <p className="text-xs text-white/85 max-w-xl line-clamp-2 mt-0.5 leading-relaxed">
+                        Authentic landmarks: sacred Marble Mountains, 700-year Nam O Village, Cham Sculpture Museum, Non Nuoc marble carving, Linh Ung Pagoda, and Love Lock Bridge.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 bg-black/50 backdrop-blur-md px-3.5 py-1.5 rounded-xl border border-white/20 text-xs font-bold text-emerald-300 self-start sm:self-auto shrink-0 shadow">
+                      <span className="material-symbols-outlined text-sm text-emerald-400">verified</span>
+                      <span>100% Real-Life Photography</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
             {/* Search & Tag Filters */}
             <div className="space-y-3">
               {/* Search Bar */}
@@ -415,8 +585,8 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                   onChange={(e) => setSearchQuery(e.target.value)}
                   placeholder={
                     selectedCategory === 'food'
-                      ? 'Search local specialties, noodles, rolls, seafood...'
-                      : 'Search heritage sites, craft villages, landmarks...'
+                      ? 'Search Mì Quảng, Bánh Xèo, Gỏi Cá, noodles, rolls, seafood...'
+                      : 'Search Marble Mountains, Nam Ô Village, Cham Museum...'
                   }
                   className="w-full bg-white/10 border border-white/20 focus:border-[#8bd6b6] rounded-2xl py-3 pl-11 pr-10 text-sm text-white placeholder:text-white/40 outline-none transition-all focus:ring-2 focus:ring-[#8bd6b6]/30"
                 />
@@ -442,15 +612,15 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                         : 'bg-white/10 text-white/70 hover:bg-white/20 border border-white/10'
                     }`}
                   >
-                    {tag === 'all' ? 'All' : tag}
+                    {tag === 'all' ? (selectedCategory === 'food' ? 'All Dishes' : 'All Destinations') : tag}
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* CATALOG GRID (1 col mobile, 2 sm, 3 md, 4 lg) */}
+            {/* CATALOG GRID (1 col mobile, 2 sm, 3 md, 3 lg) */}
             {filteredItems.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5 pt-2">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-5 pt-2">
                 {filteredItems.map(item => (
                   <div
                     key={item.id}
@@ -458,17 +628,20 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
                     className="bg-white rounded-2xl overflow-hidden shadow-xl flex flex-col border border-gray-100 group cursor-pointer transition-all duration-300 ease-in-out hover:scale-[1.02] hover:shadow-2xl hover:border-[#8bd6b6] active:scale-[0.98] text-gray-900"
                     style={{ cursor: 'pointer' }}
                   >
-                    {/* Thumbnail Image */}
-                    <div className="h-44 w-full overflow-hidden relative shrink-0">
-                      <img
+                    {/* Thumbnail Image with skeleton loading and proper aspect ratio */}
+                    <div className="aspect-[16/10] sm:aspect-[4/3] w-full overflow-hidden relative shrink-0 bg-emerald-950/40">
+                      <ImageWithSkeleton
                         src={item.image}
                         alt={item.title}
-                        className="w-full h-full object-cover group-hover:scale-108 transition-transform duration-500"
+                        containerClassName="w-full h-full"
+                        className="group-hover:scale-108 transition-transform duration-500"
+                        fallbackSrc="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
+                        iconFallback={item.category === 'food' ? 'restaurant' : 'castle'}
                       />
-                      <div className="absolute top-2.5 left-2.5 bg-[#002116]/80 backdrop-blur-md text-[#8bd6b6] text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-white/20 shadow">
+                      <div className="absolute top-2.5 left-2.5 bg-[#002116]/85 backdrop-blur-md text-[#8bd6b6] text-[10px] font-extrabold px-2.5 py-1 rounded-full border border-white/20 shadow z-10">
                         {item.tag}
                       </div>
-                      <div className="absolute top-2.5 right-2.5 bg-black/60 backdrop-blur-md text-yellow-400 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 border border-white/20 shadow">
+                      <div className="absolute top-2.5 right-2.5 bg-black/70 backdrop-blur-md text-yellow-400 text-xs font-bold px-2 py-0.5 rounded-full flex items-center gap-0.5 border border-white/20 shadow z-10">
                         <span className="material-symbols-outlined text-sm">star</span>
                         <span>{item.rating}</span>
                       </div>
@@ -512,8 +685,12 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
             ) : (
               <div className="bg-white/5 border border-white/10 rounded-2xl p-8 text-center space-y-3 my-6">
                 <span className="material-symbols-outlined text-4xl text-white/40">search_off</span>
-                <p className="text-sm font-bold text-white">No matching results found</p>
-                <p className="text-xs text-white/60">Please try searching with different keywords or select another category.</p>
+                <p className="text-sm font-bold text-white">
+                  No matching {selectedCategory === 'food' ? 'dishes' : 'destinations'} or spots found
+                </p>
+                <p className="text-xs text-white/60">
+                  Please try searching with different keywords or clear your active filters.
+                </p>
                 <button
                   onClick={() => {
                     setSearchQuery('');
@@ -533,57 +710,65 @@ export const LocalGuideScreen: React.FC<LocalGuideScreenProps> = ({ onBack, onOp
       {selectedItem && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-md animate-fadeIn">
           <div className="bg-[#002116] border border-white/20 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl text-white relative flex flex-col max-h-[90vh]">
-            {/* Image Header */}
-            <div className="relative h-56 sm:h-64 w-full shrink-0">
-              <img
+            {/* Image Header with skeleton and object-fit: cover */}
+            <div className="relative h-60 sm:h-72 w-full shrink-0 overflow-hidden bg-black/40">
+              <ImageWithSkeleton
                 src={selectedItem.image}
                 alt={selectedItem.title}
-                className="w-full h-full object-cover"
+                containerClassName="w-full h-full"
+                fallbackSrc="https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=800&q=80"
+                iconFallback={selectedItem.category === 'food' ? 'restaurant' : 'castle'}
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/30 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#002116] via-[#002116]/40 to-transparent pointer-events-none" />
 
               {/* Close Button */}
               <button
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/50 hover:bg-black/80 text-white flex items-center justify-center backdrop-blur-md border border-white/30 transition-all active:scale-95 cursor-pointer z-10"
+                className="absolute top-4 right-4 w-9 h-9 rounded-full bg-black/60 hover:bg-black/90 text-white flex items-center justify-center backdrop-blur-md border border-white/30 transition-all active:scale-95 cursor-pointer z-20"
                 title="Close"
               >
                 <span className="material-symbols-outlined text-lg">close</span>
               </button>
 
-              <div className="absolute bottom-4 left-6 right-6">
+              <div className="absolute bottom-4 left-6 right-6 z-10">
                 <span className="bg-[#8bd6b6] text-[#002116] text-[10px] font-extrabold uppercase tracking-wider px-2.5 py-1 rounded-full inline-block mb-1 shadow">
                   {selectedItem.tag}
                 </span>
-                <h2 className="text-2xl font-extrabold text-white leading-tight">
+                <h2 className="text-xl sm:text-2xl font-extrabold text-white leading-tight">
                   {selectedItem.title}
                 </h2>
+                {selectedItem.subtitle && (
+                  <p className="text-xs font-semibold text-emerald-300 mt-0.5">
+                    {selectedItem.subtitle}
+                  </p>
+                )}
               </div>
             </div>
 
             {/* Modal Body */}
             <div className="p-6 overflow-y-auto space-y-4 text-sm">
-              <p className="text-white/80 leading-relaxed">
+              <p className="text-white/85 leading-relaxed">
                 {selectedItem.description}
               </p>
 
               <div className="bg-white/10 rounded-2xl p-4 border border-white/10 space-y-2">
                 <div className="flex items-center gap-2 text-xs text-emerald-300 font-bold">
-                  <span className="material-symbols-outlined text-base">location_on</span>
+                  <span className="material-symbols-outlined text-base shrink-0">location_on</span>
                   <span>{selectedItem.address}</span>
                 </div>
                 <div className="flex items-center gap-2 text-xs text-white/90">
-                  <span className="material-symbols-outlined text-base text-[#8bd6b6]">payments</span>
-                  <span>Price / Fee: <strong>{selectedItem.priceRange}</strong></span>
+                  <span className="material-symbols-outlined text-base text-[#8bd6b6] shrink-0">payments</span>
+                  <span>Price Range: <strong className="text-emerald-200">{selectedItem.priceRange}</strong></span>
                 </div>
               </div>
 
               {selectedItem.nomadTip && (
-                <div className="bg-[#8bd6b6]/10 border border-[#8bd6b6]/30 rounded-2xl p-4 space-y-1">
-                  <span className="text-[10px] uppercase font-bold text-[#8bd6b6] tracking-wider block">
-                    💡 Nomad Tip from NomadNest:
+                <div className="bg-[#8bd6b6]/15 border border-[#8bd6b6]/30 rounded-2xl p-4 space-y-1">
+                  <span className="text-[10px] uppercase font-bold text-[#8bd6b6] tracking-wider block flex items-center gap-1">
+                    <span className="material-symbols-outlined text-xs">tips_and_updates</span>
+                    <span>Nomad Tip from NomadNest:</span>
                   </span>
-                  <p className="text-xs text-white/90 italic">
+                  <p className="text-xs text-white/95 italic leading-relaxed">
                     "{selectedItem.nomadTip}"
                   </p>
                 </div>
